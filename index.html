@@ -269,6 +269,39 @@ button{font:inherit;color:inherit;cursor:pointer}
 .pill.off{background:var(--r)}
 .adm-ges .cta{min-width:220px}
 .cta.stop{background:var(--r);box-shadow:0 5px 0 #8A2533}
+/* schermo classifica TV */
+.tv-msg{margin:0;font-size:clamp(16px,1.5vw,30px);color:var(--m)}
+.tv-msg b{color:var(--c)}
+.tv-rank{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.6vw 1.2vw}
+.tv-rank li{display:grid;grid-template-columns:2.2em 1.9em minmax(0,1fr) auto;gap:.8vw;align-items:center;background:var(--s);border-radius:.8vw;padding:.6vw 1vw;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(18px,1.7vw,34px)}
+.tv-rank li .pos{font-family:var(--px);font-weight:600;font-size:.55em;color:var(--m)}
+.tv-rank li .av{width:1.9em;height:1.9em;border-radius:6px;display:block}
+.tv-rank li .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tv-rank li .nm small{display:block;font-family:var(--body);font-weight:500;text-transform:none;font-size:.5em;color:var(--m);white-space:nowrap}
+.tv-rank li .pt{color:var(--l);font-weight:900;font-size:1.25em}
+.tv-rank li.top{background:var(--s2);box-shadow:inset 0 0 0 2px var(--l)}
+.tv-rank .empty{grid-column:1/-1;font-size:clamp(16px,1.3vw,26px);color:var(--m)}
+.tv-mom{}
+#tv-mom li{grid-template-columns:auto minmax(0,1fr) auto;font-size:clamp(14px,1.15vw,22px);text-transform:none;font-family:var(--body);font-weight:600}
+#tv-mom li:first-child{background:var(--s);color:var(--c)}
+#tv-mom li i{color:var(--l);opacity:1}
+.podio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4vw;align-items:end;margin-top:1vw}
+.podio .pl{display:flex;flex-direction:column;align-items:center;gap:.6vw;text-align:center;min-width:0}
+.podio .pl .jump{width:clamp(70px,8vw,160px)}
+.podio .pl .jump .av{display:block;width:100%;height:auto;border-radius:12%}
+.podio .pl .nm{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(22px,2.6vw,54px);line-height:.95;overflow-wrap:anywhere}
+.podio .pl .pt{font-family:var(--px);font-weight:600;font-size:clamp(12px,1vw,20px);color:var(--m)}
+.podio .step{width:100%;border-radius:1vw 1vw 0 0;background:var(--s2);display:flex;align-items:flex-start;justify-content:center;padding-top:1vw;font-family:var(--display);font-weight:900;font-size:clamp(40px,5vw,110px);line-height:1}
+.podio .p1 .step{height:clamp(120px,16vw,300px);background:var(--l);color:var(--n)}
+.podio .p2 .step{height:clamp(90px,11vw,210px)}
+.podio .p3 .step{height:clamp(70px,8vw,160px)}
+@media (prefers-reduced-motion:no-preference){.podio .p1 .jump .av{animation:jmp .7s infinite both}}
+.tv-rest{margin-top:1.2vw}
+.bigwin .tagk{font-family:var(--px);font-size:clamp(12px,1.2vw,24px);font-weight:600;letter-spacing:.06em;background:var(--n);color:var(--l);padding:4px 12px;border-radius:99px;text-transform:uppercase}
+.bigwin .sub{margin:0;font-size:clamp(16px,1.8vw,36px);font-weight:600}
+.bigwin .big{font-size:clamp(64px,10vw,220px)}
+.final-end{}
+.adm-fine{border-top:1px solid #F3F1F81A;padding-top:14px}
 /* pannello admin */
 .admin{position:fixed;inset:0;z-index:30;background:var(--n);overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .adm{position:relative;max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
@@ -300,7 +333,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 </style>
 </head>
 <body>
-
 
 <section class="full splash" id="splash" aria-label="Benvenuto">
   <div class="col">
@@ -376,19 +408,19 @@ button{font:inherit;color:inherit;cursor:pointer}
   <button class="btn" id="close" type="button">Torna alla cartella</button>
 </div>
 
-<section class="screen" id="screen" hidden aria-label="Regia">
+<section class="screen" id="screen" hidden aria-label="Classifica">
   <div class="scr-main">
     <div class="scr-head">
       <h1 class="big-ttl">Il <span class="hl">Bingo</span><br>dei Game Awards</h1>
-      <div class="stats"><span><b id="st-p">0</b>giocatori</span><span class="lv"><b id="st-b">0</b>bingo</span><span><b id="st-m">0</b>momenti</span></div>
+      <div class="stats"><span><b id="st-p">0</b>giocatori</span><span class="lv"><b id="st-m">0</b>successi</span><span><b id="st-f">Scelte aperte</b>fase</span></div>
     </div>
-    <div class="wall" id="wall"></div>
-    <div class="scr-foot"><span id="scr-hint">Tocca un momento quando succede sul palco: si accende anche sui telefoni.</span><button id="sc-reset" type="button">Azzera la serata</button><button id="sc-out" type="button">Torna alla cartella</button></div>
-    <div class="confirm" id="sc-conf" hidden><p>Azzerare i momenti accesi e tutti i bingo? Le cartelle restano, ma i segni ripartono da zero.</p><div class="row"><button class="btn" id="sc-yes" type="button">Sì, azzera</button><button class="btn alt" id="sc-no" type="button">No</button></div></div>
+    <p class="tv-msg" id="tv-msg"></p>
+    <div id="tv-board"></div>
+    <div class="scr-foot"><button id="sc-out" type="button">Esci dallo schermo</button></div>
   </div>
   <aside class="scr-side">
-    <div class="join"><p>Inquadra e gioca</p><div class="qr" id="qr"></div></div>
-    <div class="albo"><h3>Albo dei bingo</h3><ol id="albo"></ol></div>
+    <div class="join" id="tv-join"><p>Inquadra e gioca</p><div class="qr" id="qr"></div></div>
+    <div class="albo"><h3>È successo</h3><ol id="tv-mom"></ol></div>
   </aside>
 </section>
 <section class="admin" id="admin" hidden aria-label="Pannello admin">
@@ -401,6 +433,10 @@ button{font:inherit;color:inherit;cursor:pointer}
     <section class="adm-box" id="ad-ges"><h3>Gestione serata</h3>
       <div class="adm-ges"><div class="st"><span class="pill" id="ad-pill">Scelte aperte</span><b id="ad-st">Gli ospiti stanno scegliendo</b><p class="adm-hint" id="ad-sth"></p></div>
       <button class="cta stop" type="button" id="ad-scelte"><span id="ad-scelte-t">Chiudi le scelte</span><span class="px">&#9632;</span></button></div>
+      <div class="adm-ges adm-fine"><div class="st"><b id="ad-fst">Fine serata</b><p class="adm-hint" id="ad-fsh">Quando finisce lo show chiudi la serata: tutto si blocca e sullo schermo classifica compare il podio.</p></div>
+      <button class="cta" type="button" id="ad-fine"><span id="ad-fine-t">Chiudi la serata</span><span class="px">&#9733;</span></button></div>
+      <div class="confirm" id="ad-fconf" hidden><p>Chiudere la serata? Le scelte e i momenti si bloccano, la classifica diventa definitiva e sullo schermo compare il podio. Puoi riaprirla se serve.</p><div class="row"><button class="btn" id="ad-fyes" type="button">Sì, chiudi</button><button class="btn alt" id="ad-fno" type="button">No</button></div></div>
+      <p class="adm-hint"><button class="ghost" id="ad-tv" type="button">Apri lo schermo classifica in una nuova scheda</button></p>
     </section>
     <div class="adm-grid" id="ad-body">
       <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Tocca un momento quando succede sul palco: da quel momento nessuno può più sceglierlo, e chi l'aveva scelto prende 1 punto. Se sbagli, toccalo di nuovo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
@@ -412,8 +448,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 </section>
 <div class="bigwin" id="bigwin" hidden>
   <div class="jump" id="bw-jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
-  <p class="big" id="bw-t">Bingo!</p>
+  <span class="tagk" id="bw-tag">+1 punto</span>
+  <p class="big" id="bw-t">È successo!</p>
   <p class="nm" id="bw-n"></p>
+  <p class="sub" id="bw-s"></p>
 </div>
 
 <div class="dpanel" id="dpanel" hidden>
@@ -425,7 +463,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <button type="button" id="x-line">Fai 8 pronostici a caso</button>
     <button type="button" id="x-mom">Conferma un momento a caso</button>
     <button type="button" id="x-admin">Apri il pannello admin</button>
-    <button type="button" id="x-regia">Apri lo schermo grande</button>
+    <button type="button" id="x-regia">Apri lo schermo classifica</button>
     <button type="button" id="x-card">Torna alla cartella</button>
     <button type="button" id="x-fake">Arriva un giocatore finto</button>
     <button type="button" id="x-crowd">Aggiungi 8 giocatori finti</button>
@@ -541,9 +579,9 @@ if(DEBUG){(function(){
   const K="sq-bingo-debug-db";
   let db;try{db=JSON.parse(localStorage.getItem(K)||"null")}catch(e){}
   if(!db)db={session:false,giocatori:[],momenti:[]};
-  if(!db.serata)db.serata=[{id:1,scelte_aperte:true}];
+  if(!db.serata)db.serata=[{id:1,scelte_aperte:true,finita:false}];
   const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}};
-  window.addEventListener("storage",e=>{if(e.key!==K)return;try{db=JSON.parse(e.newValue||"null")||{session:false,giocatori:[],momenti:[]}}catch(_){}if(!db.serata)db.serata=[{id:1,scelte_aperte:true}];subs.forEach(x=>x.fn())});
+  window.addEventListener("storage",e=>{if(e.key!==K)return;try{db=JSON.parse(e.newValue||"null")||{session:false,giocatori:[],momenti:[]}}catch(_){}if(!db.serata)db.serata=[{id:1,scelte_aperte:true,finita:false}];subs.forEach(x=>x.fn())});
   const U={id:"debug-sabrina",email:"debug",user_metadata:{full_name:"Sabrina"}};
   const auths=[],subs=[];
   const emit=t=>setTimeout(()=>subs.forEach(s=>s.t===t&&s.fn()),120);
@@ -562,7 +600,7 @@ if(DEBUG){(function(){
     auth:{onAuthStateChange(fn){auths.push(fn)},getSession:async()=>({data:{session:db.session?{user:U}:null}}),
       signInWithOAuth:async()=>{db.session=true;save();auths.forEach(fn=>fn("SIGNED_IN",{user:U}));return {error:null}},
       signOut:async()=>{db.session=false;save();auths.forEach(fn=>fn("SIGNED_OUT",null));return {error:null}}},
-    rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.primo_bingo_at=null;g.linee=0;g.piena=false;g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
+    rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.primo_bingo_at=null;g.linee=0;g.piena=false;g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
     from:q,
     channel(){const c={on(_e,o,fn){subs.push({t:o.table,fn});return c},subscribe(cb){setTimeout(()=>cb("SUBSCRIBED"),50);return c}};return c}
   };
@@ -577,7 +615,7 @@ const LINES=[];
 for(let r=0;r<SIZE;r++){LINES.push([0,1,2,3].map(c=>r*SIZE+c));LINES.push([0,1,2,3].map(c=>c*SIZE+r));}
 LINES.push([0,5,10,15]);LINES.push([3,6,9,12]);
 const $=id=>document.getElementById(id);
-const isRegia=()=>location.hash==="#regia";
+const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
@@ -691,8 +729,8 @@ function render(){
   const all=players.filter(p=>p.id!==me.id).concat([me]);const cl=classifica(all);const pos=cl.findIndex(x=>x.p===me);const mine=cl[pos];
   $("pt").textContent=mine.pt;$("ptt").textContent=mine.pt===1?"punto":"punti";
   $("xpi").style.width=(mine.scelti/MAXP*100)+"%";$("xpt").textContent=mine.scelti+"/"+MAXP+" scelti";
-  const h=$("howto");h.classList.toggle("closed",!aperte);
-  h.innerHTML=aperte?"Scegli fino a <b>"+MAXP+" momenti</b> che secondo te succederanno stasera. Ognuno vale 1, 2 o 3 punti: i più rari valgono di più. Quando un momento succede non si può più cambiare.":"<b>Scelte chiuse.</b> I tuoi pronostici sono questi: ora guarda lo show e incrocia le dita.";
+  const h=$("howto");h.classList.toggle("closed",!aperte||finita);
+  h.innerHTML=finita?"<b>Serata finita!</b> Sei arrivato <b>"+(pos+1)+"°</b> con "+mine.pt+(mine.pt===1?" punto":" punti")+". Grazie per aver giocato.":aperte?"Scegli fino a <b>"+MAXP+" momenti</b> che secondo te succederanno stasera. Ognuno vale 1, 2 o 3 punti: i più rari valgono di più. Quando un momento succede non si può più cambiare.":"<b>Scelte chiuse.</b> I tuoi pronostici sono questi: ora guarda lo show e incrocia le dita.";
   $("rank").innerHTML="<b>"+(pos+1)+"°</b> su "+all.length+" · "+st.conf+(st.conf===1?" indovinato":" indovinati");
 }
 // linee valide (solo momenti confermati): aggiorna me, festeggia se ne arriva una nuova
@@ -708,6 +746,7 @@ let saving=Promise.resolve();
 function save(){const snap={segni:me.segni,linee:me.linee,piena:me.piena,primo_bingo_at:me.primo_bingo_at,aggiornato_at:new Date().toISOString()};
   saving=saving.then(async()=>{const {error}=await sb.from("giocatori").update(snap).eq("id",user.id);setSync(!error,error?"non salvato, riprovo al prossimo tocco":"salvato")})}
 async function tap(i){
+  if(finita){toast("La serata è finita: la classifica è definitiva.");return}
   if(!aperte&&!live.has(i)){toast("Le scelte sono chiuse: ora goditi lo show e guarda se indovini.");return}
   if(live.has(i)){toast(me.segni[i]?"Indovinato! Questo resta tuo.":"Questo momento è già successo: troppo tardi per sceglierlo.");return}
   if(!me.segni[i]&&me.segni.filter(Boolean).length>=MAXP){toast("Hai già scelto "+MAXP+" momenti: togline uno per cambiare.");return}
@@ -733,14 +772,19 @@ $("close").addEventListener("click",()=>{$("win").hidden=true});
 $("to-admin").addEventListener("click",()=>{location.hash="admin"});
 
 // ---------- dati live ----------
-let synced=false,aperte=true;
-async function loadSerata(){const {data}=await sb.from("serata").select("*").eq("id",1).maybeSingle();aperte=data?data.scelte_aperte!==false:true;render();adminRender()}
+let synced=false,aperte=true,finita=false,serataLetta=false,momLetti=false;
+async function loadSerata(){const {data}=await sb.from("serata").select("*").eq("id",1).maybeSingle();const prima=finita;
+  aperte=data?data.scelte_aperte!==false:true;finita=!!(data&&data.finita===true);
+  render();adminRender();tvRender();
+  if(serataLetta&&finita&&!prima&&me&&$("admin").hidden&&$("screen").hidden)finale();
+  serataLetta=true}
 async function loadMomenti(){const prev=live;const {data}=await sb.from("momenti").select("id");live=new Set((data||[]).map(r=>r.id).filter(i=>i>=0&&i<N));
   if(me){if(sync(null,false))save();const nuovi=[...live].filter(i=>!prev.has(i)&&me.segni[i]);if(synced&&nuovi.length&&$("admin").hidden&&$("screen").hidden)hit(nuovi[nuovi.length-1])}synced=true;
+  const appena=[...live].filter(i=>!prev.has(i));if(momLetti&&appena.length&&!$("screen").hidden)tvAnnuncia(appena[appena.length-1]);momLetti=true;
   refreshLive()}
 async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,avatar,segni,linee,piena,primo_bingo_at");players=data||[];
-  if(!$("screen").hidden)albo();render();adminRender()}
-function refreshLive(){render();if(!$("screen").hidden)wall();adminRender()}
+  render();adminRender();tvRender()}
+function refreshLive(){render();adminRender();tvRender()}
 function subscribe(){
   if(subscribed)return;subscribed=true;
   sb.channel("bingo")
@@ -751,45 +795,62 @@ function subscribe(){
 }
 
 // ---------- regia ----------
-function wall(){
-  const w=$("wall");w.textContent="";
-  MOMENTI.forEach((m,i)=>{const b=document.createElement("button");b.type="button";b.className="mo"+(live.has(i)?" on":"");b.disabled=!regia;
-    b.setAttribute("aria-pressed",live.has(i));const t=document.createElement("span");t.textContent=m;b.append(t);
-    b.addEventListener("click",()=>toggleMomento(i));w.append(b)});
-  $("st-m").textContent=live.size;
-  $("scr-hint").textContent=regia?"Tocca un momento quando succede sul palco: si accende anche sui telefoni.":"Solo chi è in regia può accendere i momenti. Qui li vedi in diretta.";
-  $("sc-reset").hidden=!regia;
-}
 async function toggleMomento(i){
   if(!regia)return;
+  if(finita){toast("La serata è chiusa: riaprila dalla gestione per cambiare i momenti.");return}
   const on=live.has(i);on?live.delete(i):live.add(i);
   if(me&&sync(null,false))save();refreshLive();
   const {error}=on?await sb.from("momenti").delete().eq("id",i):await sb.from("momenti").insert({id:i});
   if(error){toast("Non salvato: "+error.message);loadMomenti()}
 }
-function albo(){
-  const ws=players.filter(p=>p.primo_bingo_at).sort((a,b)=>a.primo_bingo_at.localeCompare(b.primo_bingo_at));
-  $("st-p").textContent=players.length;$("st-b").textContent=ws.length;
-  const o=$("albo");o.textContent="";
-  if(!ws.length){const p=document.createElement("p");p.className="empty";p.textContent="Ancora nessuno. Il primo bingo della sala finisce qui.";o.append(p)}
-  ws.forEach((p,i)=>{const li=document.createElement("li");const a=document.createElement("i");a.textContent=(i+1)+"°";
-    const av=document.createElement("span");av.innerHTML=avatarSVG(p.avatar);const t=document.createElement("span");t.textContent=p.nome;const x=document.createElement("small");x.textContent=p.piena?"piena":p.linee+(p.linee===1?" linea":" linee");
-    li.append(a,av,t,x);o.append(li)});
-  const fresh=ws.filter(p=>!shownBingo.has(p.id));ws.forEach(p=>shownBingo.add(p.id));
-  if(!firstLoad&&fresh.length)announce(fresh[0],ws.indexOf(fresh[0])===0);
-  firstLoad=false;
-}
-function announce(p,first){const bw=$("bigwin");$("bw-n").textContent=p.nome;$("bw-jump").innerHTML=avatarSVG(p.avatar,"av sl")+'<div class="shadow"></div>';$("bw-t").textContent=first?"Primo bingo!":"Bingo!";bw.hidden=false;bw.classList.remove("go");void bw.offsetWidth;bw.classList.add("go");clearTimeout(announce.t);announce.t=setTimeout(()=>{bw.hidden=true},4500)}
 $("bigwin").addEventListener("click",()=>{$("bigwin").hidden=true});
-$("sc-reset").addEventListener("click",()=>{$("sc-conf").hidden=false});
-$("sc-no").addEventListener("click",()=>{$("sc-conf").hidden=true});
-$("sc-yes").addEventListener("click",async()=>{$("sc-conf").hidden=true;const {error}=await sb.rpc("azzera_serata");if(error)toast("Non azzerato: "+error.message);else{shownBingo.clear();firstLoad=true;loadMomenti();loadPlayers();toast("Serata azzerata")}});
+// ---------- schermo classifica ----------
+function riga(x,i,top){const li=document.createElement("li");if(top)li.className="top";
+  const a=document.createElement("span");a.className="pos";a.textContent=(i+1)+"°";
+  const av=document.createElement("span");av.innerHTML=avatarSVG(x.p.avatar);
+  const nm=document.createElement("span");nm.className="nm";nm.textContent=x.p.nome;const sm=document.createElement("small");sm.textContent=x.s.conf+(x.s.conf===1?" indovinato":" indovinati");nm.append(sm);
+  const pt=document.createElement("span");pt.className="pt";pt.textContent=x.pt;li.append(a,av,nm,pt);return li}
+function tvRender(){
+  if($("screen").hidden)return;
+  const cl=classifica(players);
+  $("st-p").textContent=players.length;$("st-m").textContent=live.size;$("st-f").textContent=finita?"Finita":aperte?"Scelte aperte":"Show in corso";
+  $("tv-join").hidden=finita;
+  $("tv-msg").innerHTML=finita?"<b>Serata finita!</b> Ecco il podio dei pronostici.":aperte?"<b>Inquadra il QR</b> e scegli fino a "+MAXP+" momenti: i più rari valgono di più.":"<b>Pronostici chiusi.</b> Ogni momento che succede fa salire la classifica.";
+  const bd=$("tv-board");bd.textContent="";
+  if(finita&&cl.length){
+    const po=document.createElement("div");po.className="podio";
+    [1,0,2].forEach(k=>{const x=cl[k];const d=document.createElement("div");d.className="pl p"+(k+1);
+      if(x){const j=document.createElement("div");j.className="jump";j.innerHTML=avatarSVG(x.p.avatar,"av sl");const nm=document.createElement("div");nm.className="nm";nm.textContent=x.p.nome;const pt=document.createElement("div");pt.className="pt";pt.textContent=x.pt+(x.pt===1?" punto":" punti");d.append(j,nm,pt)}
+      const st=document.createElement("div");st.className="step";st.textContent=(k+1);d.append(st);po.append(d)});
+    bd.append(po);
+    if(cl.length>3){const ol=document.createElement("ol");ol.className="tv-rank tv-rest";cl.slice(3,11).forEach((x,i)=>ol.append(riga(x,i+3,false)));bd.append(ol)}
+  }else{
+    const ol=document.createElement("ol");ol.className="tv-rank";
+    if(!cl.length){const p=document.createElement("p");p.className="empty";p.textContent="Ancora nessun giocatore: inquadra il QR e crea il tuo personaggio.";ol.append(p)}
+    cl.slice(0,12).forEach((x,i)=>ol.append(riga(x,i,i===0&&x.pt>0)));bd.append(ol)}
+  const mo=$("tv-mom");mo.textContent="";
+  if(!live.size){const p=document.createElement("p");p.className="empty";p.textContent="Ancora niente. Il primo momento confermato compare qui.";mo.append(p)}
+  [...live].forEach(i=>{const li=document.createElement("li");const a=document.createElement("i");a.textContent="+"+PUNTI[i];const t=document.createElement("span");t.textContent=MOMENTI[i];
+    const c=document.createElement("small");c.textContent=players.filter(p=>p.segni&&p.segni[i]).length+" ✓";li.append(a,t,c);mo.append(li)});
+}
+function tvAnnuncia(i){const bw=$("bigwin");const c=players.filter(p=>p.segni&&p.segni[i]).length;
+  $("bw-jump").innerHTML='<svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text></svg><div class="shadow"></div>';
+  $("bw-tag").textContent="+"+PUNTI[i]+(PUNTI[i]===1?" punto":" punti");$("bw-t").textContent="È successo!";$("bw-n").textContent=MOMENTI[i];
+  $("bw-s").textContent=c===0?"Nessuno l'aveva scelto!":c===1?"Solo 1 persona l'aveva scelto":c+" persone l'avevano scelto";
+  bw.hidden=false;bw.classList.remove("go");void bw.offsetWidth;bw.classList.add("go");clearTimeout(tvAnnuncia.t);tvAnnuncia.t=setTimeout(()=>{bw.hidden=true},6000)}
+function finale(){const all=players.filter(p=>p.id!==me.id).concat([me]);const cl=classifica(all);const pos=cl.findIndex(x=>x.p===me);const x=cl[pos];
+  const w=$("win");w.classList.add("hit");$("win-jump").innerHTML=avatarSVG(me.avatar,"av sl")+'<div class="shadow"></div>';
+  $("wt").textContent="Serata finita";$("bg").textContent=(pos+1)+"° posto";$("wn").textContent=me.nome;$("prove").textContent="";
+  $("win-sub").textContent=(pos<3?"Sei sul podio! ":"")+"Hai fatto "+x.pt+(x.pt===1?" punto":" punti")+" con "+x.s.conf+(x.s.conf===1?" momento indovinato.":" momenti indovinati.");
+  if(pos<3)confetti($("cf"));w.hidden=false;w.classList.remove("go");void w.offsetWidth;w.classList.add("go")}
 $("sc-out").addEventListener("click",()=>{location.hash=""});
 
 // ---------- pannello admin ----------
 function adminRender(){
   if($("admin").hidden)return;
   $("ad-no").hidden=regia;$("ad-body").hidden=!regia;$("ad-reset").hidden=!regia;$("ad-ges").hidden=!regia;
+  $("ad-fine-t").textContent=finita?"Riapri la serata":"Chiudi la serata";$("ad-fine").className="cta"+(finita?" stop":"");
+  $("ad-fst").textContent=finita?"Serata chiusa":"Fine serata";$("ad-fsh").textContent=finita?"La classifica è definitiva e lo schermo mostra il podio. Riaprila solo se hai sbagliato.":"Quando finisce lo show chiudi la serata: tutto si blocca e sullo schermo classifica compare il podio.";
   const chi=players.filter(p=>(p.segni||[]).some(Boolean)).length;
   $("ad-pill").textContent=aperte?"Scelte aperte":"Scelte chiuse";$("ad-pill").classList.toggle("off",!aperte);
   $("ad-st").textContent=aperte?"Gli ospiti stanno scegliendo":"Pronostici bloccati";
@@ -819,9 +880,16 @@ $("ad-scelte").addEventListener("click",async()=>{if(!regia)return;const nv=!ape
   const {error}=await sb.from("serata").update({scelte_aperte:nv,aggiornato_at:new Date().toISOString()}).eq("id",1);
   if(error){toast("Non salvato: "+error.message);loadSerata()}else toast(nv?"Scelte riaperte":"Scelte chiuse: nessuno può più cambiare i pronostici")});
 $("ad-reset").addEventListener("click",()=>{$("ad-conf").hidden=false});
+async function setFinita(v){finita=v;adminRender();render();tvRender();
+  const {error}=await sb.from("serata").update({finita:v,scelte_aperte:v?false:aperte,aggiornato_at:new Date().toISOString()}).eq("id",1);
+  if(error){toast("Non salvato: "+error.message);loadSerata()}else{if(v)aperte=false;toast(v?"Serata chiusa: sullo schermo c'è il podio":"Serata riaperta")}}
+$("ad-fine").addEventListener("click",()=>{if(!regia)return;if(finita){setFinita(false)}else $("ad-fconf").hidden=false});
+$("ad-fno").addEventListener("click",()=>{$("ad-fconf").hidden=true});
+$("ad-fyes").addEventListener("click",()=>{$("ad-fconf").hidden=true;setFinita(true)});
+$("ad-tv").addEventListener("click",()=>{window.open(location.pathname+"#classifica","_blank")});
 $("ad-no2").addEventListener("click",()=>{$("ad-conf").hidden=true});
 $("ad-yes").addEventListener("click",async()=>{$("ad-conf").hidden=true;const {error}=await sb.rpc("azzera_serata");if(error){toast("Non azzerato: "+error.message);return}
-  if(me){me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null}shownBingo.clear();firstLoad=true;await loadSerata();await loadMomenti();await loadPlayers();toast("Serata azzerata")});
+  if(me){me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null}await loadSerata();await loadMomenti();await loadPlayers();toast("Serata azzerata")});
 let qrDone=false;
 function qr(){if(qrDone)return;const box=$("qr");const url=location.origin+location.pathname.replace(/debug\.html$/,"");
   if(typeof QRCode==="undefined"){box.innerHTML='<p class="qr-miss">QR non disponibile: condividi il link della pagina.</p>';return}
@@ -829,7 +897,7 @@ function qr(){if(qrDone)return;const box=$("qr");const url=location.origin+locat
 function route(){
   const on=isRegia()&&!!user;$("screen").hidden=!on;
   const ad=isAdmin()&&!!user;$("admin").hidden=!ad;
-  if(on){$("splash").hidden=true;wall();loadPlayers();qr();wake()}
+  if(on){$("splash").hidden=true;$("bigwin").hidden=true;loadPlayers();qr();tvRender();wake()}
   if(ad){$("splash").hidden=true;adminRender();loadPlayers();wake()}
 }
 window.addEventListener("hashchange",()=>{if((isRegia()||isAdmin())&&!user){show("login");$("splash").hidden=true}route()});
@@ -853,7 +921,7 @@ if(DEBUG){
     const pick=shuffle(free.length).slice(0,Math.max(0,MAXP-me.segni.filter(Boolean).length)).map(k=>free[k]);pick.forEach(i=>me.segni[i]=true);sync(null,false);render();save();toast("Fatti i pronostici: ora conferma qualche momento dal pannello admin")});
   $("x-mom").addEventListener("click",()=>{if(!regia){toast("Prima fai l'accesso");return}const off=MOMENTI.map((_,i)=>i).filter(i=>!live.has(i));if(off.length)toggleMomento(off[Math.random()*off.length|0])});
   $("x-reg").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;openEditor(me?me.nome:"Sabrina",me?me.avatar:avRandom(),!!me)});
-  $("x-regia").addEventListener("click",()=>{location.hash="regia"});
+  $("x-regia").addEventListener("click",()=>{location.hash="classifica"});
   $("x-admin").addEventListener("click",()=>{location.hash="admin"});
   $("x-card").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;$("admin").hidden=true;if(me)show("game")});
   const NOMI=["Marco","Giulia","Luca","Fede","Ale","Chiara","Davide","Sofi","Matte","Ire","Nico","Bea"];
