@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-50zv64cEcerbtU0X9yeggFR8lc7S3k8CKKKzcAVs+d4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://vqgkzvhlvmxihjxpsxan.supabase.co wss://vqgkzvhlvmxihjxpsxan.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-xBuHJ7b7+tfiE3FRc2YIZVNRDlAYekUAcZNyd5AuL6g='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://vqgkzvhlvmxihjxpsxan.supabase.co wss://vqgkzvhlvmxihjxpsxan.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -864,12 +864,12 @@ if(DEBUG){(function(){
     auth:{onAuthStateChange(fn){auths.push(fn)},getSession:async()=>({data:{session:db.session?{user:U}:null}}),
       signInWithOAuth:async()=>{db.session=true;save();auths.forEach(fn=>fn("SIGNED_IN",{user:U}));return {error:null}},
       signOut:async()=>{db.session=false;save();auths.forEach(fn=>fn("SIGNED_OUT",null));return {error:null}}},
-    rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
+    rpc:async n=>{if(n==="sono_regia")return {data:!window.__giocatore};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
     from:q,removeChannel(){},
     channel(){const c={on(_e,o,fn){subs.push({t:o.table,fn});return c},subscribe(cb){setTimeout(()=>cb("SUBSCRIBED"),50);return c}};return c}
   };
   window.supabase={createClient:()=>client};
-  window.__mock={addPlayer(p){db.giocatori.push(p);save();emit("giocatori")},wipe(){try{localStorage.removeItem(K);sessionStorage.removeItem("sq-intro")}catch(e){}}};
+  window.__mock={get ascolti(){return subs.map(x=>x.t)},addPlayer(p){db.giocatori.push(p);save();emit("giocatori")},wipe(){try{localStorage.removeItem(K);sessionStorage.removeItem("sq-intro")}catch(e){}}};
 })()}
 
 const SB_URL="https://vqgkzvhlvmxihjxpsxan.supabase.co";
@@ -880,7 +880,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=25; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=26; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -889,7 +889,7 @@ function show(id){["login","naming","game","kicked"].forEach(x=>$(x).hidden=x!==
 let tab="bingo";try{tab=sessionStorage.getItem("sq-tab")||"bingo"}catch(e){}
 function setTab(t){tab=t;try{sessionStorage.setItem("sq-tab",t)}catch(e){}
   ["bingo","rank","acc"].forEach(x=>{$("tab-"+x).hidden=x!==t;$("tb-"+x).setAttribute("aria-selected",x===t)});
-  if(t==="rank")$("tb-badge").hidden=true;
+  if(t==="rank"){$("tb-badge").hidden=true;if(user)loadPlayers()}
   window.scrollTo(0,0);render()}
 document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
 // un segno vale solo se il momento è stato confermato dall'admin
@@ -1075,8 +1075,10 @@ async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,
   if(me){const io=players.find(p=>p.id===me.id);if(io&&io.nome!==me.nome){me.nome=io.nome;toast("L'admin ha cambiato il tuo nome in "+io.nome)}}
   render();adminRender();tvRender()}
 function refreshLive(){render();adminRender();tvRender()}
-let chan=null,retry=0,retryT=null,lpT=null;
+let chan=null,retry=0,retryT=null,lpT=null,chanTutti=false;
 function loadPlayersSoon(){clearTimeout(lpT);lpT=setTimeout(loadPlayers,500)} // tanti tocchi insieme = una sola lettura
+function loadPlayersPresto(){clearTimeout(lpT);lpT=setTimeout(loadPlayers,300+Math.random()*3700)} // i telefoni non leggono tutti nello stesso istante
+const vedeTutti=()=>regia||isRegia()||isAdmin(); // admin e schermo TV seguono ogni tocco, i giocatori no (meno traffico)
 function reconnect(why){setSync(false,why);clearTimeout(retryT);const wait=Math.min(30000,2000*Math.pow(2,retry++));
   retryT=setTimeout(()=>{subscribed=false;subscribe();refreshAll()},wait)}
 async function refreshAll(){if(!sb||!user)return;if(dirty&&me)save();await loadSerata();await loadMomenti();await loadPlayers();loadEsclusi()}
@@ -1087,12 +1089,13 @@ let chanOk=false;
 function subscribe(){
   if(subscribed)return;subscribed=true;
   if(chan){try{sb.removeChannel(chan)}catch(e){}chan=null}
-  chan=sb.channel("bingo")
+  const tutti=vedeTutti();chanTutti=tutti;
+  let c=sb.channel("bingo")
     .on("postgres_changes",{event:"*",schema:"public",table:"esclusi"},()=>{if(regia)loadEsclusi();else escluso()})
-    .on("postgres_changes",{event:"*",schema:"public",table:"momenti"},()=>loadMomenti())
-    .on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>loadPlayersSoon())
-    .on("postgres_changes",{event:"*",schema:"public",table:"serata"},()=>loadSerata())
-    .subscribe(s=>{if(s==="SUBSCRIBED"){chanOk=true;retry=0;setSync(true,"in diretta")}else if(s==="CHANNEL_ERROR"||s==="TIMED_OUT"||s==="CLOSED"){chanOk=false;reconnect("diretta interrotta, riprovo da solo")}});
+    .on("postgres_changes",{event:"*",schema:"public",table:"momenti"},()=>{loadMomenti();if(!tutti)loadPlayersPresto()})
+    .on("postgres_changes",{event:"*",schema:"public",table:"serata"},()=>loadSerata());
+  if(tutti)c=c.on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>loadPlayersSoon());
+  chan=c.subscribe(s=>{if(s==="SUBSCRIBED"){chanOk=true;retry=0;setSync(true,"in diretta")}else if(s==="CHANNEL_ERROR"||s==="TIMED_OUT"||s==="CLOSED"){chanOk=false;reconnect("diretta interrotta, riprovo da solo")}});
 }
 
 // ---------- regia ----------
@@ -1229,6 +1232,7 @@ function route(){
   const ad=isAdmin()&&!!user;$("admin").hidden=!ad;$("tabbar").hidden=on||ad||$("game").hidden;
   if(on){$("bigwin").hidden=true;loadPlayers();qr();tvRender();wake()}
   if(ad){adminRender();loadPlayers();wake()}
+  if((on||ad)&&chan&&!chanTutti){subscribed=false;subscribe()} // passa alla diretta completa
 }
 window.addEventListener("hashchange",()=>{if((isRegia()||isAdmin())&&!user)show("login");route()});
 
@@ -1287,6 +1291,7 @@ async function nuovaVersione(){if(DEBUG||location.protocol!=="https:")return;
     if(j&&j.v>APP_V&&!pending&&!dirty&&$("win").hidden){try{sessionStorage.setItem("sq-agg","1")}catch(e){}location.reload()}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")nuovaVersione()});
 setInterval(nuovaVersione,120000);
+setInterval(()=>{if(user&&!chanTutti&&document.visibilityState==="visible")loadPlayers()},30000); // nuovi arrivi e nomi
 try{if(sessionStorage.getItem("sq-agg")==="1"){sessionStorage.removeItem("sq-agg");setTimeout(()=>toast("App aggiornata all'ultima versione"),900)}}catch(e){}
 
 // ---------- avvio ----------
