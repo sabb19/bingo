@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-pLj3NDh/twZJ9x377xh9YzmhmMhHsrPudlbPSJ3sIIA='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://vqgkzvhlvmxihjxpsxan.supabase.co wss://vqgkzvhlvmxihjxpsxan.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-UX4mcf4osu1GyXI+mbRXxu7oQHPNp7Npkl0UfeavPGo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://vqgkzvhlvmxihjxpsxan.supabase.co wss://vqgkzvhlvmxihjxpsxan.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -789,6 +789,16 @@ svg.blink .e{opacity:0}
 .feed li em{font-style:normal;margin-left:auto;flex:none;background:var(--v);color:var(--n);font-weight:900;padding:2px 6px;transform:rotate(-3deg)}
 .feed li.empty{color:var(--m);font-size:13px}
 @media (prefers-reduced-motion:reduce){#who-av .av,.podio-m .a .av{animation:none}}
+
+/* ---------- v32: admin per email ---------- */
+.adm-mail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.adm-mail li{display:flex;align-items:center;gap:10px;background:var(--n);border-radius:12px;padding:10px 12px;font-weight:600;font-size:15px;min-width:0}
+.adm-mail li span{min-width:0;overflow-wrap:anywhere}
+.adm-mail em{margin-left:auto;font-style:normal;background:var(--c);color:var(--n);font-size:10px;font-weight:900;letter-spacing:.06em;padding:3px 6px;transform:rotate(-2deg)}
+.adm-mail .ghost{margin-left:auto;padding:4px 0;white-space:nowrap}
+.adm-mail .ghost.armed{color:var(--c);font-weight:800}
+.adm-add{display:flex;gap:8px}
+.adm-add input{flex:1;min-width:0;font:inherit;font-size:16px;border:2px solid var(--c);border-radius:12px;padding:11px 12px;background:var(--n);color:var(--c)}
 </style>
 </head>
 <body>
@@ -948,6 +958,11 @@ svg.blink .e{opacity:0}
       <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Quando un momento succede sul palco toccalo due volte: la seconda conferma. Da lì nessuno può più sceglierlo, e chi l'aveva scelto prende i suoi punti (1, 2 o 3). Se sbagli, toccalo di nuovo due volte per annullarlo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
       <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi fa più punti con i pronostici confermati. I momenti valgono 1, 2 o 3 punti: i più rari valgono di più. Ognuno può sceglierne al massimo 8. Tocca ⋯ accanto a un nome per rinominarlo o toglierlo.</p><ol class="adm-rank" id="ad-rank"></ol><div id="ad-escw" hidden><h3 style="margin-top:18px">Tolti dalla serata</h3><ol class="adm-esc" id="ad-esc"></ol></div></section>
     </div>
+    <section class="adm-box" id="ad-adm" hidden><h3>Admin</h3>
+      <p class="adm-hint" id="ad-adm-h">Chi è in questa lista entra nel pannello admin con il suo account Google.</p>
+      <ul class="adm-mail" id="ad-adm-l"></ul>
+      <form class="adm-add" id="ad-adm-f" hidden><input id="ad-adm-e" type="email" inputmode="email" autocomplete="off" placeholder="email Google del nuovo admin" maxlength="120"><button class="btn" type="submit">Aggiungi</button></form>
+    </section>
     <div class="scr-foot"><button id="ad-out" type="button">Vai alla mia cartella</button><button id="ad-reset" type="button">Azzera la serata</button></div>
     <div class="confirm" id="ad-conf" hidden><p>Azzerare la serata? Tolgo le conferme dei momenti e tutti i segni dei giocatori. I giocatori e i loro personaggi restano.</p><div class="row"><button class="btn" id="ad-yes" type="button">Sì, azzera</button><button class="btn alt" id="ad-no2" type="button">No</button></div></div>
   </div>
@@ -1090,7 +1105,12 @@ if(DEBUG){(function(){
     auth:{onAuthStateChange(fn){auths.push(fn)},getSession:async()=>({data:{session:db.session?{user:U}:null}}),
       signInWithOAuth:async()=>{db.session=true;save();auths.forEach(fn=>fn("SIGNED_IN",{user:U}));return {error:null}},
       signOut:async()=>{db.session=false;save();auths.forEach(fn=>fn("SIGNED_OUT",null));return {error:null}}},
-    rpc:async n=>{if(n==="sono_regia")return {data:!window.__giocatore};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
+    rpc:async (n,arg)=>{if(n==="sono_regia")return {data:!window.__giocatore};
+      if(n==="sono_principale")return {data:!window.__giocatore&&!window.__secondo};
+      if(!db.admin)db.admin=[{email:"sabrinamontella02@gmail.com",principale:true}];
+      if(n==="admin_lista")return {data:db.admin.slice(),error:null};
+      if(n==="aggiungi_admin"){const e=String(arg.nuova).trim().toLowerCase();if(!db.admin.some(a=>a.email===e))db.admin.push({email:e,principale:false});save();return {error:null}}
+      if(n==="togli_admin"){db.admin=db.admin.filter(a=>a.principale||a.email!==arg.vecchia);save();return {error:null}}if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
     from:q,removeChannel(){},
     channel(){const c={on(_e,o,fn){subs.push({t:o.table,fn});return c},subscribe(cb){setTimeout(()=>cb("SUBSCRIBED"),50);return c}};return c}
   };
@@ -1106,7 +1126,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=31; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=32; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1434,7 +1454,7 @@ $("sc-out").addEventListener("click",()=>{location.hash=""});
 
 // ---------- pannello admin ----------
 function adminRender(){
-  if($("admin").hidden)return;
+  if($("admin").hidden)return;if(regia&&!adminLetti){adminLetti=true;loadAdmin()}$("ad-adm").hidden=!regia;
   $("ad-no").hidden=regia;$("ad-body").hidden=!regia;$("ad-reset").hidden=!regia;$("ad-ges").hidden=!regia;
   $("ad-fine-t").textContent=finita?"Riapri la serata":"Chiudi la serata";$("ad-fine").className="cta"+(finita?" stop":"");
   $("ad-fst").textContent=finita?"Serata chiusa":"Fine serata";$("ad-fsh").textContent=finita?"La classifica è definitiva e lo schermo mostra il podio. Riaprila solo se hai sbagliato.":"Quando finisce lo show chiudi la serata: tutto si blocca e sullo schermo classifica compare il podio.";
@@ -1489,6 +1509,21 @@ async function togli(p){
   loadEsclusi();loadPlayers()}
 async function riammetti(e){const {error}=await sb.from("esclusi").delete().eq("user_id",e.user_id);if(error){toast("Non riuscito: "+error.message);return}toast((e.nome||"Il giocatore")+" può rientrare");loadEsclusi()}
 $("ad-out").addEventListener("click",()=>{location.hash=""});
+// ---------- v32: lista admin per email ----------
+let adminLetti=false,principale=false,adminList=[],togliArmata=null;
+async function loadAdmin(){try{const p=await sb.rpc("sono_principale");principale=!!p.data;const {data,error}=await sb.rpc("admin_lista");if(!error)adminList=data||[]}catch(e){}renderAdmin()}
+function renderAdmin(){const l=$("ad-adm-l");l.textContent="";$("ad-adm-f").hidden=!principale;
+  $("ad-adm-h").textContent=principale?"Chi è in questa lista entra nel pannello admin con il suo account Google. Solo tu, come admin principale, puoi aggiungere e togliere.":"Chi è in questa lista entra nel pannello admin con il suo account Google. Solo l'admin principale può cambiarla.";
+  adminList.forEach(a=>{const li=document.createElement("li");const e=document.createElement("span");e.textContent=a.email;li.append(e);
+    if(a.principale){const b=document.createElement("em");b.textContent="PRINCIPALE";li.append(b)}
+    else if(principale){const b=document.createElement("button");b.type="button";b.className="ghost";const arm=togliArmata===a.email;b.textContent=arm?"Tocca ancora per togliere":"Togli";if(arm)b.classList.add("armed");
+      b.addEventListener("click",async()=>{if(togliArmata!==a.email){togliArmata=a.email;renderAdmin();setTimeout(()=>{if(togliArmata===a.email){togliArmata=null;renderAdmin()}},4000);return}
+        togliArmata=null;const {error}=await sb.rpc("togli_admin",{vecchia:a.email});if(error)toast("Non riesco a togliere: "+error.message);else toast(a.email+" non è più admin.");loadAdmin()});li.append(b)}
+    l.append(li)})}
+$("ad-adm-f").addEventListener("submit",async e=>{e.preventDefault();const v=$("ad-adm-e").value.trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){toast("Scrivi un'email valida, quella dell'account Google.");return}
+  const {error}=await sb.rpc("aggiungi_admin",{nuova:v});if(error){toast("Non riesco ad aggiungere: "+error.message);return}
+  $("ad-adm-e").value="";toast(v+" ora è admin. Entra nel pannello con il suo account Google.");loadAdmin()});
 $("ad-scelte").addEventListener("click",async()=>{if(!regia)return;const nv=!aperte;aperte=nv;adminRender();render();
   const {error}=await sb.from("serata").update({scelte_aperte:nv,aggiornato_at:new Date().toISOString()}).eq("id",1);
   if(error){toast("Non salvato: "+error.message);loadSerata()}else toast(nv?"Scelte riaperte":"Scelte chiuse: nessuno può più cambiare i pronostici")});
