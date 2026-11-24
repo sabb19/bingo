@@ -564,6 +564,7 @@ async function afterAuth(){
   if(error){setSync(false,"errore di collegamento");toast("Errore: "+error.message)}
   me=data||null;
   if(!me){const g=(user.user_metadata?.full_name||user.user_metadata?.name||"").split(" ")[0];openEditor(g.slice(0,24),avRandom(),false)}
+  else if(!me.avatar||!Object.keys(me.avatar).length){openEditor(me.nome,avRandom(),true)}
   else{show("game");render()}
   route();
 }
