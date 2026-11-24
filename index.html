@@ -441,7 +441,7 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
 </head>
 <body>
 
-<section class="full splash" id="splash" aria-label="Benvenuto">
+<section class="full splash" id="splash" hidden aria-label="Benvenuto">
   <div class="col">
     <div class="sp-top"><span>Watch party · The Game Awards 2026</span></div>
     <h1 class="big-ttl drop" aria-label="Il Bingo dei Game Awards"><span class="w"><span class=""><span class="ch" style="--i:1">I</span><span class="ch" style="--i:2">l</span></span> <span class="hl"><span class="ch" style="--i:3">B</span><span class="ch" style="--i:4">i</span><span class="ch" style="--i:5">n</span><span class="ch" style="--i:6">g</span><span class="ch" style="--i:7">o</span></span></span><span class="w"><span class=""><span class="ch" style="--i:8">d</span><span class="ch" style="--i:9">e</span><span class="ch" style="--i:10">i</span></span> <span class=""><span class="ch" style="--i:11">G</span><span class="ch" style="--i:12">a</span><span class="ch" style="--i:13">m</span><span class="ch" style="--i:14">e</span></span></span><span class="w"><span class=""><span class="ch" style="--i:15">A</span><span class="ch" style="--i:16">w</span><span class="ch" style="--i:17">a</span><span class="ch" style="--i:18">r</span><span class="ch" style="--i:19">d</span><span class="ch" style="--i:20">s</span></span></span></h1>
@@ -616,7 +616,6 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
 <div class="dpanel" id="dpanel" hidden>
   <div class="dlist" id="dlist" hidden>
     <div class="dinfo" id="dinfo">debug</div>
-    <button type="button" id="x-intro">Rivedi l'intro</button>
     <button type="button" id="x-inst">Mostra la guida all'installazione</button>
     <button type="button" id="x-login">Mostra la schermata di accesso</button>
     <button type="button" id="x-reg">Mostra la registrazione</button>
@@ -1149,7 +1148,7 @@ if(DEBUG){
   $("dtog").addEventListener("click",()=>{const l=$("dlist");l.hidden=!l.hidden;$("dtog").setAttribute("aria-expanded",!l.hidden);dinfo()});
   $("dlist").addEventListener("click",e=>{if(e.target.closest("button")){$("dlist").hidden=true;$("dtog").setAttribute("aria-expanded","false")}},true);
   const ready=()=>{if(!me){toast("Prima fai l'accesso e prendi la cartella");return false}location.hash="";$("screen").hidden=true;$("admin").hidden=true;show("game");return true};
-  $("x-intro").addEventListener("click",()=>{location.hash="";intro()});
+  
   $("x-inst").addEventListener("click",()=>{skipInst=false;try{sessionStorage.removeItem("sq-skip-inst")}catch(e){}showInstall(false)});
   $("x-login").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;show("login")});
   $("x-line").addEventListener("click",()=>{if(!ready())return;const free=CARTELLA.filter(i=>!live.has(i));me.segni=me.segni.map((v,i)=>live.has(i)?v:false);
@@ -1188,7 +1187,7 @@ if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceW
 // ---------- avvio ----------
 let seen=false;try{seen=sessionStorage.getItem("sq-intro")==="1"}catch(e){}
 if(needInstall())showInstall(false);
-else if(isRegia()||isAdmin()||seen||/[?&#](code|access_token)=/.test(location.href))$("splash").hidden=true;else intro();
+else $("splash").hidden=true; // v18: niente intro con la pallina
 boot();
 })();
 </script>
