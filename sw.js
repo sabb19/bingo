@@ -1,6 +1,6 @@
 // Service worker minimo: rende l'app installabile e mostra l'ultima versione salvata se manca la rete.
 // I dati della serata (Supabase) passano sempre dalla rete, mai dalla cache.
-const CACHE="bingo-v16";
+const CACHE="bingo-v17";
 const SHELL=["./","./index.html","./debug.html","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).catch(()=>{}));self.skipWaiting()});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
