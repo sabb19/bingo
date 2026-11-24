@@ -2,9 +2,10 @@
 
 Web app di Side Questers per la watch party dei The Game Awards 2026.
 
-- **Telefono:** ogni ospite inserisce il nome e riceve una cartella 4x4 mescolata con i momenti tipici dello show. Riga, colonna o diagonale completa = BINGO.
-- **Intro:** all'apertura la mascotte entra a passi e il titolo cade lettera per lettera; si parte con "Premi start".
-- **Schermo grande:** apri la pagina con `#regia` in fondo all'indirizzo. Trovi il QR per entrare, il muro dei momenti da accendere e l'albo dei bingo.
-- **Debug:** `debug.html` è la stessa app con un pannello di prova (rivedi intro, completa una linea, riempi la cartella, apri la regia, cancella tutto).
+- **Intro:** la mascotte entra a passi e il titolo cade lettera per lettera; si parte con "Premi start".
+- **Accesso:** con Google, tramite Supabase. Ogni ospite ha una cartella 4x4 salvata sul suo account.
+- **Telefono:** riga, colonna o diagonale completa = BINGO, che arriva da solo sullo schermo grande. I momenti accesi dalla regia compaiono con un pallino viola.
+- **Regia:** `#regia` in fondo all'indirizzo. Muro dei momenti (lo modifica solo chi è nella tabella `regia`), QR per entrare e albo dei bingo in diretta.
+- **Debug:** `debug.html` è la stessa app con un pannello di prova.
 
-Tutto è in `index.html`, senza build. Lo stato resta nel browser di ogni dispositivo.
+Il database è descritto in `supabase/tabelle-bingo-v1.sql`.
