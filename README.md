@@ -4,6 +4,7 @@ Web app per la watch party dei The Game Awards 2026.
 
 - **Intro:** una pallina del bingo rotola sotto il riflettore e il titolo cade lettera per lettera; si parte con "Premi start".
 - **Accesso:** con Google, tramite Supabase. Ogni ospite ha una cartella 4x4 salvata sul suo account.
+- **Registrazione:** nome e personaggio pixel 16x16 modificabile (capelli, colore, occhi, bocca, accessorio, pelle, maglia, sfondo), con tasto Casuale. Si può modificare dopo dalla cartella.
 - **Telefono:** riga, colonna o diagonale completa = BINGO, che arriva da solo sullo schermo grande. I momenti accesi dalla regia compaiono con un pallino viola.
 - **Regia:** `#regia` in fondo all'indirizzo. Muro dei momenti (lo modifica solo chi è nella tabella `regia`), QR per entrare e albo dei bingo in diretta.
 - **Debug:** `debug.html` è la stessa app con un pannello di prova e un database finto nel browser: funziona senza Supabase e senza Google.

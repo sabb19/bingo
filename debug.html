@@ -47,9 +47,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .big-ttl .hl{color:var(--l)}
 
 /* schermate a tutto schermo */
-.full{position:fixed;inset:0;z-index:20;overflow:auto;display:flex;align-items:center;justify-content:center;
+.full{position:fixed;inset:0;z-index:20;overflow:auto;display:flex;align-items:flex-start;justify-content:center;
   padding:calc(24px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.col{position:relative;z-index:1;width:100%;max-width:440px;display:flex;flex-direction:column;gap:24px}
+.col{position:relative;z-index:1;width:100%;max-width:440px;display:flex;flex-direction:column;gap:24px;margin-block:auto}
 
 /* intro */
 .splash{background:var(--n);cursor:pointer;z-index:26}
@@ -209,6 +209,33 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (max-width:800px){.screen{grid-template-columns:1fr}.wall{grid-template-columns:repeat(3,minmax(0,1fr))}.mo{min-height:64px;border-radius:10px;padding:10px}.join{border-radius:14px;padding:14px}}
 
 .who small,.lines,.xp,.sync,.stats,.albo h3,.albo li i,.albo li small,.field label,.cell .n,.dinfo,.win-layer .tagk{letter-spacing:.06em;font-weight:600}
+
+/* registrazione: personaggio pixel */
+.reg .col{max-width:480px;gap:20px}
+.reg .big-ttl{font-size:clamp(46px,13vw,68px)}
+.reg-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:end}
+.preview{width:clamp(112px,34vw,150px);aspect-ratio:1;border-radius:16px;overflow:hidden;box-shadow:0 6px 0 var(--vd),0 0 40px #8C5CFF55}
+.preview svg{display:block;width:100%;height:100%}
+.preview.bump svg{animation:pop .3s var(--boing)}
+.reg-side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.reg-side input{width:100%;box-sizing:border-box}
+.dice{align-self:flex-start;border:0;border-radius:10px;background:var(--s2);color:var(--c);font-weight:700;font-size:15px;padding:10px 14px;display:inline-flex;gap:8px;align-items:center}
+.dice span{font-size:20px;line-height:1}
+.editor{display:flex;flex-direction:column;gap:10px}
+.erow{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:center;background:var(--s);border-radius:12px;padding:8px 10px}
+.erow>span{font-family:var(--px);font-weight:600;letter-spacing:.06em;font-size:11px;text-transform:uppercase;color:var(--m)}
+.step{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:6px}
+.step button{border:0;border-radius:9px;background:var(--s2);color:var(--c);height:36px;font-size:18px;font-weight:700}
+.step output{text-align:center;font-weight:700;font-size:15px;overflow-wrap:anywhere}
+.sw{display:flex;gap:6px;flex-wrap:wrap}
+.sw button{width:30px;height:30px;border-radius:50%;border:0;box-shadow:inset 0 0 0 2px #0003;padding:0}
+.sw button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--n),0 0 0 4px var(--l)}
+.who .me{display:flex;gap:12px;align-items:flex-end;min-width:0}
+.who .me .av{width:56px;height:56px;border-radius:10px;flex:none}
+.win-layer .jump{margin-top:10px}
+.win-layer .jump .av,.bigwin .jump .av{display:block;width:100%;height:auto;border-radius:12%}
+.albo li .av{width:1.6em;height:1.6em;border-radius:4px;display:block}
+.albo li{grid-template-columns:auto auto minmax(0,1fr) auto}
 /* pannello debug (solo debug.html) */
 .dpanel{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .dtog{border:0;border-radius:99px;background:var(--r);color:var(--n);font-family:var(--px);font-size:12px;padding:8px 12px;text-transform:uppercase;box-shadow:0 3px 0 #0006}
@@ -246,15 +273,21 @@ button{font:inherit;color:inherit;cursor:pointer}
   </div>
 </section>
 
-<section class="full auth" id="naming" hidden aria-label="Il tuo nome">
+<section class="full auth reg" id="naming" hidden aria-label="Crea il tuo personaggio">
   <form class="col" id="f">
-    <h2 class="big-ttl">Come ti <span class="hl">chiami</span>?</h2>
-    <p>Questo nome compare sullo schermo grande quando fai bingo.</p>
-    <div class="field">
-      <label for="nome">Nome da giocatore</label>
-      <input id="nome" name="nome" autocomplete="nickname" maxlength="24" required>
+    <h2 class="big-ttl">Crea il tuo <span class="hl">personaggio</span></h2>
+    <div class="reg-top">
+      <div class="preview" id="preview"></div>
+      <div class="reg-side">
+        <div class="field">
+          <label for="nome">Nome da giocatore</label>
+          <input id="nome" name="nome" autocomplete="nickname" maxlength="24" required>
+        </div>
+        <button class="dice" id="dice" type="button"><span aria-hidden="true">⚄</span> Casuale</button>
+      </div>
     </div>
-    <button class="cta" type="submit"><span>Prendi la cartella</span><span class="px">&#9654; start</span></button>
+    <div class="editor" id="editor"></div>
+    <button class="cta" type="submit" id="reg-go"><span id="reg-go-t">Prendi la cartella</span><span class="px">&#9654; start</span></button>
     <p class="err" id="name-err" hidden></p>
   </form>
 </section>
@@ -265,7 +298,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <span class="tag">TGA 2026</span>
   </header>
   <div class="who">
-    <div style="min-width:0"><small>Cartella di</small><h2 id="who"></h2></div>
+    <div class="me"><span id="who-av"></span><div style="min-width:0"><small>Cartella di</small><h2 id="who"></h2></div></div>
     <div class="lines"><b id="nl">0</b><span id="nlt">linee</span></div>
   </div>
   <div class="xp"><div class="xpb"><i id="xpi"></i></div><span id="xpt">0/16</span></div>
@@ -273,7 +306,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div class="legend"><span><i></i>già successo sul palco</span></div>
   <div class="foot">
     <span class="sync" id="sync">collegamento…</span>
-    <div class="row"><button class="ghost" id="reset" type="button">Nuova cartella</button><button class="ghost" id="logout" type="button">Esci</button></div>
+    <div class="row"><button class="ghost" id="edit-av" type="button">Modifica personaggio</button><button class="ghost" id="reset" type="button">Nuova cartella</button><button class="ghost" id="logout" type="button">Esci</button></div>
   </div>
   <div class="confirm" id="conf" hidden>
     <p>Vuoi davvero una cartella nuova? Perdi i segni fatti finora e il tuo posto nell'albo.</p>
@@ -284,7 +317,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <div class="win-layer" id="win" hidden role="dialog" aria-modal="true" aria-labelledby="bg">
   <div class="conf" id="cf"></div>
   <span class="tagk" id="wt">Linea 1</span>
-  <div class="jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
+  <div class="jump" id="win-jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
   <p class="big" id="bg">Bingo!</p>
   <p class="nm" id="wn"></p>
   <p class="sub">Sei già sullo schermo grande. La tua linea:</p>
@@ -308,7 +341,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   </aside>
 </section>
 <div class="bigwin" id="bigwin" hidden>
-  <div class="jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
+  <div class="jump" id="bw-jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
   <p class="big" id="bw-t">Bingo!</p>
   <p class="nm" id="bw-n"></p>
 </div>
@@ -318,6 +351,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div class="dinfo" id="dinfo">debug</div>
     <button type="button" id="x-intro">Rivedi l'intro</button>
     <button type="button" id="x-login">Mostra la schermata di accesso</button>
+    <button type="button" id="x-reg">Mostra la registrazione</button>
     <button type="button" id="x-line">Completa una linea</button>
     <button type="button" id="x-full">Riempi tutta la cartella</button>
     <button type="button" id="x-new">Nuova cartella al volo</button>
@@ -376,6 +410,81 @@ const MOMENTI=[
  "Annuncio con «only on» una console"
 ];
 const DEBUG=!!window.SQ_DEBUG;
+// ---------- personaggio pixel 16x16 ----------
+const PAL={
+  pelle:["#FFDDC2","#F2C29B","#D9A273","#B57A4F","#8A5634","#5E3A22"],
+  capelli:["#1E1A2B","#5B3A24","#A0612F","#E8C468","#E9E4F2","#FF6FA8","#5CC8FF","#BBEB4B"],
+  maglia:["#8C5CFF","#BBEB4B","#FF5A6E","#5CC8FF","#FFB547","#F3F1F8","#2F2347","#3DDC97"],
+  sfondo:["#2F2347","#4B2E99","#1F3B4D","#4D1F3B","#3B4D1F","#F3F1F8"]
+};
+const INK="#150F22";
+const OPZ={
+  capelli:["Corti","Spettinati","Lunghi","Cresta","Chignon","Rasati"],
+  occhi:["Puntini","Grandi","Furbetti","Occhiali da sole","Occhiolino"],
+  bocca:["Sorriso","Stupita","Seria","Linguaccia"],
+  accessorio:["Nessuno","Cuffie da gaming","Cappellino","Corona","Berretto","Fascia"]
+};
+const AV_KEYS=["pelle","capelli","coloreCapelli","occhi","bocca","accessorio","maglia","sfondo"];
+const AV_LEN={pelle:PAL.pelle.length,capelli:OPZ.capelli.length,coloreCapelli:PAL.capelli.length,occhi:OPZ.occhi.length,bocca:OPZ.bocca.length,accessorio:OPZ.accessorio.length,maglia:PAL.maglia.length,sfondo:PAL.sfondo.length};
+function avFix(a){const o={};AV_KEYS.forEach(k=>{const v=a&&Number.isInteger(a[k])?a[k]:0;o[k]=((v%AV_LEN[k])+AV_LEN[k])%AV_LEN[k]});return o}
+function avRandom(){const o={};AV_KEYS.forEach(k=>o[k]=Math.random()*AV_LEN[k]|0);return o}
+function span(y,x1,x2){const r=[];for(let x=x1;x<=x2;x++)r.push([x,y]);return r}
+function avPixels(a){
+  a=avFix(a);
+  const P=[];const put=(pts,c)=>pts.forEach(([x,y])=>P.push([x,y,c]));
+  const skin=PAL.pelle[a.pelle],hair=PAL.capelli[a.coloreCapelli],shirt=PAL.maglia[a.maglia];
+  // corpo
+  put([...span(12,3,12),...span(13,2,13),...span(14,2,13),...span(15,2,13)],shirt);
+  put([[7,12],[8,12]],skin);
+  put(span(11,6,9),skin);
+  // capelli lunghi dietro la testa
+  if(a.capelli===2)put([...[4,5,6,7,8,9,10,11].flatMap(y=>[[3,y],[12,y]])],hair);
+  // testa
+  put([...span(3,5,10),...span(4,4,11),...span(5,4,11),...span(6,4,11),...span(7,4,11),...span(8,4,11),...span(9,4,11),...span(10,5,10)],skin);
+  // capelli
+  const H={
+    0:[...span(2,5,10),...span(3,4,11),[4,4],[11,4]],
+    1:[[5,1],[8,1],[10,1],...span(2,4,11),...span(3,4,11),[4,4],[7,4],[11,4]],
+    2:[...span(2,5,10),...span(3,4,11),[4,4],[11,4],[4,5],[11,5]],
+    3:[...span(0,7,8),...span(1,7,8),...span(2,6,9),...span(3,7,8)],
+    4:[...span(0,7,8),...span(1,6,9),...span(2,5,10),...span(3,4,11),[4,4],[11,4]],
+    5:[...span(3,5,10)]
+  };
+  put(H[a.capelli],a.capelli===5?shade(hair):hair);
+  // occhi
+  const E={
+    0:[[6,6],[9,6]],
+    1:[[6,6],[6,7],[9,6],[9,7]],
+    2:[[5,7],[6,6],[9,6],[10,7]],
+    3:[...span(6,5,10),[5,7],[6,7],[9,7],[10,7]],
+    4:[[6,6],[8,7],[9,7],[10,7]]
+  };
+  put(E[a.occhi],INK);
+  if(a.occhi===1)put([[6,6],[9,6]],"#F3F1F8");
+  // bocca
+  const M={0:[[6,8],[7,9],[8,9],[9,8]],1:[[7,8],[8,8],[7,9],[8,9]],2:[[7,9],[8,9]],3:[[6,8],[7,8],[8,8],[9,8]]};
+  put(M[a.bocca],INK);
+  if(a.bocca===3)put([[8,9]],"#FF5A6E");
+  // guance
+  if(a.occhi!==3)put([[5,8],[10,8]],"#FF8FA3");
+  // accessori
+  const acc=a.accessorio;
+  if(acc===1){put(span(2,5,10),INK);put([[4,3],[11,3]],INK);put([[3,5],[3,6],[3,7],[12,5],[12,6],[12,7]],"#8C5CFF");put([[12,8],[12,9],[11,9],[10,9]],INK)}
+  if(acc===2){put([...span(1,5,10),...span(2,4,11),...span(3,4,13)],shirt===PAL.maglia[5]?"#8C5CFF":shirt);put(span(3,12,13),INK)}
+  if(acc===3){put([[5,0],[7,0],[8,0],[10,0],...span(1,5,10),...span(2,5,10)],"#FFC93C");put([[7,1],[8,1]],"#FF5A6E")}
+  if(acc===4){put([...span(0,7,8)],"#F3F1F8");put([...span(1,6,9),...span(2,5,10),...span(3,4,11)],"#FF5A6E")}
+  if(acc===5){put(span(4,4,11),"#FF5A6E");put([[3,5],[3,6]],"#FF5A6E")}
+  return P;
+}
+function shade(h){return h+"88"}
+function avatarSVG(a,cls){
+  a=avFix(a);
+  const bg=PAL.sfondo[a.sfondo];
+  let r=`<svg class="${cls||"av"}" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><rect width="16" height="16" fill="${bg}"/>`;
+  avPixels(a).forEach(([x,y,c])=>{r+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${c}"/>`});
+  return r+"</svg>";
+}
+
 
 // ---------- debug: finto Supabase, tutto in questo browser ----------
 if(DEBUG){(function(){
@@ -455,25 +564,49 @@ async function afterAuth(){
   const {data,error}=await sb.from("giocatori").select("*").eq("id",user.id).maybeSingle();
   if(error){setSync(false,"errore di collegamento");toast("Errore: "+error.message)}
   me=data||null;
-  if(!me){const g=(user.user_metadata?.full_name||user.user_metadata?.name||"").split(" ")[0];$("nome").value=g.slice(0,24);show("naming")}
+  if(!me){const g=(user.user_metadata?.full_name||user.user_metadata?.name||"").split(" ")[0];openEditor(g.slice(0,24),avRandom(),false)}
   else{show("game");render()}
   route();
 }
 
 // ---------- nome e cartella ----------
+let draft=avRandom(),editing=false;
+function openEditor(name,avatar,isEdit){draft=avFix(avatar);editing=isEdit;$("nome").value=name||"";$("reg-go-t").textContent=isEdit?"Salva e torna alla cartella":"Prendi la cartella";$("name-err").hidden=true;buildEditor();show("naming")}
+function paintPreview(){const p=$("preview");p.innerHTML=avatarSVG(draft);p.classList.remove("bump");void p.offsetWidth;p.classList.add("bump")}
+function buildEditor(){
+  const ed=$("editor");ed.textContent="";
+  const rows=[["Capelli","capelli",OPZ.capelli],["Colore","coloreCapelli",PAL.capelli],["Occhi","occhi",OPZ.occhi],["Bocca","bocca",OPZ.bocca],["Accessorio","accessorio",OPZ.accessorio],["Pelle","pelle",PAL.pelle],["Maglia","maglia",PAL.maglia],["Sfondo","sfondo",PAL.sfondo]];
+  rows.forEach(([lab,key,list])=>{
+    const r=document.createElement("div");r.className="erow";const l=document.createElement("span");l.textContent=lab;r.append(l);
+    const isColor=list[0].startsWith("#");
+    if(isColor){const sw=document.createElement("div");sw.className="sw";sw.setAttribute("role","group");sw.setAttribute("aria-label",lab);
+      list.forEach((c,i)=>{const b=document.createElement("button");b.type="button";b.style.background=c;b.setAttribute("aria-label",lab+" "+(i+1));b.setAttribute("aria-pressed",draft[key]===i);
+        b.addEventListener("click",()=>{draft[key]=i;sw.querySelectorAll("button").forEach((x,k)=>x.setAttribute("aria-pressed",k===i));paintPreview()});sw.append(b)});r.append(sw)}
+    else{const st=document.createElement("div");st.className="step";const pv=document.createElement("button");pv.type="button";pv.textContent="‹";pv.setAttribute("aria-label",lab+" precedente");
+      const o=document.createElement("output");o.textContent=list[draft[key]];const nx=document.createElement("button");nx.type="button";nx.textContent="›";nx.setAttribute("aria-label",lab+" successivo");
+      const go=d=>{draft[key]=(draft[key]+d+list.length)%list.length;o.textContent=list[draft[key]];paintPreview()};
+      pv.addEventListener("click",()=>go(-1));nx.addEventListener("click",()=>go(1));st.append(pv,o,nx);r.append(st)}
+    ed.append(r)});
+  paintPreview();
+}
+$("dice").addEventListener("click",()=>{draft=avRandom();buildEditor()});
+$("edit-av").addEventListener("click",()=>{if(me)openEditor(me.nome,me.avatar,true)});
 $("f").addEventListener("submit",async e=>{
   e.preventDefault();const n=$("nome").value.trim();if(!n)return;
-  await deal(n);
+  if(editing&&me){const {error}=await sb.from("giocatori").update({nome:n,avatar:draft,aggiornato_at:new Date().toISOString()}).eq("id",user.id);
+    if(error){$("name-err").hidden=false;$("name-err").textContent="Non riesco a salvare: "+error.message;return}
+    me.nome=n;me.avatar=Object.assign({},draft);show("game");render();return}
+  await deal(n,draft);
 });
-async function deal(name){
-  const row={id:user.id,nome:name,cartella:shuffle(MOMENTI.length).slice(0,N),segni:Array(N).fill(false),linee:0,piena:false,primo_bingo_at:null,aggiornato_at:new Date().toISOString()};
+async function deal(name,avatar){
+  const row={id:user.id,nome:name,avatar:avFix(avatar||(me&&me.avatar)||avRandom()),cartella:shuffle(MOMENTI.length).slice(0,N),segni:Array(N).fill(false),linee:0,piena:false,primo_bingo_at:null,aggiornato_at:new Date().toISOString()};
   const {data,error}=await sb.from("giocatori").upsert(row).select().single();
   if(error){$("name-err").hidden=false;$("name-err").textContent="Non riesco a salvare la cartella: "+error.message;return}
   me=data;show("game");render();
 }
 function render(){
   if(!me)return;
-  $("who").textContent=me.nome;
+  $("who").textContent=me.nome;$("who-av").innerHTML=avatarSVG(me.avatar);
   const card=$("card");card.textContent="";
   const won=new Set(done(me.segni).flat());
   me.cartella.forEach((m,i)=>{
@@ -502,7 +635,7 @@ async function tap(i){
   saving=saving.then(async()=>{const {error}=await sb.from("giocatori").update(snap).eq("id",user.id);setSync(!error,error?"non salvato, riprovo al prossimo tocco":"salvato")});
 }
 function celebrate(l,last){
-  const w=$("win");$("wn").textContent=me.nome;
+  const w=$("win");$("win-jump").innerHTML=avatarSVG(me.avatar,"av sl")+'<div class="shadow"></div>';$("wn").textContent=me.nome;
   const full=me.segni.every(Boolean);
   $("wt").textContent=full?"Cartella piena":"Linea "+l;$("bg").textContent=full?"Full clear!":"Bingo!";
   const pr=$("prove");pr.textContent="";const ls=done(me.segni);(ls.find(x=>x.includes(last))||ls[ls.length-1]||[]).forEach(i=>{const li=document.createElement("li");li.textContent=MOMENTI[me.cartella[i]];pr.append(li)});
@@ -517,7 +650,7 @@ $("yes").addEventListener("click",()=>{$("conf").hidden=true;deal(me.nome)});
 
 // ---------- dati live ----------
 async function loadMomenti(){const {data}=await sb.from("momenti").select("id");live=new Set((data||[]).map(r=>r.id));render();if(!$("screen").hidden)wall()}
-async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,linee,piena,primo_bingo_at");players=data||[];albo()}
+async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,avatar,linee,piena,primo_bingo_at");players=data||[];albo()}
 function subscribe(){
   if(subscribed)return;subscribed=true;
   sb.channel("bingo")
@@ -548,13 +681,13 @@ function albo(){
   const o=$("albo");o.textContent="";
   if(!ws.length){const p=document.createElement("p");p.className="empty";p.textContent="Ancora nessuno. Il primo bingo della sala finisce qui.";o.append(p)}
   ws.forEach((p,i)=>{const li=document.createElement("li");const a=document.createElement("i");a.textContent=(i+1)+"°";
-    const t=document.createElement("span");t.textContent=p.nome;const x=document.createElement("small");x.textContent=p.piena?"piena":p.linee+(p.linee===1?" linea":" linee");
-    li.append(a,t,x);o.append(li)});
+    const av=document.createElement("span");av.innerHTML=avatarSVG(p.avatar);const t=document.createElement("span");t.textContent=p.nome;const x=document.createElement("small");x.textContent=p.piena?"piena":p.linee+(p.linee===1?" linea":" linee");
+    li.append(a,av,t,x);o.append(li)});
   const fresh=ws.filter(p=>!shownBingo.has(p.id));ws.forEach(p=>shownBingo.add(p.id));
-  if(!firstLoad&&fresh.length)announce(fresh[0].nome,ws.indexOf(fresh[0])===0);
+  if(!firstLoad&&fresh.length)announce(fresh[0],ws.indexOf(fresh[0])===0);
   firstLoad=false;
 }
-function announce(n,first){const bw=$("bigwin");$("bw-n").textContent=n;$("bw-t").textContent=first?"Primo bingo!":"Bingo!";bw.hidden=false;bw.classList.remove("go");void bw.offsetWidth;bw.classList.add("go");clearTimeout(announce.t);announce.t=setTimeout(()=>{bw.hidden=true},4500)}
+function announce(p,first){const bw=$("bigwin");$("bw-n").textContent=p.nome;$("bw-jump").innerHTML=avatarSVG(p.avatar,"av sl")+'<div class="shadow"></div>';$("bw-t").textContent=first?"Primo bingo!":"Bingo!";bw.hidden=false;bw.classList.remove("go");void bw.offsetWidth;bw.classList.add("go");clearTimeout(announce.t);announce.t=setTimeout(()=>{bw.hidden=true},4500)}
 $("bigwin").addEventListener("click",()=>{$("bigwin").hidden=true});
 $("sc-reset").addEventListener("click",()=>{$("sc-conf").hidden=false});
 $("sc-no").addEventListener("click",()=>{$("sc-conf").hidden=true});
@@ -589,11 +722,12 @@ if(DEBUG){
   $("x-full").addEventListener("click",()=>{if(!ready())return;const miss=me.segni.map((v,i)=>v?-1:i).filter(i=>i>=0);if(!miss.length)return;me.segni=me.segni.slice();miss.slice(0,-1).forEach(i=>me.segni[i]=true);tap(miss[miss.length-1])});
   $("x-new").addEventListener("click",()=>{if(!ready())return;deal(me.nome)});
   $("x-mom").addEventListener("click",()=>{if(!regia){toast("Non sei ancora in regia");return}const off=MOMENTI.map((_,i)=>i).filter(i=>!live.has(i));if(off.length)toggleMomento(off[Math.random()*off.length|0])});
+  $("x-reg").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;openEditor(me?me.nome:"Sabrina",me?me.avatar:avRandom(),!!me)});
   $("x-regia").addEventListener("click",()=>{location.hash="regia"});
   $("x-card").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;if(me)show("game")});
   const NOMI=["Marco","Giulia","Luca","Fede","Ale","Chiara","Davide","Sofi","Matte","Ire","Nico","Bea"];
   const fake=(bingo)=>{const id="fake-"+Math.random().toString(36).slice(2,8);const n=NOMI[Math.random()*NOMI.length|0]+" (prova)";
-    return {id,nome:n,cartella:shuffle(MOMENTI.length).slice(0,N),segni:Array(N).fill(false),linee:bingo?1:0,piena:false,primo_bingo_at:bingo?new Date().toISOString():null,aggiornato_at:new Date().toISOString()}};
+    return {id,nome:n,avatar:avRandom(),cartella:shuffle(MOMENTI.length).slice(0,N),segni:Array(N).fill(false),linee:bingo?1:0,piena:false,primo_bingo_at:bingo?new Date().toISOString():null,aggiornato_at:new Date().toISOString()}};
   $("x-fake").addEventListener("click",()=>{window.__mock.addPlayer(fake(true));toast("Bingo finto inviato: guardalo in regia")});
   $("x-crowd").addEventListener("click",()=>{for(let i=0;i<8;i++)window.__mock.addPlayer(fake(false));toast("8 giocatori finti aggiunti")});
   $("x-wipe").addEventListener("click",()=>{window.__mock.wipe();location.hash="";location.reload()});
