@@ -437,6 +437,9 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
 .inst .cta{width:100%}
 .inst-done{margin:0;background:#BBEB4B1F;color:var(--l);border-radius:12px;padding:12px 14px;font-weight:600}
 .inst .note{margin:0;font-size:13px;color:var(--m);line-height:1.4}
+.two{display:flex;flex-direction:column;gap:8px}
+.two .mock{margin:0}
+.two .mock b{font-family:var(--display);font-weight:900;font-size:22px;color:var(--l);width:22px;text-align:center}
 .sheet{position:fixed;inset:0;z-index:45;background:#0008;display:flex;align-items:flex-end;justify-content:center;animation:tabin .2s ease both}
 .sheet .box{width:100%;max-width:480px;background:var(--s);border-radius:22px 22px 0 0;padding:22px max(16px,env(safe-area-inset-left,0px)) calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;animation:sheetup .3s var(--boing) both}
 @keyframes sheetup{from{transform:translateY(100%)}to{transform:none}}
@@ -465,7 +468,9 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
 <section class="full inst" id="install" hidden aria-label="Installa l'app">
   <div class="col">
     <h2 class="big-ttl">Scarica <span class="hl">l'app</span></h2>
-    <button class="cta" id="inst-go" type="button"><span>Installa l'app</span><span class="px">↓</span></button>
+    <div class="two" id="sh-ios" hidden><div class="mock"><b>1</b><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Tocca <strong>Condividi</strong></span></div><div class="mock hl" style="margin-top:8px"><b>2</b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Tocca <strong>Aggiungi alla schermata Home</strong></span></div></div>
+    <div class="two" id="sh-and" hidden><div class="mock"><b>1</b><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg></span><span>Tocca i <strong>tre puntini</strong> in alto</span></div><div class="mock hl" style="margin-top:8px"><b>2</b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v7M9 11l3 3 3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tocca <strong>Installa app</strong></span></div></div>
+    <button class="cta" id="inst-go" type="button" hidden><span>Installa l'app</span><span class="px">↓</span></button>
     <div class="seg" role="group" aria-label="Il tuo telefono" hidden><button type="button" id="os-ios" aria-pressed="true">iPhone</button><button type="button" id="os-and" aria-pressed="false">Android</button></div>
     <ol class="steps" id="st-ios" hidden data-off>
       <li><div><p>Tocca il tasto <b>Condividi</b><small>Su Safari è nella barra in basso. Su Chrome è in alto, accanto all'indirizzo.</small></p><div class="mock"><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Condividi</span></div></div></li>
@@ -484,12 +489,6 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
   </div>
 </section>
 
-<div class="sheet" id="inst-sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sh-t"><div class="box">
-  <h3 id="sh-t">Due tocchi</h3>
-  <div id="sh-ios"><div class="mock"><b>1</b><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Tocca <strong>Condividi</strong></span></div><div class="mock hl" style="margin-top:8px"><b>2</b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Tocca <strong>Aggiungi alla schermata Home</strong></span></div></div>
-  <div id="sh-and" hidden><div class="mock"><b>1</b><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg></span><span>Tocca i <strong>tre puntini</strong> in alto</span></div><div class="mock hl" style="margin-top:8px"><b>2</b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v7M9 11l3 3 3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tocca <strong>Installa app</strong></span></div></div>
-  <button class="cta" id="sh-ok" type="button"><span>Ho capito</span><span class="px">✓</span></button>
-</div></div>
 
 <section class="full auth kicked" id="kicked" hidden aria-label="Fuori dalla serata">
   <div class="col">
@@ -1190,9 +1189,9 @@ $("os-ios").addEventListener("click",()=>setOS("ios"));
 $("os-and").addEventListener("click",()=>setOS("and"));
 setOS(isIOS?"ios":"and");
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();promptEv=e});
-$("inst-go").addEventListener("click",async()=>{if(!promptEv){$("sh-ios").hidden=!isIOS;$("sh-and").hidden=isIOS;$("inst-sheet").hidden=false;return}promptEv.prompt();const r=await promptEv.userChoice.catch(()=>null);promptEv=null;if(r&&r.outcome==="accepted"){$("inst-done").hidden=false;$("inst-go").hidden=true}});
-$("sh-ok").addEventListener("click",()=>{$("inst-sheet").hidden=true});
-$("inst-sheet").addEventListener("click",e=>{if(e.target.id==="inst-sheet")$("inst-sheet").hidden=true});
+function layoutInst(ios){$("sh-ios").hidden=!ios;$("sh-and").hidden=true;$("inst-go").hidden=ios}
+layoutInst(isIOS);
+$("inst-go").addEventListener("click",async()=>{if(!promptEv){$("inst-go").hidden=true;$("sh-and").hidden=false;return}promptEv.prompt();const r=await promptEv.userChoice.catch(()=>null);promptEv=null;if(r&&r.outcome==="accepted"){$("inst-done").hidden=false;$("inst-go").hidden=true}});
 window.addEventListener("appinstalled",()=>{$("inst-done").hidden=false;$("inst-go").hidden=true});
 $("inst-skip").addEventListener("click",()=>{skipInst=true;try{sessionStorage.setItem("sq-skip-inst","1")}catch(e){}$("install").hidden=true});
 
