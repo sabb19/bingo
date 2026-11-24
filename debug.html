@@ -2,6 +2,8 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-50zv64cEcerbtU0X9yeggFR8lc7S3k8CKKKzcAVs+d4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://vqgkzvhlvmxihjxpsxan.supabase.co wss://vqgkzvhlvmxihjxpsxan.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
 <link rel="manifest" href="manifest-debug.webmanifest">
@@ -558,23 +560,13 @@ body{font-family:var(--body);font-feature-settings:"ss01"}
 /* ---------- v24: piu aria tra la x e Game Awards ---------- */
 .so-ga{display:flex;align-items:flex-start;gap:14px;letter-spacing:-.035em;line-height:.94}
 .so-ga .x{font-size:30px;line-height:1;margin-top:6px}
+
+/* ---------- v25: conferma momento in due tocchi ---------- */
+.adm-mom button.armed{background:var(--c);color:var(--n);box-shadow:none}
+.adm-mom button.armed .n,.adm-mom button.armed .k,.adm-mom button.armed .k b{color:var(--n)}
 </style>
 </head>
 <body>
-
-<section class="full splash" id="splash" hidden aria-label="Benvenuto">
-  <div class="col">
-    <div class="sp-top"><span>Watch party · The Game Awards 2026</span></div>
-    <h1 class="big-ttl drop" aria-label="Il Bingo dei Game Awards"><span class="w"><span class=""><span class="ch" style="--i:1">I</span><span class="ch" style="--i:2">l</span></span> <span class="hl"><span class="ch" style="--i:3">B</span><span class="ch" style="--i:4">i</span><span class="ch" style="--i:5">n</span><span class="ch" style="--i:6">g</span><span class="ch" style="--i:7">o</span></span></span><span class="w"><span class=""><span class="ch" style="--i:8">d</span><span class="ch" style="--i:9">e</span><span class="ch" style="--i:10">i</span></span> <span class=""><span class="ch" style="--i:11">G</span><span class="ch" style="--i:12">a</span><span class="ch" style="--i:13">m</span><span class="ch" style="--i:14">e</span></span></span><span class="w"><span class=""><span class="ch" style="--i:15">A</span><span class="ch" style="--i:16">w</span><span class="ch" style="--i:17">a</span><span class="ch" style="--i:18">r</span><span class="ch" style="--i:19">d</span><span class="ch" style="--i:20">s</span></span></span></h1>
-    <div class="sp-stage" aria-hidden="true">
-      <span class="sp-light"></span>
-      <div class="sp-walk"><div class="spin"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#BBEB4B"/><circle cx="50" cy="50" r="29" fill="#F3F1F8"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">B</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".35" transform="rotate(-30 32 24)"/></svg></div></div>
-      <div class="sp-floor"></div>
-    </div>
-    <p class="sp-meta"><span class="tag">Live</span><span>Segna i momenti dello show dal telefono</span></p>
-    <button class="press" id="start" type="button">Premi start</button>
-  </div>
-</section>
 
 <section class="full inst" id="install" hidden aria-label="Installa l'app"><i class="rgm tl"></i><i class="rgm tr"></i><i class="rgm bl"></i><i class="rgm br"></i>
   <div class="col">
@@ -583,19 +575,6 @@ body{font-family:var(--body);font-feature-settings:"ss01"}
     <div class="two" id="sh-ios" hidden><div class="mock"><b>1</b><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Tocca <strong>Condividi</strong></span></div><div class="mock hl" style="margin-top:8px"><b>2</b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Tocca <strong>Aggiungi alla schermata Home</strong></span></div></div>
     <div class="two" id="sh-and" hidden><div class="mock"><b>1</b><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg></span><span>Tocca i <strong>tre puntini</strong> in alto</span></div><div class="mock hl" style="margin-top:8px"><b>2</b><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v7M9 11l3 3 3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tocca <strong>Installa app</strong></span></div></div>
     <button class="cta" id="inst-go" type="button" hidden><span>Installa l'app</span><span class="px">↓</span></button>
-    <div class="seg" role="group" aria-label="Il tuo telefono" hidden><button type="button" id="os-ios" aria-pressed="true">iPhone</button><button type="button" id="os-and" aria-pressed="false">Android</button></div>
-    <ol class="steps" id="st-ios" hidden data-off>
-      <li><div><p>Tocca il tasto <b>Condividi</b><small>Su Safari è nella barra in basso. Su Chrome è in alto, accanto all'indirizzo.</small></p><div class="mock"><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Condividi</span></div></div></li>
-      <li><div><p>Scorri il menu e tocca <b>Aggiungi alla schermata Home</b><small>Se non lo vedi, tocca "Modifica azioni" in fondo al menu e aggiungilo.</small></p><div class="mock hl"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Aggiungi alla schermata Home</span></div></div></li>
-      <li><div><p>Tocca <b>Aggiungi</b> in alto a destra</p><div class="mock"><span>Santa Officina</span><span class="btnr">Aggiungi</span></div></div></li>
-      <li><div><p>Apri il Bingo <b>dalla schermata Home</b><small>Da lì entri con Google e prendi la tua cartella.</small></p><div class="mock"><div class="app"><span><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#BBEB4B"/><circle cx="50" cy="50" r="29" fill="#F3F1F8"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">B</text></svg></span><span>Santa Officina</span></div></div></div></li>
-    </ol>
-    <ol class="steps" id="st-and" hidden data-off>
-      <li><div><p>Apri questa pagina con <b>Chrome</b> e tocca i <b>tre puntini</b> in alto a destra<small>Se qui sopra vedi il tasto "Installa l'app", puoi toccare direttamente quello.</small></p><div class="mock"><span class="ki on"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg></span><span>Menu di Chrome</span></div></div></li>
-      <li><div><p>Tocca <b>Installa app</b> oppure <b>Aggiungi a schermata Home</b></p><div class="mock hl"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v7M9 11l3 3 3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Installa app</span></div></div></li>
-      <li><div><p>Conferma con <b>Installa</b></p><div class="mock"><span>Santa Officina</span><span class="btnr">Installa</span></div></div></li>
-      <li><div><p>Apri il Bingo <b>dalla schermata Home</b><small>Da lì entri con Google e prendi la tua cartella.</small></p><div class="mock"><div class="app"><span><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#BBEB4B"/><circle cx="50" cy="50" r="29" fill="#F3F1F8"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">B</text></svg></span><span>Santa Officina</span></div></div></div></li>
-    </ol>
     <p class="inst-done" id="inst-done" hidden>Fatto! Ora chiudi questa pagina e apri il Bingo dalla schermata Home.</p>
     <button class="ghost" id="inst-skip" type="button" hidden>Continua nel browser (solo per le prove)</button>
   </div>
@@ -722,7 +701,7 @@ body{font-family:var(--body);font-feature-settings:"ss01"}
       <p class="adm-hint"><button class="ghost" id="ad-tv" type="button">Apri lo schermo classifica in una nuova scheda</button></p>
     </section>
     <div class="adm-grid" id="ad-body">
-      <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Tocca un momento quando succede sul palco: da quel momento nessuno può più sceglierlo, e chi l'aveva scelto prende i punti del momento (1, 2 o 3). Se sbagli, toccalo di nuovo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
+      <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Quando un momento succede sul palco toccalo due volte: la seconda conferma. Da lì nessuno può più sceglierlo, e chi l'aveva scelto prende i suoi punti (1, 2 o 3). Se sbagli, toccalo di nuovo due volte per annullarlo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
       <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi fa più punti con i pronostici confermati. I momenti valgono 1, 2 o 3 punti: i più rari valgono di più. Ognuno può sceglierne al massimo 8. Tocca ⋯ accanto a un nome per rinominarlo o toglierlo.</p><ol class="adm-rank" id="ad-rank"></ol><div id="ad-escw" hidden><h3 style="margin-top:18px">Tolti dalla serata</h3><ol class="adm-esc" id="ad-esc"></ol></div></section>
     </div>
     <div class="scr-foot"><button id="ad-out" type="button">Vai alla mia cartella</button><button id="ad-reset" type="button">Azzera la serata</button></div>
@@ -758,8 +737,8 @@ body{font-family:var(--body);font-feature-settings:"ss01"}
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>window.SQ_DEBUG=true</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="vendor/supabase-2.45.4.js"></script>
+<script src="vendor/qrcode-1.0.0.min.js"></script>
 <script>
 (function(){
 // 16 momenti uguali per tutti, con i punti: 1 probabile, 2 medio, 3 raro
@@ -872,7 +851,7 @@ if(DEBUG){(function(){
   const emit=t=>setTimeout(()=>subs.forEach(s=>s.t===t&&s.fn()),120);
   function q(t){let op="sel",val=null,f=null,one=false;
     const run=()=>{let rows=db[t]||(db[t]=[]);
-      if(op==="upsert"){db[t]=rows.filter(x=>x.id!==val.id).concat([val]);save();emit(t);return {data:val,error:null}}
+      if(op==="upsert"){db[t]=rows.filter(x=>x.id!==val.id).concat([val]);save();emit(t);return {data:JSON.parse(JSON.stringify(val)),error:null}}
       if(op==="insert"){if(!rows.some(x=>x.id===val.id))rows.push(Object.assign({acceso_at:new Date().toISOString()},val));save();emit(t);return {error:null}}
       if(op==="update"){rows.filter(x=>x[f[0]]===f[1]).forEach(r=>Object.assign(r,val));save();emit(t);return {error:null}}
       if(op==="delete"){db[t]=rows.filter(x=>x[f[0]]!==f[1]);save();emit(t);return {error:null}}
@@ -885,7 +864,7 @@ if(DEBUG){(function(){
     auth:{onAuthStateChange(fn){auths.push(fn)},getSession:async()=>({data:{session:db.session?{user:U}:null}}),
       signInWithOAuth:async()=>{db.session=true;save();auths.forEach(fn=>fn("SIGNED_IN",{user:U}));return {error:null}},
       signOut:async()=>{db.session=false;save();auths.forEach(fn=>fn("SIGNED_OUT",null));return {error:null}}},
-    rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.primo_bingo_at=null;g.linee=0;g.piena=false;g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
+    rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
     from:q,removeChannel(){},
     channel(){const c={on(_e,o,fn){subs.push({t:o.table,fn});return c},subscribe(cb){setTimeout(()=>cb("SUBSCRIBED"),50);return c}};return c}
   };
@@ -896,15 +875,13 @@ if(DEBUG){(function(){
 const SB_URL="https://vqgkzvhlvmxihjxpsxan.supabase.co";
 const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxZ2t6dmhsdm14aWhqeHBzeGFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1MTY5NjIsImV4cCI6MjExMTA5Mjk2Mn0.MfjDx2MdXax7oKwTWJSmt7UV93Baq32GXbie_bZDGcw";
 const SIZE=4,N=16;
-const LINES=[];
-for(let r=0;r<SIZE;r++){LINES.push([0,1,2,3].map(c=>r*SIZE+c));LINES.push([0,1,2,3].map(c=>c*SIZE+r));}
-LINES.push([0,5,10,15]);LINES.push([3,6,9,12]);
 const $=id=>document.getElementById(id);
 const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-let sb=null,user=null,me=null,live=new Set(),regia=false,players=[],shownBingo=new Set(),firstLoad=true;
+const APP_V=25; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
 function show(id){["login","naming","game","kicked"].forEach(x=>$(x).hidden=x!==id);$("tabbar").hidden=id!=="game"}
@@ -915,9 +892,8 @@ function setTab(t){tab=t;try{sessionStorage.setItem("sq-tab",t)}catch(e){}
   if(t==="rank")$("tb-badge").hidden=true;
   window.scrollTo(0,0);render()}
 document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
-function done(on){return LINES.filter(l=>l.every(i=>on[i]))}
 // un segno vale solo se il momento è stato confermato dall'admin
-function stato(p){const ok=CARTELLA.map(i=>!!(p.segni&&p.segni[i])&&live.has(i));return {ok,conf:ok.filter(Boolean).length,pts:ok.reduce((a,v,i)=>a+(v?PUNTI[i]:0),0),ls:done(ok).length,piena:ok.every(Boolean)}}
+function stato(p){const ok=CARTELLA.map(i=>!!(p.segni&&p.segni[i])&&live.has(i));return {ok,conf:ok.filter(Boolean).length,pts:ok.reduce((a,v,i)=>a+(v?PUNTI[i]:0),0)}}
 function classifica(list){
   return list.map(p=>{const s=stato(p);return {p,s,pt:s.pts,scelti:(p.segni||[]).filter(Boolean).length}})
    .sort((a,b)=>b.pt-a.pt||b.s.conf-a.s.conf||String(a.p.nome).localeCompare(String(b.p.nome)))}
@@ -926,10 +902,6 @@ function shuffle(n){const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){c
 function setSync(ok,t){const e=$("sync");e.className="sync "+(ok?"ok":"ko");e.textContent=t}
 
 // ---------- intro ----------
-function intro(){const sp=$("splash");sp.hidden=false;sp.classList.remove("out");sp.querySelectorAll("*").forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""})}
-function leaveIntro(){const sp=$("splash");if(sp.hidden)return;sp.classList.add("out");setTimeout(()=>{sp.hidden=true;sp.classList.remove("out")},350);try{sessionStorage.setItem("sq-intro","1")}catch(e){}}
-$("splash").addEventListener("click",leaveIntro);
-document.addEventListener("keydown",e=>{if(!$("splash").hidden&&(e.key==="Enter"||e.key===" ")){e.preventDefault();leaveIntro()}});
 
 // ---------- accesso ----------
 async function boot(){
@@ -958,9 +930,8 @@ async function afterAuth(){
   const {data,error}=await sb.from("giocatori").select("*").eq("id",user.id).maybeSingle();
   if(error){setSync(false,"errore di collegamento");toast("Errore: "+error.message)}
   me=data||null;
-  if(me&&!sameCard(me.cartella)){me.cartella=CARTELLA.slice();me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null;
-    await sb.from("giocatori").update({cartella:me.cartella,segni:me.segni,linee:0,piena:false,primo_bingo_at:null}).eq("id",user.id)}
-  if(me&&sync(null,false))save();
+  if(me&&!sameCard(me.cartella)){me.cartella=CARTELLA.slice();me.segni=Array(N).fill(false);
+    await sb.from("giocatori").update({cartella:me.cartella,segni:me.segni}).eq("id",user.id)}
   if(me)synced=true;
   await loadPlayers();
   if(!me){const g=(user.user_metadata?.full_name||user.user_metadata?.name||"").split(" ")[0];openEditor(g.slice(0,24),avRandom(),false)}
@@ -1005,7 +976,7 @@ $("f").addEventListener("submit",async e=>{
   await deal(n,draft);
 });
 async function deal(name,avatar){
-  const row={id:user.id,nome:name,avatar:avFix(avatar||(me&&me.avatar)||avRandom()),cartella:CARTELLA.slice(),segni:Array(N).fill(false),linee:0,piena:false,primo_bingo_at:null,aggiornato_at:new Date().toISOString()};
+  const row={id:user.id,nome:name,avatar:avFix(avatar||(me&&me.avatar)||avRandom()),cartella:CARTELLA.slice(),segni:Array(N).fill(false),aggiornato_at:new Date().toISOString()};
   const {data,error}=await sb.from("giocatori").upsert(row).select().single();
   if(error){$("name-err").hidden=false;$("name-err").textContent="Non riesco a salvare la cartella: "+error.message;return}
   me=data;show("game");render();
@@ -1014,7 +985,7 @@ function render(){
   if(!me)return;
   $("who").textContent=me.nome;$("who-av").innerHTML=avatarSVG(me.avatar);
   const card=$("card");card.textContent="";
-  const st=stato(me);const won=new Set(done(st.ok).flat());
+  const st=stato(me);
   me.cartella.forEach((m,i)=>{
     const seg=!!me.segni[i],cf=live.has(m);
     const b=document.createElement("button");b.type="button";
@@ -1055,37 +1026,31 @@ function renderAcc(mine,pos){
   $("acc-mail").textContent=(user&&user.email)?user.email:"";
   $("acc-pos").textContent=(pos+1)+"°";$("acc-pt").textContent=mine.pt;$("acc-sc").textContent=mine.scelti+"/"+MAXP;
 }
-// linee valide (solo momenti confermati): aggiorna me, festeggia se ne arriva una nuova
-function sync(last,celeb){
-  const s=stato(me);const before=me.linee||0;const changed=s.ls!==me.linee||s.piena!==me.piena;
-  me.linee=s.ls;me.piena=s.piena;
-  if(s.ls>0&&!me.primo_bingo_at)me.primo_bingo_at=new Date().toISOString();
-  if(s.ls===0)me.primo_bingo_at=null;
-  if(celeb&&s.ls>before&&$("admin").hidden&&$("screen").hidden)setTimeout(()=>celebrate(s.ls,last),last===null?0:250);
-  return changed;
-}
-let saving=Promise.resolve();
-function save(){const snap={segni:me.segni,linee:me.linee,piena:me.piena,primo_bingo_at:me.primo_bingo_at,aggiornato_at:new Date().toISOString()};
-  saving=saving.then(async()=>{const {error}=await sb.from("giocatori").update(snap).eq("id",user.id);setSync(!error,error?"non salvato, riprovo al prossimo tocco":"salvato")})}
+// ---------- salvataggio dei pronostici ----------
+// Se manca la rete il pronostico resta in attesa e si riprova da solo; se il database lo rifiuta
+// (scelte chiuse, momento già successo...) il telefono torna a mostrare quello che c'è davvero sul database.
+let saving=Promise.resolve(),pending=0,dirty=false;
+const MOTIVI={"scelte chiuse":"Le scelte sono state chiuse proprio ora: quel pronostico non è stato salvato.","serata finita":"La serata è finita: i pronostici non si cambiano più.","massimo 8 pronostici":"Puoi scegliere al massimo "+MAXP+" momenti.","momento già successo":"Quel momento è già successo: non si può più cambiare."};
+function spiega(e){const m=(e&&e.message)||"";for(const k in MOTIVI)if(m.includes(k))return MOTIVI[k];return "Non salvato: riprova tra poco."}
+const erroreDiRete=e=>!e.code;
+async function ricaricaMe(){const {data}=await sb.from("giocatori").select("segni").eq("id",user.id).maybeSingle();if(data&&me&&!pending){me.segni=data.segni;render()}}
+function save(){pending++;
+  saving=saving.then(async()=>{const snap={segni:me.segni.slice(),aggiornato_at:new Date().toISOString()};
+    const {error}=await sb.from("giocatori").update(snap).eq("id",user.id);pending--;
+    if(!error){dirty=false;setSync(true,"salvato");return}
+    if(erroreDiRete(error)){dirty=true;setSync(false,"non salvato: riprovo appena torna la rete");return}
+    dirty=false;setSync(true,"in diretta");toast(spiega(error));await ricaricaMe()})}
 async function tap(i){
   if(finita){toast("La serata è finita: la classifica è definitiva.");return}
   if(!aperte&&!live.has(i)){toast("Le scelte sono chiuse: ora goditi lo show e guarda se indovini.");return}
   if(live.has(i)){toast(me.segni[i]?"Indovinato! Questo resta tuo.":"Questo momento è già successo: troppo tardi per sceglierlo.");return}
   if(!me.segni[i]&&me.segni.filter(Boolean).length>=MAXP){toast("Hai già scelto "+MAXP+" momenti: togline uno per cambiare.");return}
   me.segni=me.segni.slice();me.segni[i]=!me.segni[i];
-  sync(i,false);render();$("card").children[i].classList.add("pop");save();
+  render();$("card").children[i].classList.add("pop");save();
 }
 function hit(i){
   const w=$("win");w.classList.add("hit");$("win-jump").innerHTML=avatarSVG(me.avatar,"av sl")+'<div class="shadow"></div>';$("wn").textContent=MOMENTI[i];
   $("wt").textContent="+"+PUNTI[i]+(PUNTI[i]===1?" punto":" punti");$("bg").textContent="Indovinato!";$("prove").textContent="";$("win-sub").textContent="Era un tuo pronostico. Ora hai "+stato(me).pts+(stato(me).pts===1?" punto.":" punti.");
-  confetti($("cf"));w.hidden=false;w.classList.remove("go");void w.offsetWidth;w.classList.add("go");
-  try{navigator.vibrate&&navigator.vibrate([60,40,120])}catch(e){}
-}
-function celebrate(l,last){
-  const w=$("win");$("win-jump").innerHTML=avatarSVG(me.avatar,"av sl")+'<div class="shadow"></div>';$("wn").textContent=me.nome;
-  const st=stato(me);const full=st.piena;
-  $("wt").textContent=full?"Cartella piena":"Linea "+l;$("bg").textContent=full?"Full clear!":"Bingo!";
-  const pr=$("prove");pr.textContent="";const ls=done(st.ok);(ls.find(x=>x.includes(last))||ls[ls.length-1]||[]).forEach(i=>{const li=document.createElement("li");li.textContent=MOMENTI[me.cartella[i]];pr.append(li)});
   confetti($("cf"));w.hidden=false;w.classList.remove("go");void w.offsetWidth;w.classList.add("go");
   try{navigator.vibrate&&navigator.vibrate([60,40,120])}catch(e){}
 }
@@ -1101,18 +1066,20 @@ async function loadSerata(){const {data}=await sb.from("serata").select("*").eq(
   if(serataLetta&&finita&&!prima&&me&&$("admin").hidden&&$("screen").hidden)finale();
   serataLetta=true}
 async function loadMomenti(){const prev=live;const {data}=await sb.from("momenti").select("id");live=new Set((data||[]).map(r=>r.id).filter(i=>i>=0&&i<N));
-  if(me){if(sync(null,false))save();const nuovi=[...live].filter(i=>!prev.has(i)&&me.segni[i]);if(synced&&nuovi.length&&$("admin").hidden&&$("screen").hidden)hit(nuovi[nuovi.length-1])}synced=true;
+  if(me){const nuovi=[...live].filter(i=>!prev.has(i)&&me.segni[i]);if(synced&&nuovi.length&&$("admin").hidden&&$("screen").hidden)hit(nuovi[nuovi.length-1])}synced=true;
   const appena=[...live].filter(i=>!prev.has(i));if(momLetti&&appena.length&&tab!=="rank"){const bd=$("tb-badge");bd.textContent=(+bd.textContent||0)*(bd.hidden?0:1)+appena.length;bd.hidden=false}if(momLetti&&appena.length&&!$("screen").hidden)tvAnnuncia(appena[appena.length-1]);momLetti=true;
   refreshLive()}
-async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,avatar,segni,linee,piena,primo_bingo_at");players=data||[];
+async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,avatar,segni");players=data||[];
+  if(me&&data&&!pending&&!dirty){const io=players.find(p=>p.id===me.id);if(io&&Array.isArray(io.segni))me.segni=io.segni}
   if(me&&!regia&&data&&!players.some(p=>p.id===me.id)){if(await escluso())return}
   if(me){const io=players.find(p=>p.id===me.id);if(io&&io.nome!==me.nome){me.nome=io.nome;toast("L'admin ha cambiato il tuo nome in "+io.nome)}}
   render();adminRender();tvRender()}
 function refreshLive(){render();adminRender();tvRender()}
-let chan=null,retry=0,retryT=null;
+let chan=null,retry=0,retryT=null,lpT=null;
+function loadPlayersSoon(){clearTimeout(lpT);lpT=setTimeout(loadPlayers,500)} // tanti tocchi insieme = una sola lettura
 function reconnect(why){setSync(false,why);clearTimeout(retryT);const wait=Math.min(30000,2000*Math.pow(2,retry++));
   retryT=setTimeout(()=>{subscribed=false;subscribe();refreshAll()},wait)}
-async function refreshAll(){if(!sb||!user)return;await loadSerata();await loadMomenti();await loadPlayers();loadEsclusi()}
+async function refreshAll(){if(!sb||!user)return;if(dirty&&me)save();await loadSerata();await loadMomenti();await loadPlayers();loadEsclusi()}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&user){refreshAll();if(!chanOk)reconnect("riconnessione…")}});
 window.addEventListener("online",()=>{if(user){retry=0;reconnect("riconnessione…")}});
 window.addEventListener("offline",()=>setSync(false,"senza rete, riprovo da solo"));
@@ -1123,17 +1090,20 @@ function subscribe(){
   chan=sb.channel("bingo")
     .on("postgres_changes",{event:"*",schema:"public",table:"esclusi"},()=>{if(regia)loadEsclusi();else escluso()})
     .on("postgres_changes",{event:"*",schema:"public",table:"momenti"},()=>loadMomenti())
-    .on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>loadPlayers())
+    .on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>loadPlayersSoon())
     .on("postgres_changes",{event:"*",schema:"public",table:"serata"},()=>loadSerata())
     .subscribe(s=>{if(s==="SUBSCRIBED"){chanOk=true;retry=0;setSync(true,"in diretta")}else if(s==="CHANNEL_ERROR"||s==="TIMED_OUT"||s==="CLOSED"){chanOk=false;reconnect("diretta interrotta, riprovo da solo")}});
 }
 
 // ---------- regia ----------
+let armato=null; // primo tocco = "sei sicura?", secondo tocco entro 3,5 secondi = conferma
 async function toggleMomento(i){
   if(!regia)return;
   if(finita){toast("La serata è chiusa: riaprila dalla gestione per cambiare i momenti.");return}
+  if(armato!==i){armato=i;adminRender();clearTimeout(toggleMomento.t);toggleMomento.t=setTimeout(()=>{armato=null;adminRender()},3500);return}
+  armato=null;clearTimeout(toggleMomento.t);
   const on=live.has(i);on?live.delete(i):live.add(i);
-  if(me&&sync(null,false))save();refreshLive();
+  refreshLive();
   const {error}=on?await sb.from("momenti").delete().eq("id",i):await sb.from("momenti").insert({id:i});
   if(error){toast("Non salvato: "+error.message);loadMomenti()}
 }
@@ -1198,6 +1168,7 @@ function adminRender(){
     const t=document.createElement("span");t.textContent=m;
     const k=document.createElement("span");k.className="k";const c=players.filter(p=>p.segni&&p.segni[i]).length;
     const kb=document.createElement("b");kb.textContent=(on?"✓ ":"")+c+"/"+players.length;k.append(kb,on?"l'hanno indovinato":"l'hanno scelto");
+    if(armato===i){b.classList.add("armed");k.textContent="";const kb2=document.createElement("b");kb2.textContent="Tocca ancora";k.append(kb2,on?"per annullarlo":"per confermarlo")}
     b.append(n,t,k);b.addEventListener("click",()=>toggleMomento(i));li.append(b);mo.append(li)});
   const rk=$("ad-rank");rk.textContent="";
   if(!cl.length){const p=document.createElement("p");p.className="empty";p.textContent="Ancora nessun giocatore. Appena qualcuno si registra compare qui.";rk.append(p)}
@@ -1248,7 +1219,7 @@ $("ad-fyes").addEventListener("click",()=>{$("ad-fconf").hidden=true;setFinita(t
 $("ad-tv").addEventListener("click",()=>{window.open(location.pathname+"#classifica","_blank")});
 $("ad-no2").addEventListener("click",()=>{$("ad-conf").hidden=true});
 $("ad-yes").addEventListener("click",async()=>{$("ad-conf").hidden=true;const {error}=await sb.rpc("azzera_serata");if(error){toast("Non azzerato: "+error.message);return}
-  if(me){me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null}await loadSerata();await loadMomenti();await loadPlayers();toast("Serata azzerata")});
+  if(me)me.segni=Array(N).fill(false);await loadSerata();await loadMomenti();await loadPlayers();toast("Serata azzerata")});
 let qrDone=false;
 function qr(){if(qrDone)return;const box=$("qr");const url=location.origin+location.pathname.replace(/debug\.html$/,"");
   if(typeof QRCode==="undefined"){box.innerHTML='<p class="qr-miss">QR non disponibile: condividi il link della pagina.</p>';return}
@@ -1256,10 +1227,10 @@ function qr(){if(qrDone)return;const box=$("qr");const url=location.origin+locat
 function route(){
   const on=isRegia()&&!!user;$("screen").hidden=!on;
   const ad=isAdmin()&&!!user;$("admin").hidden=!ad;$("tabbar").hidden=on||ad||$("game").hidden;
-  if(on){$("splash").hidden=true;$("bigwin").hidden=true;loadPlayers();qr();tvRender();wake()}
-  if(ad){$("splash").hidden=true;adminRender();loadPlayers();wake()}
+  if(on){$("bigwin").hidden=true;loadPlayers();qr();tvRender();wake()}
+  if(ad){adminRender();loadPlayers();wake()}
 }
-window.addEventListener("hashchange",()=>{if((isRegia()||isAdmin())&&!user){show("login");$("splash").hidden=true}route()});
+window.addEventListener("hashchange",()=>{if((isRegia()||isAdmin())&&!user)show("login");route()});
 
 // schermo sempre acceso durante lo show
 let lock=null;
@@ -1279,7 +1250,7 @@ if(DEBUG){
   $("x-inst").addEventListener("click",()=>{layoutInst(true);skipInst=false;try{sessionStorage.removeItem("sq-skip-inst")}catch(e){}showInstall(false)});
   $("x-login").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;show("login")});
   $("x-line").addEventListener("click",()=>{if(!ready())return;const free=CARTELLA.filter(i=>!live.has(i));me.segni=me.segni.map((v,i)=>live.has(i)?v:false);
-    const pick=shuffle(free.length).slice(0,Math.max(0,MAXP-me.segni.filter(Boolean).length)).map(k=>free[k]);pick.forEach(i=>me.segni[i]=true);sync(null,false);render();save();toast("Fatti i pronostici: ora conferma qualche momento dal pannello admin")});
+    const pick=shuffle(free.length).slice(0,Math.max(0,MAXP-me.segni.filter(Boolean).length)).map(k=>free[k]);pick.forEach(i=>me.segni[i]=true);render();save();toast("Fatti i pronostici: ora conferma qualche momento dal pannello admin")});
   $("x-mom").addEventListener("click",()=>{if(!regia){toast("Prima fai l'accesso");return}const off=MOMENTI.map((_,i)=>i).filter(i=>!live.has(i));if(off.length)toggleMomento(off[Math.random()*off.length|0])});
   $("x-reg").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;openEditor(me?me.nome:"Sabrina",me?me.avatar:avRandom(),!!me)});
   $("x-regia").addEventListener("click",()=>{location.hash="classifica"});
@@ -1287,7 +1258,7 @@ if(DEBUG){
   $("x-card").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;$("admin").hidden=true;if(me)show("game")});
   const NOMI=["Marco","Giulia","Luca","Fede","Ale","Chiara","Davide","Sofi","Matte","Ire","Nico","Bea"];
   const fake=()=>{const id="fake-"+Math.random().toString(36).slice(2,8);const n=NOMI[Math.random()*NOMI.length|0]+" (prova)";const k=3+(Math.random()*6|0);const pick=new Set(shuffle(N).slice(0,k));
-    return {id,nome:n,avatar:avRandom(),cartella:CARTELLA.slice(),segni:CARTELLA.map(i=>pick.has(i)),linee:0,piena:false,primo_bingo_at:null,aggiornato_at:new Date().toISOString()}};
+    return {id,nome:n,avatar:avRandom(),cartella:CARTELLA.slice(),segni:CARTELLA.map(i=>pick.has(i)),aggiornato_at:new Date().toISOString()}};
   $("x-fake").addEventListener("click",()=>{const p=fake();window.__mock.addPlayer(p);toast(p.nome+" è entrato con "+p.segni.filter(Boolean).length+" pronostici")});
   $("x-crowd").addEventListener("click",()=>{for(let i=0;i<8;i++)window.__mock.addPlayer(fake());toast("8 giocatori finti aggiunti, ognuno con i suoi pronostici")});
   $("x-wipe").addEventListener("click",()=>{window.__mock.wipe();location.hash="";location.reload()});
@@ -1298,12 +1269,8 @@ const standalone=()=>matchMedia("(display-mode: standalone)").matches||matchMedi
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
 let skipInst=false;try{skipInst=sessionStorage.getItem("sq-skip-inst")==="1"}catch(e){}
 let promptEv=null;
-function setOS(os){$("os-ios").setAttribute("aria-pressed",os==="ios");$("os-and").setAttribute("aria-pressed",os==="and");}
 function needInstall(){return !standalone()&&!skipInst&&!isRegia()&&!isAdmin()}
-function showInstall(guide){$("install").hidden=false;$("splash").hidden=true;$("inst-skip").hidden=!(DEBUG||guide);$("inst-skip").textContent=guide?"Torna all'app":"Continua nel browser (solo per le prove)"}
-$("os-ios").addEventListener("click",()=>setOS("ios"));
-$("os-and").addEventListener("click",()=>setOS("and"));
-setOS(isIOS?"ios":"and");
+function showInstall(guide){$("install").hidden=false;$("inst-skip").hidden=!(DEBUG||guide);$("inst-skip").textContent=guide?"Torna all'app":"Continua nel browser (solo per le prove)"}
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();promptEv=e});
 function layoutInst(ios){$("sh-ios").hidden=!ios;$("sh-and").hidden=true;$("inst-go").hidden=ios}
 layoutInst(isIOS);
@@ -1311,12 +1278,19 @@ $("inst-go").addEventListener("click",async()=>{if(!promptEv){$("inst-go").hidde
 window.addEventListener("appinstalled",()=>{$("inst-done").hidden=false;$("inst-go").hidden=true});
 $("inst-skip").addEventListener("click",()=>{skipInst=true;try{sessionStorage.setItem("sq-skip-inst","1")}catch(e){}$("install").hidden=true});
 
-if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
+if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).catch(()=>{});
+// ---------- aggiornamento automatico ----------
+// Ogni volta che l'app torna in primo piano (e ogni 2 minuti) controlla version.json:
+// se c'è una versione nuova si ricarica da sola, ma mai mentre sta salvando o con un riquadro aperto.
+async function nuovaVersione(){if(DEBUG||location.protocol!=="https:")return;
+  try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const j=await r.json();
+    if(j&&j.v>APP_V&&!pending&&!dirty&&$("win").hidden){try{sessionStorage.setItem("sq-agg","1")}catch(e){}location.reload()}}catch(e){}}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")nuovaVersione()});
+setInterval(nuovaVersione,120000);
+try{if(sessionStorage.getItem("sq-agg")==="1"){sessionStorage.removeItem("sq-agg");setTimeout(()=>toast("App aggiornata all'ultima versione"),900)}}catch(e){}
 
 // ---------- avvio ----------
-let seen=false;try{seen=sessionStorage.getItem("sq-intro")==="1"}catch(e){}
 if(needInstall())showInstall(false);
-else $("splash").hidden=true; // v18: niente intro con la pallina
 boot();
 })();
 </script>
