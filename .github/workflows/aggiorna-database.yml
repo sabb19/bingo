@@ -1,0 +1,47 @@
+# Aggiorna il database Supabase (progetto bingo-game-awards) da solo.
+# Parte quando su main cambia qualcosa in supabase/migrations/, oppure a mano da Actions > "Aggiorna database" > Run workflow.
+# Applica solo le modifiche nuove: quelle già fatte sono segnate nel database e non vengono ripetute.
+name: Aggiorna database
+
+on:
+  push:
+    branches: [main]
+    paths: ["supabase/migrations/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: database
+  cancel-in-progress: false
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      PROJECT_REF: vqgkzvhlvmxihjxpsxan
+    steps:
+      - name: Controllo chiavi
+        id: chiavi
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$SUPABASE_DB_PASSWORD" ]; then
+            echo "::warning::Mancano le chiavi SUPABASE_ACCESS_TOKEN e/o SUPABASE_DB_PASSWORD in Settings > Secrets and variables > Actions. Database non aggiornato."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.chiavi.outputs.ok == 'true'
+      - uses: supabase/setup-cli@v1
+        if: steps.chiavi.outputs.ok == 'true'
+        with:
+          version: 2.20.12
+      - name: Collega il progetto
+        if: steps.chiavi.outputs.ok == 'true'
+        run: supabase link --project-ref "$PROJECT_REF"
+      - name: Cosa verrà applicato
+        if: steps.chiavi.outputs.ok == 'true'
+        run: supabase db push --dry-run
+      - name: Applica le modifiche nuove
+        if: steps.chiavi.outputs.ok == 'true'
+        run: supabase db push
