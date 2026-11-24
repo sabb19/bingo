@@ -180,7 +180,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .stats{display:flex;gap:2vw;font-family:var(--px);font-size:clamp(11px,.9vw,16px);color:var(--m);text-transform:uppercase}
 .stats b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(28px,3vw,56px);line-height:.9;color:var(--c)}
 .stats .lv b{color:var(--l)}
-.wall{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.6vw}
+.wall{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6vw}
 .mo{border:0;border-radius:.8vw;background:var(--s);color:var(--c);text-align:left;padding:.7vw .8vw .8vw;min-height:5.2vw;font-size:clamp(11px,.92vw,18px);font-weight:500;line-height:1.15;
   display:flex;align-items:flex-end;position:relative;transition:background .15s,color .15s}
 .mo span{min-width:0;overflow-wrap:break-word}
@@ -244,6 +244,41 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dlist button:hover{background:#F3F1F824}
 .dlist .dinfo{font-family:var(--px);font-size:10px;color:var(--m);text-transform:uppercase;padding:2px 2px 6px;overflow-wrap:anywhere}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;background:var(--s2);color:var(--c);border-radius:12px;padding:10px 14px;font-size:14px;max-width:calc(100vw - 32px);box-shadow:0 8px 30px #0008}
+/* cartella uguale per tutti: segnato in attesa / confermato */
+.cell.wait{box-shadow:0 4px 0 #0000005A,inset 0 0 0 2px var(--l)}
+.cell.wait::after{content:"attesa";position:absolute;top:6px;right:6px;font-family:var(--px);font-size:8px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--l)}
+.legend i.lg-wait{background:none;box-shadow:inset 0 0 0 2px var(--l);border-radius:2px;width:10px;height:10px}
+.legend i.lg-on{background:var(--l);box-shadow:none;border-radius:2px;width:10px;height:10px}
+.rank{margin:-8px 0 0;font-family:var(--px);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--m)}
+.rank b{color:var(--c)}
+/* pannello admin */
+.admin{position:fixed;inset:0;z-index:30;background:var(--n);overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.adm{position:relative;max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.adm-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.adm-head .big-ttl{font-size:clamp(40px,9vw,72px);margin-top:10px}
+.adm .stats{font-size:11px;gap:18px}.adm .stats b{font-size:34px}
+.adm-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:760px){.adm-grid{grid-template-columns:1fr}}
+.adm-box{background:var(--s);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.adm-box h3{margin:0;font-family:var(--px);font-weight:600;letter-spacing:.06em;font-size:12px;text-transform:uppercase;color:var(--l)}
+.adm-hint{margin:0;font-size:13px;color:var(--m);line-height:1.4}
+.adm-mom,.adm-rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.adm-mom button{width:100%;border:0;border-radius:12px;background:var(--s2);color:var(--c);display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;padding:12px;font-size:15px;font-weight:500;min-height:52px;transition:background .15s}
+.adm-mom .n{font-family:var(--px);font-size:11px;color:var(--m)}
+.adm-mom .k{font-family:var(--px);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--m);text-align:right;white-space:nowrap}
+.adm-mom .k b{display:block;font-size:13px;color:var(--c)}
+.adm-mom button[aria-pressed="true"]{background:var(--v)}
+.adm-mom button[aria-pressed="true"] .n,.adm-mom button[aria-pressed="true"] .k{color:#F3F1F8CC}
+.adm-rank li{display:grid;grid-template-columns:28px 36px minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--s2);border-radius:12px;padding:8px 12px}
+.adm-rank .pos{font-family:var(--px);font-weight:600;font-size:12px;color:var(--m)}
+.adm-rank .av{width:36px;height:36px;border-radius:6px;display:block}
+.adm-rank .nm{font-weight:700;overflow-wrap:anywhere;min-width:0}
+.adm-rank .nm small{display:block;font-weight:500;font-size:12px;color:var(--m)}
+.adm-rank .pt{font-family:var(--display);font-weight:900;font-size:30px;line-height:1;color:var(--l);text-align:right}
+.adm-rank li:first-child{box-shadow:inset 0 0 0 2px var(--l)}
+.adm-rank .empty{font-size:14px;color:var(--m)}
+.adm-no{margin:0;font-size:16px}
+.admin .scr-foot{font-size:14px}
 </style>
 </head>
 <body>
@@ -299,18 +334,15 @@ button{font:inherit;color:inherit;cursor:pointer}
   </header>
   <div class="who">
     <div class="me"><span id="who-av"></span><div style="min-width:0"><small>Cartella di</small><h2 id="who"></h2></div></div>
-    <div class="lines"><b id="nl">0</b><span id="nlt">linee</span></div>
+    <div class="lines"><b id="pt">0</b><span>punti</span></div>
   </div>
   <div class="xp"><div class="xpb"><i id="xpi"></i></div><span id="xpt">0/16</span></div>
+  <p class="rank" id="rank">&nbsp;</p>
   <div class="card" id="card" role="grid" aria-label="Cartella del bingo"></div>
-  <div class="legend"><span><i></i>già successo sul palco</span></div>
+  <div class="legend"><span><i class="lg-on"></i>vale punti</span><span><i class="lg-wait"></i>segnato, in attesa di conferma</span><span><i></i>successo sul palco</span></div>
   <div class="foot">
     <span class="sync" id="sync">collegamento…</span>
-    <div class="row"><button class="ghost" id="edit-av" type="button">Modifica personaggio</button><button class="ghost" id="reset" type="button">Nuova cartella</button><button class="ghost" id="logout" type="button">Esci</button></div>
-  </div>
-  <div class="confirm" id="conf" hidden>
-    <p>Vuoi davvero una cartella nuova? Perdi i segni fatti finora e il tuo posto nell'albo.</p>
-    <div class="row"><button class="btn" id="yes" type="button">Sì, rimescola</button><button class="btn alt" id="no" type="button">No, tengo questa</button></div>
+    <div class="row"><button class="ghost" id="edit-av" type="button">Modifica personaggio</button><button class="ghost" id="to-admin" type="button" hidden>Pannello admin</button><button class="ghost" id="logout" type="button">Esci</button></div>
   </div>
 </div>
 
@@ -340,6 +372,21 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div class="albo"><h3>Albo dei bingo</h3><ol id="albo"></ol></div>
   </aside>
 </section>
+<section class="admin" id="admin" hidden aria-label="Pannello admin">
+  <div class="adm">
+    <header class="adm-head">
+      <div><span class="tag">Admin</span><h2 class="big-ttl">Pannello <span class="hl">admin</span></h2></div>
+      <div class="stats"><span><b id="ad-p">0</b>giocatori</span><span class="lv"><b id="ad-m">0/16</b>confermati</span><span><b id="ad-l">0</b>in linea</span></div>
+    </header>
+    <p class="adm-no" id="ad-no" hidden>Questa pagina è solo per chi organizza la serata.</p>
+    <div class="adm-grid" id="ad-body">
+      <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Tocca un momento quando succede sul palco: si accende su tutti i telefoni. Solo i momenti confermati fanno punti. Se sbagli, toccalo di nuovo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
+      <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">1 punto per ogni momento segnato e confermato, +3 per ogni linea, +10 per la cartella piena, +3 al primo che fa linea.</p><ol class="adm-rank" id="ad-rank"></ol></section>
+    </div>
+    <div class="scr-foot"><button id="ad-out" type="button">Vai alla mia cartella</button><button id="ad-reset" type="button">Azzera la serata</button></div>
+    <div class="confirm" id="ad-conf" hidden><p>Azzerare la serata? Tolgo le conferme dei momenti e tutti i segni dei giocatori. I giocatori e i loro personaggi restano.</p><div class="row"><button class="btn" id="ad-yes" type="button">Sì, azzera</button><button class="btn alt" id="ad-no2" type="button">No</button></div></div>
+  </div>
+</section>
 <div class="bigwin" id="bigwin" hidden>
   <div class="jump" id="bw-jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
   <p class="big" id="bw-t">Bingo!</p>
@@ -354,11 +401,11 @@ button{font:inherit;color:inherit;cursor:pointer}
     <button type="button" id="x-reg">Mostra la registrazione</button>
     <button type="button" id="x-line">Completa una linea</button>
     <button type="button" id="x-full">Riempi tutta la cartella</button>
-    <button type="button" id="x-new">Nuova cartella al volo</button>
-    <button type="button" id="x-mom">Accendi un momento a caso (regia)</button>
-    <button type="button" id="x-regia">Apri la regia</button>
+    <button type="button" id="x-mom">Conferma un momento a caso</button>
+    <button type="button" id="x-admin">Apri il pannello admin</button>
+    <button type="button" id="x-regia">Apri lo schermo grande</button>
     <button type="button" id="x-card">Torna alla cartella</button>
-    <button type="button" id="x-fake">Arriva un bingo finto</button>
+    <button type="button" id="x-fake">Un giocatore finto fa linea</button>
     <button type="button" id="x-crowd">Aggiungi 8 giocatori finti</button>
     <button type="button" id="x-wipe">Cancella tutto e riparti</button>
   </div>
@@ -382,32 +429,12 @@ const MOMENTI=[
  "Star del cinema sul palco",
  "L'orchestra suona un tema famoso",
  "Trailer tutto in CGI, zero gameplay",
- "Il logo si capisce solo alla fine",
  "Torna una saga dimenticata",
- "Annunciano un film tratto da un gioco",
  "Il favorito della sala non vince",
  "Uno sviluppatore si commuove",
- "Discorso non in inglese",
- "Una battuta che non fa ridere nessuno",
- "Pubblicità di uno snack o di una bibita",
- "Crossover che nessuno si aspettava",
  "Videomessaggio di un assente",
- "Qualcuno sale sul palco con la felpa",
- "Teaser di 30 secondi e basta",
- "Premio dato di corsa nel pre-show",
- "Un sequel di un gioco amatissimo",
- "Qualcuno dice «this is for the fans»",
  "Countdown gigante sullo schermo",
- "Un attore famoso dentro un trailer",
- "La sala esplode per un annuncio",
- "Si parla di wishlist su Steam",
- "Indie in anteprima mondiale",
- "Ricordo di chi non c'è più",
- "Esibizione musicale dal vivo",
- "Un discorso lunghissimo",
- "Qualcuno sbaglia un nome sul palco",
- "Citano un gioco del 2026 a caso",
- "Annuncio con «only on» una console"
+ "Qualcuno sbaglia un nome sul palco"
 ];
 const DEBUG=!!window.SQ_DEBUG;
 // ---------- personaggio pixel 16x16 ----------
@@ -492,6 +519,7 @@ if(DEBUG){(function(){
   let db;try{db=JSON.parse(localStorage.getItem(K)||"null")}catch(e){}
   if(!db)db={session:false,giocatori:[],momenti:[]};
   const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}};
+  window.addEventListener("storage",e=>{if(e.key!==K)return;try{db=JSON.parse(e.newValue||"null")||{session:false,giocatori:[],momenti:[]}}catch(_){}subs.forEach(x=>x.fn())});
   const U={id:"debug-sabrina",email:"debug",user_metadata:{full_name:"Sabrina"}};
   const auths=[],subs=[];
   const emit=t=>setTimeout(()=>subs.forEach(s=>s.t===t&&s.fn()),120);
@@ -526,11 +554,21 @@ for(let r=0;r<SIZE;r++){LINES.push([0,1,2,3].map(c=>r*SIZE+c));LINES.push([0,1,2
 LINES.push([0,5,10,15]);LINES.push([3,6,9,12]);
 const $=id=>document.getElementById(id);
 const isRegia=()=>location.hash==="#regia";
+const isAdmin=()=>location.hash==="#admin";
+const CARTELLA=[...Array(16).keys()];
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[],shownBingo=new Set(),firstLoad=true;
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
 function show(id){["login","naming","game"].forEach(x=>$(x).hidden=x!==id)}
 function done(on){return LINES.filter(l=>l.every(i=>on[i]))}
+// un segno vale solo se il momento è stato confermato dall'admin
+function stato(p){const ok=CARTELLA.map(i=>!!(p.segni&&p.segni[i])&&live.has(i));return {ok,conf:ok.filter(Boolean).length,ls:done(ok).length,piena:ok.every(Boolean)}}
+function classifica(list){
+  const first=list.map(p=>stato(p).ls>0&&p.primo_bingo_at?Date.parse(p.primo_bingo_at):Infinity).reduce((a,b)=>Math.min(a,b),Infinity);
+  return list.map(p=>{const s=stato(p);const primo=s.ls>0&&!!p.primo_bingo_at&&Date.parse(p.primo_bingo_at)-first<2000;
+    return {p,s,primo,pt:s.conf+3*s.ls+(s.piena?10:0)+(primo?3:0)}})
+   .sort((a,b)=>b.pt-a.pt||(a.p.primo_bingo_at||"9").localeCompare(b.p.primo_bingo_at||"9")||String(a.p.nome).localeCompare(String(b.p.nome)))}
+const sameCard=c=>Array.isArray(c)&&c.length===16&&c.every((v,i)=>v===i);
 function shuffle(n){const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function setSync(ok,t){const e=$("sync");e.className="sync "+(ok?"ok":"ko");e.textContent=t}
 
@@ -559,11 +597,16 @@ async function afterAuth(){
   dinfo();
   if(!user){show("login");if(isRegia())$("screen").hidden=true;return}
   try{const {data}=await sb.rpc("sono_regia");regia=!!data}catch(e){regia=false}
+  $("to-admin").hidden=!regia;
   subscribe();
   await loadMomenti();
   const {data,error}=await sb.from("giocatori").select("*").eq("id",user.id).maybeSingle();
   if(error){setSync(false,"errore di collegamento");toast("Errore: "+error.message)}
   me=data||null;
+  if(me&&!sameCard(me.cartella)){me.cartella=CARTELLA.slice();me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null;
+    await sb.from("giocatori").update({cartella:me.cartella,segni:me.segni,linee:0,piena:false,primo_bingo_at:null}).eq("id",user.id)}
+  if(me&&sync(null,false))save();
+  await loadPlayers();
   if(!me){const g=(user.user_metadata?.full_name||user.user_metadata?.name||"").split(" ")[0];openEditor(g.slice(0,24),avRandom(),false)}
   else if(!me.avatar||!Object.keys(me.avatar).length){openEditor(me.nome,avRandom(),true)}
   else{show("game");render()}
@@ -600,7 +643,7 @@ $("f").addEventListener("submit",async e=>{
   await deal(n,draft);
 });
 async function deal(name,avatar){
-  const row={id:user.id,nome:name,avatar:avFix(avatar||(me&&me.avatar)||avRandom()),cartella:shuffle(MOMENTI.length).slice(0,N),segni:Array(N).fill(false),linee:0,piena:false,primo_bingo_at:null,aggiornato_at:new Date().toISOString()};
+  const row={id:user.id,nome:name,avatar:avFix(avatar||(me&&me.avatar)||avRandom()),cartella:CARTELLA.slice(),segni:Array(N).fill(false),linee:0,piena:false,primo_bingo_at:null,aggiornato_at:new Date().toISOString()};
   const {data,error}=await sb.from("giocatori").upsert(row).select().single();
   if(error){$("name-err").hidden=false;$("name-err").textContent="Non riesco a salvare la cartella: "+error.message;return}
   me=data;show("game");render();
@@ -609,54 +652,63 @@ function render(){
   if(!me)return;
   $("who").textContent=me.nome;$("who-av").innerHTML=avatarSVG(me.avatar);
   const card=$("card");card.textContent="";
-  const won=new Set(done(me.segni).flat());
+  const st=stato(me);const won=new Set(done(st.ok).flat());
   me.cartella.forEach((m,i)=>{
+    const seg=!!me.segni[i],cf=live.has(m);
     const b=document.createElement("button");b.type="button";
-    b.className="cell"+(me.segni[i]?" on":"")+(won.has(i)?" win":"")+(live.has(m)?" live":"");
-    b.setAttribute("aria-pressed",me.segni[i]);
-    b.setAttribute("aria-label",MOMENTI[m]+(live.has(m)?", già successo":""));
+    b.className="cell"+(seg&&cf?" on":"")+(seg&&!cf?" wait":"")+(!seg&&cf?" live":"")+(won.has(i)?" win":"");
+    b.setAttribute("aria-pressed",seg);
+    b.setAttribute("aria-label",MOMENTI[m]+(seg&&cf?", vale punti":seg?", segnato, in attesa di conferma":cf?", successo sul palco":""));
     const n=document.createElement("span");n.className="n";n.textContent=String(i+1).padStart(2,"0");
     const t=document.createElement("span");t.textContent=MOMENTI[m];
     b.append(n,t);b.addEventListener("click",()=>tap(i));card.append(b);
   });
-  const k=me.segni.filter(Boolean).length,l=done(me.segni).length;
-  $("xpi").style.width=(k/N*100)+"%";$("xpt").textContent=k+"/"+N;$("nl").textContent=l;$("nlt").textContent=l===1?"linea":"linee";
+  const all=players.filter(p=>p.id!==me.id).concat([me]);const cl=classifica(all);const pos=cl.findIndex(x=>x.p===me);const mine=cl[pos];
+  $("pt").textContent=mine.pt;
+  $("xpi").style.width=(st.conf/N*100)+"%";$("xpt").textContent=st.conf+"/"+N;
+  $("rank").innerHTML="<b>"+(pos+1)+"°</b> su "+all.length+" · "+st.ls+(st.ls===1?" linea":" linee")+(mine.primo?" · primo a fare linea":"");
+}
+// linee valide (solo momenti confermati): aggiorna me, festeggia se ne arriva una nuova
+function sync(last,celeb){
+  const s=stato(me);const before=me.linee||0;const changed=s.ls!==me.linee||s.piena!==me.piena;
+  me.linee=s.ls;me.piena=s.piena;
+  if(s.ls>0&&!me.primo_bingo_at)me.primo_bingo_at=new Date().toISOString();
+  if(s.ls===0)me.primo_bingo_at=null;
+  if(celeb&&s.ls>before&&$("admin").hidden&&$("screen").hidden)setTimeout(()=>celebrate(s.ls,last),last===null?0:250);
+  return changed;
 }
 let saving=Promise.resolve();
+function save(){const snap={segni:me.segni,linee:me.linee,piena:me.piena,primo_bingo_at:me.primo_bingo_at,aggiornato_at:new Date().toISOString()};
+  saving=saving.then(async()=>{const {error}=await sb.from("giocatori").update(snap).eq("id",user.id);setSync(!error,error?"non salvato, riprovo al prossimo tocco":"salvato")})}
 async function tap(i){
-  const before=done(me.segni).length;
   me.segni=me.segni.slice();me.segni[i]=!me.segni[i];
-  const l=done(me.segni).length;
-  me.linee=l;me.piena=me.segni.every(Boolean);
-  if(l>0&&!me.primo_bingo_at)me.primo_bingo_at=new Date().toISOString();
-  if(l===0)me.primo_bingo_at=null;
-  render();$("card").children[i].classList.add("pop");
-  if(l>before)celebrate(l,i);
-  const snap={segni:me.segni,linee:me.linee,piena:me.piena,primo_bingo_at:me.primo_bingo_at,aggiornato_at:new Date().toISOString()};
-  saving=saving.then(async()=>{const {error}=await sb.from("giocatori").update(snap).eq("id",user.id);setSync(!error,error?"non salvato, riprovo al prossimo tocco":"salvato")});
+  sync(i,true);render();$("card").children[i].classList.add("pop");save();
 }
 function celebrate(l,last){
   const w=$("win");$("win-jump").innerHTML=avatarSVG(me.avatar,"av sl")+'<div class="shadow"></div>';$("wn").textContent=me.nome;
-  const full=me.segni.every(Boolean);
+  const st=stato(me);const full=st.piena;
   $("wt").textContent=full?"Cartella piena":"Linea "+l;$("bg").textContent=full?"Full clear!":"Bingo!";
-  const pr=$("prove");pr.textContent="";const ls=done(me.segni);(ls.find(x=>x.includes(last))||ls[ls.length-1]||[]).forEach(i=>{const li=document.createElement("li");li.textContent=MOMENTI[me.cartella[i]];pr.append(li)});
+  const pr=$("prove");pr.textContent="";const ls=done(st.ok);(ls.find(x=>x.includes(last))||ls[ls.length-1]||[]).forEach(i=>{const li=document.createElement("li");li.textContent=MOMENTI[me.cartella[i]];pr.append(li)});
   confetti($("cf"));w.hidden=false;w.classList.remove("go");void w.offsetWidth;w.classList.add("go");
   try{navigator.vibrate&&navigator.vibrate([60,40,120])}catch(e){}
 }
 function confetti(cf){cf.textContent="";for(let j=0;j<22;j++){const i=document.createElement("i");const a=Math.random()*Math.PI*2,d=90+Math.random()*170;i.style.setProperty("--x",Math.cos(a)*d+"px");i.style.setProperty("--y",Math.sin(a)*d+"px");i.style.setProperty("--r",(Math.random()*360|0)+"deg");if(j%3===0)i.style.background="var(--v)";cf.append(i)}}
 $("close").addEventListener("click",()=>{$("win").hidden=true});
-$("reset").addEventListener("click",()=>{$("conf").hidden=false;$("no").focus()});
-$("no").addEventListener("click",()=>{$("conf").hidden=true});
-$("yes").addEventListener("click",()=>{$("conf").hidden=true;deal(me.nome)});
+$("to-admin").addEventListener("click",()=>{location.hash="admin"});
 
 // ---------- dati live ----------
-async function loadMomenti(){const {data}=await sb.from("momenti").select("id");live=new Set((data||[]).map(r=>r.id));render();if(!$("screen").hidden)wall()}
-async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,avatar,linee,piena,primo_bingo_at");players=data||[];albo()}
+let synced=false;
+async function loadMomenti(){const {data}=await sb.from("momenti").select("id");live=new Set((data||[]).map(r=>r.id).filter(i=>i>=0&&i<N));
+  if(me){if(sync(null,synced))save();synced=true}
+  refreshLive()}
+async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,avatar,segni,linee,piena,primo_bingo_at");players=data||[];
+  if(!$("screen").hidden)albo();render();adminRender()}
+function refreshLive(){render();if(!$("screen").hidden)wall();adminRender()}
 function subscribe(){
   if(subscribed)return;subscribed=true;
   sb.channel("bingo")
     .on("postgres_changes",{event:"*",schema:"public",table:"momenti"},()=>loadMomenti())
-    .on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>{if(!$("screen").hidden)loadPlayers()})
+    .on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>loadPlayers())
     .subscribe(s=>{if(s==="SUBSCRIBED")setSync(true,"in diretta");else if(s==="CHANNEL_ERROR"||s==="TIMED_OUT")setSync(false,"diretta interrotta, ricarica la pagina")});
 }
 
@@ -672,7 +724,8 @@ function wall(){
 }
 async function toggleMomento(i){
   if(!regia)return;
-  const on=live.has(i);on?live.delete(i):live.add(i);wall();
+  const on=live.has(i);on?live.delete(i):live.add(i);
+  if(me&&sync(null,true))save();refreshLive();
   const {error}=on?await sb.from("momenti").delete().eq("id",i):await sb.from("momenti").insert({id:i});
   if(error){toast("Non salvato: "+error.message);loadMomenti()}
 }
@@ -694,15 +747,46 @@ $("sc-reset").addEventListener("click",()=>{$("sc-conf").hidden=false});
 $("sc-no").addEventListener("click",()=>{$("sc-conf").hidden=true});
 $("sc-yes").addEventListener("click",async()=>{$("sc-conf").hidden=true;const {error}=await sb.rpc("azzera_serata");if(error)toast("Non azzerato: "+error.message);else{shownBingo.clear();firstLoad=true;loadMomenti();loadPlayers();toast("Serata azzerata")}});
 $("sc-out").addEventListener("click",()=>{location.hash=""});
+
+// ---------- pannello admin ----------
+function adminRender(){
+  if($("admin").hidden)return;
+  $("ad-no").hidden=regia;$("ad-body").hidden=!regia;$("ad-reset").hidden=!regia;
+  const cl=classifica(players);
+  $("ad-p").textContent=players.length;$("ad-m").textContent=live.size+"/"+N;$("ad-l").textContent=cl.filter(x=>x.s.ls>0).length;
+  const mo=$("ad-mom");mo.textContent="";
+  MOMENTI.forEach((m,i)=>{const li=document.createElement("li");const b=document.createElement("button");b.type="button";const on=live.has(i);b.setAttribute("aria-pressed",on);
+    const n=document.createElement("span");n.className="n";n.textContent=String(i+1).padStart(2,"0");
+    const t=document.createElement("span");t.textContent=m;
+    const k=document.createElement("span");k.className="k";const c=players.filter(p=>p.segni&&p.segni[i]).length;
+    const kb=document.createElement("b");kb.textContent=(on?"✓ ":"")+c+"/"+players.length;k.append(kb,on?"confermato":"l'hanno segnato");
+    b.append(n,t,k);b.addEventListener("click",()=>toggleMomento(i));li.append(b);mo.append(li)});
+  const rk=$("ad-rank");rk.textContent="";
+  if(!cl.length){const p=document.createElement("p");p.className="empty";p.textContent="Ancora nessun giocatore. Appena qualcuno si registra compare qui.";rk.append(p)}
+  cl.forEach((x,i)=>{const li=document.createElement("li");
+    const a=document.createElement("span");a.className="pos";a.textContent=(i+1)+"°";
+    const av=document.createElement("span");av.innerHTML=avatarSVG(x.p.avatar);
+    const nm=document.createElement("span");nm.className="nm";nm.textContent=x.p.nome;const sm=document.createElement("small");
+    sm.textContent=x.s.conf+(x.s.conf===1?" momento valido":" momenti validi")+" · "+x.s.ls+(x.s.ls===1?" linea":" linee")+(x.s.piena?" · piena":"")+(x.primo?" · primo":"");nm.append(sm);
+    const pt=document.createElement("span");pt.className="pt";pt.textContent=x.pt;
+    li.append(a,av,nm,pt);rk.append(li)});
+}
+$("ad-out").addEventListener("click",()=>{location.hash=""});
+$("ad-reset").addEventListener("click",()=>{$("ad-conf").hidden=false});
+$("ad-no2").addEventListener("click",()=>{$("ad-conf").hidden=true});
+$("ad-yes").addEventListener("click",async()=>{$("ad-conf").hidden=true;const {error}=await sb.rpc("azzera_serata");if(error){toast("Non azzerato: "+error.message);return}
+  if(me){me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null}shownBingo.clear();firstLoad=true;await loadMomenti();await loadPlayers();toast("Serata azzerata")});
 let qrDone=false;
 function qr(){if(qrDone)return;const box=$("qr");const url=location.origin+location.pathname.replace(/debug\.html$/,"");
   if(typeof QRCode==="undefined"){box.innerHTML='<p class="qr-miss">QR non disponibile: condividi il link della pagina.</p>';return}
   new QRCode(box,{text:url,width:512,height:512,colorDark:"#150F22",colorLight:"#F3F1F8",correctLevel:QRCode.CorrectLevel.M});qrDone=true}
 function route(){
   const on=isRegia()&&!!user;$("screen").hidden=!on;
+  const ad=isAdmin()&&!!user;$("admin").hidden=!ad;
   if(on){$("splash").hidden=true;wall();loadPlayers();qr();wake()}
+  if(ad){$("splash").hidden=true;adminRender();loadPlayers();wake()}
 }
-window.addEventListener("hashchange",()=>{if(isRegia()&&!user){show("login");$("splash").hidden=true}route()});
+window.addEventListener("hashchange",()=>{if((isRegia()||isAdmin())&&!user){show("login");$("splash").hidden=true}route()});
 
 // schermo sempre acceso durante lo show
 let lock=null;
@@ -716,27 +800,28 @@ if(DEBUG){
   $("dpanel").hidden=false;$("google").querySelector("span").textContent="Entra (prova, senza Google)";
   $("dtog").addEventListener("click",()=>{const l=$("dlist");l.hidden=!l.hidden;$("dtog").setAttribute("aria-expanded",!l.hidden);dinfo()});
   $("dlist").addEventListener("click",e=>{if(e.target.closest("button")){$("dlist").hidden=true;$("dtog").setAttribute("aria-expanded","false")}},true);
-  const ready=()=>{if(!me){toast("Prima fai l'accesso e prendi la cartella");return false}location.hash="";$("screen").hidden=true;show("game");return true};
+  const ready=()=>{if(!me){toast("Prima fai l'accesso e prendi la cartella");return false}location.hash="";$("screen").hidden=true;$("admin").hidden=true;show("game");return true};
   $("x-intro").addEventListener("click",()=>{location.hash="";intro()});
   $("x-login").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;show("login")});
-  $("x-line").addEventListener("click",()=>{if(!ready())return;const free=LINES.filter(l=>l.some(i=>!me.segni[i]));if(!free.length)return;const l=free[Math.random()*free.length|0];const miss=l.filter(i=>!me.segni[i]);me.segni=me.segni.slice();miss.slice(0,-1).forEach(i=>me.segni[i]=true);tap(miss[miss.length-1])});
+  $("x-line").addEventListener("click",()=>{if(!ready())return;const free=LINES.filter(l=>l.some(i=>!me.segni[i]));if(!free.length)return;const l=free[Math.random()*free.length|0];const miss=l.filter(i=>!me.segni[i]);me.segni=me.segni.slice();miss.slice(0,-1).forEach(i=>me.segni[i]=true);tap(miss[miss.length-1]);if(l.some(i=>!live.has(i)))toast("Linea segnata: vale quando confermi i suoi momenti dal pannello admin")});
   $("x-full").addEventListener("click",()=>{if(!ready())return;const miss=me.segni.map((v,i)=>v?-1:i).filter(i=>i>=0);if(!miss.length)return;me.segni=me.segni.slice();miss.slice(0,-1).forEach(i=>me.segni[i]=true);tap(miss[miss.length-1])});
-  $("x-new").addEventListener("click",()=>{if(!ready())return;deal(me.nome)});
-  $("x-mom").addEventListener("click",()=>{if(!regia){toast("Non sei ancora in regia");return}const off=MOMENTI.map((_,i)=>i).filter(i=>!live.has(i));if(off.length)toggleMomento(off[Math.random()*off.length|0])});
+  $("x-mom").addEventListener("click",()=>{if(!regia){toast("Prima fai l'accesso");return}const off=MOMENTI.map((_,i)=>i).filter(i=>!live.has(i));if(off.length)toggleMomento(off[Math.random()*off.length|0])});
   $("x-reg").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;openEditor(me?me.nome:"Sabrina",me?me.avatar:avRandom(),!!me)});
   $("x-regia").addEventListener("click",()=>{location.hash="regia"});
-  $("x-card").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;if(me)show("game")});
+  $("x-admin").addEventListener("click",()=>{location.hash="admin"});
+  $("x-card").addEventListener("click",()=>{location.hash="";$("screen").hidden=true;$("admin").hidden=true;if(me)show("game")});
   const NOMI=["Marco","Giulia","Luca","Fede","Ale","Chiara","Davide","Sofi","Matte","Ire","Nico","Bea"];
-  const fake=(bingo)=>{const id="fake-"+Math.random().toString(36).slice(2,8);const n=NOMI[Math.random()*NOMI.length|0]+" (prova)";
-    return {id,nome:n,avatar:avRandom(),cartella:shuffle(MOMENTI.length).slice(0,N),segni:Array(N).fill(false),linee:bingo?1:0,piena:false,primo_bingo_at:bingo?new Date().toISOString():null,aggiornato_at:new Date().toISOString()}};
-  $("x-fake").addEventListener("click",()=>{window.__mock.addPlayer(fake(true));toast("Bingo finto inviato: guardalo in regia")});
-  $("x-crowd").addEventListener("click",()=>{for(let i=0;i<8;i++)window.__mock.addPlayer(fake(false));toast("8 giocatori finti aggiunti")});
+  const fake=(p)=>{const id="fake-"+Math.random().toString(36).slice(2,8);const n=NOMI[Math.random()*NOMI.length|0]+" (prova)";
+    return {id,nome:n,avatar:avRandom(),cartella:CARTELLA.slice(),segni:CARTELLA.map(()=>Math.random()<p),linee:0,piena:false,primo_bingo_at:null,aggiornato_at:new Date().toISOString()}};
+  $("x-fake").addEventListener("click",async()=>{const l=LINES[Math.random()*LINES.length|0];for(const i of l)if(!live.has(i))await sb.from("momenti").insert({id:i});
+    const p=fake(.3);l.forEach(i=>p.segni[i]=true);p.linee=1;p.primo_bingo_at=new Date().toISOString();window.__mock.addPlayer(p);await loadMomenti();toast(p.nome+" ha fatto linea: ho confermato anche i suoi momenti")});
+  $("x-crowd").addEventListener("click",()=>{for(let i=0;i<8;i++)window.__mock.addPlayer(fake(.45));toast("8 giocatori finti aggiunti, con qualche segno a caso")});
   $("x-wipe").addEventListener("click",()=>{window.__mock.wipe();location.hash="";location.reload()});
 }
 
 // ---------- avvio ----------
 let seen=false;try{seen=sessionStorage.getItem("sq-intro")==="1"}catch(e){}
-if(isRegia()||seen||/[?&#](code|access_token)=/.test(location.href))$("splash").hidden=true;else intro();
+if(isRegia()||isAdmin()||seen||/[?&#](code|access_token)=/.test(location.href))$("splash").hidden=true;else intro();
 boot();
 })();
 </script>
