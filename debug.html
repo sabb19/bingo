@@ -393,6 +393,22 @@ button{font:inherit;color:inherit;cursor:pointer}
 body:has(#tabbar:not([hidden])) .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 
+/* ---------- v16 ---------- */
+.adm-rank li{grid-template-columns:28px 36px minmax(0,1fr) auto 36px}
+.adm-rank .more{border:0;background:none;color:var(--m);width:36px;height:36px;border-radius:10px;font-size:20px;line-height:1;cursor:pointer}
+.adm-rank .more[aria-expanded="true"]{background:var(--s);color:var(--c)}
+.adm-rank .act{grid-column:1/-1;display:flex;flex-direction:column;gap:10px;padding:6px 0 4px}
+.adm-rank .act .rw{display:flex;gap:8px}
+.adm-rank .act input{flex:1;min-width:0;background:var(--n);color:var(--c);border:0;border-radius:10px;padding:10px 12px;font:500 16px var(--body);box-shadow:inset 0 0 0 1px #F3F1F833}
+.adm-rank .act button.sv{border:0;border-radius:10px;padding:0 14px;background:var(--l);color:var(--n);font:700 15px var(--body)}
+.adm-rank .act button.kick{border:0;border-radius:10px;padding:12px;background:#FF5A6E26;color:var(--r);font:700 15px var(--body);text-align:left}
+.adm-rank .act button.kick.sure{background:var(--r);color:var(--n)}
+.adm-rank .act small{font-size:12px;color:var(--m)}
+.adm-esc{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.adm-esc li{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;color:var(--m);background:var(--s2);border-radius:10px;padding:8px 12px}
+.adm-esc button{border:0;background:none;color:var(--l);font:600 14px var(--body);text-decoration:underline}
+.kicked{background:var(--n)}
+
 /* ---------- v15: installazione ---------- */
 .inst{background:var(--n);z-index:28}
 .inst .col{gap:20px}
@@ -443,7 +459,7 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
   <div class="col">
     <div class="inst-ic"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#BBEB4B"/><circle cx="50" cy="50" r="29" fill="#F3F1F8"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">B</text></svg></div>
     <h2 class="big-ttl">Scarica <span class="hl">l'app</span></h2>
-    <p class="lead">Il bingo si gioca dall'app sul telefono: si apre a tutto schermo, resta pronta per tutta la serata e ti avvisa quando indovini.</p>
+    <p class="lead">Il bingo si gioca dall'app sul telefono: si apre a tutto schermo, resta pronta per tutta la serata e ti mostra subito quando indovini.</p>
     <button class="cta" id="inst-go" type="button" hidden><span>Installa l'app</span><span class="px">↓</span></button>
     <div class="seg" role="group" aria-label="Il tuo telefono"><button type="button" id="os-ios" aria-pressed="true">iPhone</button><button type="button" id="os-and" aria-pressed="false">Android</button></div>
     <ol class="steps" id="st-ios">
@@ -461,6 +477,14 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
     <p class="inst-done" id="inst-done" hidden>Fatto! Ora chiudi questa pagina e apri il Bingo dalla schermata Home.</p>
     <p class="note" id="inst-note">Se l'hai già installata, aprila dalla schermata Home: questa pagina nel browser serve solo per scaricarla.</p>
     <button class="ghost" id="inst-skip" type="button" hidden>Continua nel browser (solo per le prove)</button>
+  </div>
+</section>
+
+<section class="full auth kicked" id="kicked" hidden aria-label="Fuori dalla serata">
+  <div class="col">
+    <h2 class="big-ttl">Fuori dal <span class="hl">gioco</span></h2>
+    <p>L'admin ti ha tolto dalla serata. Se pensi sia un errore, chiedi a chi organizza.</p>
+    <button class="ghost" id="kick-out" type="button">Esci da questo account</button>
   </div>
 </section>
 
@@ -576,8 +600,8 @@ body:has(#tabbar:not([hidden])) .dpanel{bottom:calc(84px + env(safe-area-inset-b
       <p class="adm-hint"><button class="ghost" id="ad-tv" type="button">Apri lo schermo classifica in una nuova scheda</button></p>
     </section>
     <div class="adm-grid" id="ad-body">
-      <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Tocca un momento quando succede sul palco: da quel momento nessuno può più sceglierlo, e chi l'aveva scelto prende 1 punto. Se sbagli, toccalo di nuovo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
-      <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi fa più punti con i pronostici confermati. I momenti valgono 1, 2 o 3 punti: i più rari valgono di più. Ognuno può sceglierne al massimo 8.</p><ol class="adm-rank" id="ad-rank"></ol></section>
+      <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Tocca un momento quando succede sul palco: da quel momento nessuno può più sceglierlo, e chi l'aveva scelto prende i punti del momento (1, 2 o 3). Se sbagli, toccalo di nuovo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
+      <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi fa più punti con i pronostici confermati. I momenti valgono 1, 2 o 3 punti: i più rari valgono di più. Ognuno può sceglierne al massimo 8. Tocca ⋯ accanto a un nome per rinominarlo o toglierlo.</p><ol class="adm-rank" id="ad-rank"></ol><div id="ad-escw" hidden><h3 style="margin-top:18px">Tolti dalla serata</h3><ol class="adm-esc" id="ad-esc"></ol></div></section>
     </div>
     <div class="scr-foot"><button id="ad-out" type="button">Vai alla mia cartella</button><button id="ad-reset" type="button">Azzera la serata</button></div>
     <div class="confirm" id="ad-conf" hidden><p>Azzerare la serata? Tolgo le conferme dei momenti e tutti i segni dei giocatori. I giocatori e i loro personaggi restano.</p><div class="row"><button class="btn" id="ad-yes" type="button">Sì, azzera</button><button class="btn alt" id="ad-no2" type="button">No</button></div></div>
@@ -725,7 +749,7 @@ if(DEBUG){(function(){
   const auths=[],subs=[];
   const emit=t=>setTimeout(()=>subs.forEach(s=>s.t===t&&s.fn()),120);
   function q(t){let op="sel",val=null,f=null,one=false;
-    const run=()=>{let rows=db[t];
+    const run=()=>{let rows=db[t]||(db[t]=[]);
       if(op==="upsert"){db[t]=rows.filter(x=>x.id!==val.id).concat([val]);save();emit(t);return {data:val,error:null}}
       if(op==="insert"){if(!rows.some(x=>x.id===val.id))rows.push(Object.assign({acceso_at:new Date().toISOString()},val));save();emit(t);return {error:null}}
       if(op==="update"){rows.filter(x=>x[f[0]]===f[1]).forEach(r=>Object.assign(r,val));save();emit(t);return {error:null}}
@@ -740,7 +764,7 @@ if(DEBUG){(function(){
       signInWithOAuth:async()=>{db.session=true;save();auths.forEach(fn=>fn("SIGNED_IN",{user:U}));return {error:null}},
       signOut:async()=>{db.session=false;save();auths.forEach(fn=>fn("SIGNED_OUT",null));return {error:null}}},
     rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.primo_bingo_at=null;g.linee=0;g.piena=false;g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
-    from:q,
+    from:q,removeChannel(){},
     channel(){const c={on(_e,o,fn){subs.push({t:o.table,fn});return c},subscribe(cb){setTimeout(()=>cb("SUBSCRIBED"),50);return c}};return c}
   };
   window.supabase={createClient:()=>client};
@@ -761,7 +785,7 @@ const MAXP=8; // pronostici massimi a testa
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[],shownBingo=new Set(),firstLoad=true;
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
-function show(id){["login","naming","game"].forEach(x=>$(x).hidden=x!==id);$("tabbar").hidden=id!=="game"}
+function show(id){["login","naming","game","kicked"].forEach(x=>$(x).hidden=x!==id);$("tabbar").hidden=id!=="game"}
 // ---------- schede ----------
 let tab="bingo";try{tab=sessionStorage.getItem("sq-tab")||"bingo"}catch(e){}
 function setTab(t){tab=t;try{sessionStorage.setItem("sq-tab",t)}catch(e){}
@@ -806,6 +830,7 @@ async function afterAuth(){
   try{const {data}=await sb.rpc("sono_regia");regia=!!data}catch(e){regia=false}
   $("to-admin").hidden=!regia;
   subscribe();
+  if(await escluso())return;
   await loadSerata();
   await loadMomenti();
   const {data,error}=await sb.from("giocatori").select("*").eq("id",user.id).maybeSingle();
@@ -821,6 +846,12 @@ async function afterAuth(){
   else{show("game");setTab(tab)}
   route();
 }
+
+// ---------- esclusi ----------
+let esclusi=[];
+async function loadEsclusi(){const {data}=await sb.from("esclusi").select("*");esclusi=data||[];adminRender()}
+async function escluso(){await loadEsclusi();if(user&&esclusi.some(e=>e.user_id===user.id)&&!regia){me=null;show("kicked");return true}return false}
+$("kick-out").addEventListener("click",async()=>{await sb.auth.signOut();user=null;me=null;afterAuth()});
 
 // ---------- nome e cartella ----------
 let draft=avRandom(),editing=false;
@@ -952,15 +983,27 @@ async function loadMomenti(){const prev=live;const {data}=await sb.from("momenti
   const appena=[...live].filter(i=>!prev.has(i));if(momLetti&&appena.length&&tab!=="rank"){const bd=$("tb-badge");bd.textContent=(+bd.textContent||0)*(bd.hidden?0:1)+appena.length;bd.hidden=false}if(momLetti&&appena.length&&!$("screen").hidden)tvAnnuncia(appena[appena.length-1]);momLetti=true;
   refreshLive()}
 async function loadPlayers(){const {data}=await sb.from("giocatori").select("id,nome,avatar,segni,linee,piena,primo_bingo_at");players=data||[];
+  if(me&&!regia&&data&&!players.some(p=>p.id===me.id)){if(await escluso())return}
+  if(me){const io=players.find(p=>p.id===me.id);if(io&&io.nome!==me.nome){me.nome=io.nome;toast("L'admin ha cambiato il tuo nome in "+io.nome)}}
   render();adminRender();tvRender()}
 function refreshLive(){render();adminRender();tvRender()}
+let chan=null,retry=0,retryT=null;
+function reconnect(why){setSync(false,why);clearTimeout(retryT);const wait=Math.min(30000,2000*Math.pow(2,retry++));
+  retryT=setTimeout(()=>{subscribed=false;subscribe();refreshAll()},wait)}
+async function refreshAll(){if(!sb||!user)return;await loadSerata();await loadMomenti();await loadPlayers();loadEsclusi()}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&user){refreshAll();if(!chanOk)reconnect("riconnessione…")}});
+window.addEventListener("online",()=>{if(user){retry=0;reconnect("riconnessione…")}});
+window.addEventListener("offline",()=>setSync(false,"senza rete, riprovo da solo"));
+let chanOk=false;
 function subscribe(){
   if(subscribed)return;subscribed=true;
-  sb.channel("bingo")
+  if(chan){try{sb.removeChannel(chan)}catch(e){}chan=null}
+  chan=sb.channel("bingo")
+    .on("postgres_changes",{event:"*",schema:"public",table:"esclusi"},()=>{if(regia)loadEsclusi();else escluso()})
     .on("postgres_changes",{event:"*",schema:"public",table:"momenti"},()=>loadMomenti())
     .on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>loadPlayers())
     .on("postgres_changes",{event:"*",schema:"public",table:"serata"},()=>loadSerata())
-    .subscribe(s=>{if(s==="SUBSCRIBED")setSync(true,"in diretta");else if(s==="CHANNEL_ERROR"||s==="TIMED_OUT")setSync(false,"diretta interrotta, ricarica la pagina")});
+    .subscribe(s=>{if(s==="SUBSCRIBED"){chanOk=true;retry=0;setSync(true,"in diretta")}else if(s==="CHANNEL_ERROR"||s==="TIMED_OUT"||s==="CLOSED"){chanOk=false;reconnect("diretta interrotta, riprovo da solo")}});
 }
 
 // ---------- regia ----------
@@ -1042,8 +1085,33 @@ function adminRender(){
     const nm=document.createElement("span");nm.className="nm";nm.textContent=x.p.nome;const sm=document.createElement("small");
     sm.textContent=x.s.conf+(x.s.conf===1?" indovinato":" indovinati")+" su "+x.scelti+(x.scelti===1?" pronostico":" pronostici");nm.append(sm);
     const pt=document.createElement("span");pt.className="pt";pt.textContent=x.pt;
-    li.append(a,av,nm,pt);rk.append(li)});
+    const mb=document.createElement("button");mb.type="button";mb.className="more";mb.textContent="⋯";mb.setAttribute("aria-label","Gestisci "+x.p.nome);mb.setAttribute("aria-expanded",openP===x.p.id);
+    mb.addEventListener("click",()=>{openP=openP===x.p.id?null:x.p.id;kickSure=false;adminRender()});
+    li.append(a,av,nm,pt,mb);
+    if(openP===x.p.id)li.append(azioni(x.p));
+    rk.append(li)});
+  const ew=$("ad-escw"),el=$("ad-esc");ew.hidden=!esclusi.length;el.textContent="";
+  esclusi.forEach(e=>{const li=document.createElement("li");const t=document.createElement("span");t.textContent=e.nome||"Giocatore";
+    const b=document.createElement("button");b.type="button";b.textContent="Riammetti";b.addEventListener("click",()=>riammetti(e));li.append(t,b);el.append(li)});
 }
+let openP=null,kickSure=false;
+function azioni(p){const box=document.createElement("div");box.className="act";
+  const rw=document.createElement("div");rw.className="rw";const inp=document.createElement("input");inp.value=p.nome;inp.maxLength=24;inp.setAttribute("aria-label","Nuovo nome");
+  const sv=document.createElement("button");sv.type="button";sv.className="sv";sv.textContent="Rinomina";
+  sv.addEventListener("click",async()=>{const n=inp.value.trim();if(!n||n===p.nome)return;const {error}=await sb.from("giocatori").update({nome:n}).eq("id",p.id);
+    if(error){toast("Non rinominato: "+error.message);return}toast("Ora si chiama "+n);openP=null;loadPlayers()});
+  rw.append(inp,sv);
+  const k=document.createElement("button");k.type="button";k.className="kick"+(kickSure?" sure":"");
+  k.textContent=kickSure?"Tocca di nuovo per togliere "+p.nome:"Togli dalla serata";
+  k.addEventListener("click",async()=>{if(!kickSure){kickSure=true;adminRender();return}kickSure=false;openP=null;await togli(p)});
+  const sm=document.createElement("small");sm.textContent=p.id===(user&&user.id)?"Sei tu: puoi rinominarti, ma non toglierti.":"Toglie la cartella e i punti. Non potrà rientrare finché non lo riammetti.";
+  box.append(rw);if(p.id!==(user&&user.id))box.append(k);box.append(sm);return box}
+async function togli(p){
+  const e1=(await sb.from("esclusi").insert({user_id:p.id,nome:p.nome})).error;
+  const e2=(await sb.from("giocatori").delete().eq("id",p.id)).error;
+  if(e1||e2){toast("Non riuscito: "+(e1||e2).message)}else toast(p.nome+" è fuori dalla serata");
+  loadEsclusi();loadPlayers()}
+async function riammetti(e){const {error}=await sb.from("esclusi").delete().eq("user_id",e.user_id);if(error){toast("Non riuscito: "+error.message);return}toast((e.nome||"Il giocatore")+" può rientrare");loadEsclusi()}
 $("ad-out").addEventListener("click",()=>{location.hash=""});
 $("ad-scelte").addEventListener("click",async()=>{if(!regia)return;const nv=!aperte;aperte=nv;adminRender();render();
   const {error}=await sb.from("serata").update({scelte_aperte:nv,aggiornato_at:new Date().toISOString()}).eq("id",1);
