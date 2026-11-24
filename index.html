@@ -130,6 +130,8 @@ button{font:inherit;color:inherit;cursor:pointer}
   box-shadow:0 4px 0 #0000005A;transition:transform .08s,box-shadow .08s,background .15s;overflow:hidden;hyphens:auto;-webkit-hyphens:auto}
 .cell span{position:relative;min-width:0;overflow-wrap:break-word}
 .cell .n{position:absolute;top:6px;left:7px;font-family:var(--px);font-size:9px;color:var(--m)}
+.cell .n.p2{color:#C9B5FF}.cell .n.p3{color:var(--l)}
+.cell.on .n.p2,.cell.on .n.p3{color:#150F22B3}
 .cell:active{transform:translateY(4px);box-shadow:0 0 0 #0000}
 .cell.live{box-shadow:0 4px 0 #0000005A,inset 0 0 0 2px var(--v)}
 .cell.live::before{content:"";position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--v);box-shadow:0 0 10px var(--v)}
@@ -246,14 +248,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;background:var(--s2);color:var(--c);border-radius:12px;padding:10px 14px;font-size:14px;max-width:calc(100vw - 32px);box-shadow:0 8px 30px #0008}
 /* cartella uguale per tutti: segnato in attesa / confermato */
 .cell.wait{box-shadow:0 4px 0 #0000005A,inset 0 0 0 2px var(--l)}
-.cell.wait::after{content:"pronostico";position:absolute;top:6px;right:6px;font-family:var(--px);font-size:8px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--l)}
+.cell.wait::after{content:"";position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--l)}
 .legend i.lg-wait{background:none;box-shadow:inset 0 0 0 2px var(--l);border-radius:2px;width:10px;height:10px}
 .legend i.lg-on{background:var(--l);box-shadow:none;border-radius:2px;width:10px;height:10px}
 .rank{margin:-8px 0 0;font-family:var(--px);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--m)}
 .rank b{color:var(--c)}
 .howto{margin:0;font-size:14px;line-height:1.4;color:var(--m)}.howto b{color:var(--c)}
 .cell.miss{opacity:.45;cursor:default}
-.cell.miss::before{content:"successo";position:absolute;top:6px;right:6px;font-family:var(--px);font-size:8px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--c);width:auto;height:auto;background:none;box-shadow:none;border-radius:0}
+.cell.miss::before{content:none}
 .cell.lock{cursor:default}
 .legend i.lg-miss{background:var(--s);box-shadow:none;border-radius:2px;width:10px;height:10px;opacity:.6}
 .win-layer.hit .big{font-size:clamp(52px,16vw,150px)}
@@ -354,9 +356,9 @@ button{font:inherit;color:inherit;cursor:pointer}
   </div>
   <div class="xp"><div class="xpb"><i id="xpi"></i></div><span id="xpt">0/16</span></div>
   <p class="rank" id="rank">&nbsp;</p>
-  <p class="howto" id="howto">Scegli fino a <b>8 momenti</b> che secondo te succederanno stasera. Ogni momento indovinato vale 1 punto. Quando un momento succede non si può più cambiare.</p>
+  <p class="howto" id="howto"></p>
   <div class="card" id="card" role="grid" aria-label="Cartella del bingo"></div>
-  <div class="legend"><span><i class="lg-on"></i>indovinato, 1 punto</span><span><i class="lg-wait"></i>tuo pronostico</span><span><i class="lg-miss"></i>successo, non l'avevi scelto</span></div>
+  <div class="legend"><span><i class="lg-on"></i>indovinato</span><span><i class="lg-wait"></i>tuo pronostico</span><span><i class="lg-miss"></i>successo, non l'avevi scelto</span></div>
   <div class="foot">
     <span class="sync" id="sync">collegamento…</span>
     <div class="row"><button class="ghost" id="edit-av" type="button">Modifica personaggio</button><button class="ghost" id="to-admin" type="button" hidden>Pannello admin</button><button class="ghost" id="logout" type="button">Esci</button></div>
@@ -402,7 +404,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     </section>
     <div class="adm-grid" id="ad-body">
       <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Tocca un momento quando succede sul palco: da quel momento nessuno può più sceglierlo, e chi l'aveva scelto prende 1 punto. Se sbagli, toccalo di nuovo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
-      <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi indovina più momenti: 1 punto per ogni pronostico che confermi. Ognuno può sceglierne al massimo 8.</p><ol class="adm-rank" id="ad-rank"></ol></section>
+      <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi fa più punti con i pronostici confermati. I momenti valgono 1, 2 o 3 punti: i più rari valgono di più. Ognuno può sceglierne al massimo 8.</p><ol class="adm-rank" id="ad-rank"></ol></section>
     </div>
     <div class="scr-foot"><button id="ad-out" type="button">Vai alla mia cartella</button><button id="ad-reset" type="button">Azzera la serata</button></div>
     <div class="confirm" id="ad-conf" hidden><p>Azzerare la serata? Tolgo le conferme dei momenti e tutti i segni dei giocatori. I giocatori e i loro personaggi restano.</p><div class="row"><button class="btn" id="ad-yes" type="button">Sì, azzera</button><button class="btn alt" id="ad-no2" type="button">No</button></div></div>
@@ -437,24 +439,26 @@ button{font:inherit;color:inherit;cursor:pointer}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function(){
+// 16 momenti uguali per tutti, con i punti: 1 probabile, 2 medio, 3 raro
 const MOMENTI=[
- "Annuncio di un gioco nuovo a sorpresa",
- "La musica interrompe un discorso",
- "Un gioco indie vince un premio",
- "Un trailer finisce con «2027»",
- "Annunciano un remake",
- "Qualcuno ringrazia la mamma",
- "Gioco disponibile da stasera",
- "Star del cinema sul palco",
- "L'orchestra suona un tema famoso",
- "Trailer tutto in CGI, zero gameplay",
- "Torna una saga dimenticata",
- "Il favorito della sala non vince",
- "Uno sviluppatore si commuove",
- "Videomessaggio di un assente",
- "Countdown gigante sullo schermo",
- "Qualcuno sbaglia un nome sul palco"
+ "Geoff dice «World Premiere»",
+ "Kojima compare, sul palco o in video",
+ "Annunciano Half-Life 3",
+ "Un gioco esce stasera, a sorpresa",
+ "Il flautista sul palco",
+ "Miss Piggy sul palco",
+ "Qualcuno sale sul palco senza invito",
+ "Un nome o un titolo pronunciato male",
+ "La musica o il «wrap it up» tagliano un discorso",
+ "GTA 6 vince almeno un premio",
+ "Annunciano un remake o un remaster",
+ "Una parolaccia in diretta",
+ "Qualcuno si commuove sul palco, Geoff compreso",
+ "L'orchestra suona i temi dei candidati al GOTY",
+ "Torna una saga ferma da più di 10 anni",
+ "Ocarina of Time vince il Game of the Year"
 ];
+const PUNTI=[1,2,3,1,2,1,3,2,1,2,1,3,2,1,2,3];
 const DEBUG=!!window.SQ_DEBUG;
 // ---------- personaggio pixel 16x16 ----------
 const PAL={
@@ -583,10 +587,10 @@ function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout
 function show(id){["login","naming","game"].forEach(x=>$(x).hidden=x!==id)}
 function done(on){return LINES.filter(l=>l.every(i=>on[i]))}
 // un segno vale solo se il momento è stato confermato dall'admin
-function stato(p){const ok=CARTELLA.map(i=>!!(p.segni&&p.segni[i])&&live.has(i));return {ok,conf:ok.filter(Boolean).length,ls:done(ok).length,piena:ok.every(Boolean)}}
+function stato(p){const ok=CARTELLA.map(i=>!!(p.segni&&p.segni[i])&&live.has(i));return {ok,conf:ok.filter(Boolean).length,pts:ok.reduce((a,v,i)=>a+(v?PUNTI[i]:0),0),ls:done(ok).length,piena:ok.every(Boolean)}}
 function classifica(list){
-  return list.map(p=>{const s=stato(p);return {p,s,pt:s.conf,scelti:(p.segni||[]).filter(Boolean).length}})
-   .sort((a,b)=>b.pt-a.pt||String(a.p.nome).localeCompare(String(b.p.nome)))}
+  return list.map(p=>{const s=stato(p);return {p,s,pt:s.pts,scelti:(p.segni||[]).filter(Boolean).length}})
+   .sort((a,b)=>b.pt-a.pt||b.s.conf-a.s.conf||String(a.p.nome).localeCompare(String(b.p.nome)))}
 const sameCard=c=>Array.isArray(c)&&c.length===16&&c.every((v,i)=>v===i);
 function shuffle(n){const a=[...Array(n).keys()];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function setSync(ok,t){const e=$("sync");e.className="sync "+(ok?"ok":"ko");e.textContent=t}
@@ -679,8 +683,8 @@ function render(){
     const b=document.createElement("button");b.type="button";
     b.className="cell"+(seg&&cf?" on lock":"")+(seg&&!cf?" wait":"")+(!seg&&cf?" miss":"");
     b.setAttribute("aria-pressed",seg);
-    b.setAttribute("aria-label",MOMENTI[m]+(seg&&cf?", indovinato":seg?", tuo pronostico":cf?", già successo":""));
-    const n=document.createElement("span");n.className="n";n.textContent=String(i+1).padStart(2,"0");
+    b.setAttribute("aria-label",MOMENTI[m]+", "+PUNTI[m]+(PUNTI[m]===1?" punto":" punti")+(seg&&cf?", indovinato":seg?", tuo pronostico":cf?", già successo":""));
+    const n=document.createElement("span");n.className="n p"+PUNTI[m];n.textContent="+"+PUNTI[m];
     const t=document.createElement("span");t.textContent=MOMENTI[m];
     b.append(n,t);b.addEventListener("click",()=>tap(i));card.append(b);
   });
@@ -688,7 +692,7 @@ function render(){
   $("pt").textContent=mine.pt;$("ptt").textContent=mine.pt===1?"punto":"punti";
   $("xpi").style.width=(mine.scelti/MAXP*100)+"%";$("xpt").textContent=mine.scelti+"/"+MAXP+" scelti";
   const h=$("howto");h.classList.toggle("closed",!aperte);
-  h.innerHTML=aperte?"Scegli fino a <b>"+MAXP+" momenti</b> che secondo te succederanno stasera. Ogni momento indovinato vale 1 punto. Quando un momento succede non si può più cambiare.":"<b>Scelte chiuse.</b> I tuoi pronostici sono questi: ora guarda lo show e incrocia le dita.";
+  h.innerHTML=aperte?"Scegli fino a <b>"+MAXP+" momenti</b> che secondo te succederanno stasera. Ognuno vale 1, 2 o 3 punti: i più rari valgono di più. Quando un momento succede non si può più cambiare.":"<b>Scelte chiuse.</b> I tuoi pronostici sono questi: ora guarda lo show e incrocia le dita.";
   $("rank").innerHTML="<b>"+(pos+1)+"°</b> su "+all.length+" · "+st.conf+(st.conf===1?" indovinato":" indovinati");
 }
 // linee valide (solo momenti confermati): aggiorna me, festeggia se ne arriva una nuova
@@ -712,7 +716,7 @@ async function tap(i){
 }
 function hit(i){
   const w=$("win");w.classList.add("hit");$("win-jump").innerHTML=avatarSVG(me.avatar,"av sl")+'<div class="shadow"></div>';$("wn").textContent=MOMENTI[i];
-  $("wt").textContent="+1 punto";$("bg").textContent="Indovinato!";$("prove").textContent="";$("win-sub").textContent="Era un tuo pronostico. Ora hai "+stato(me).conf+(stato(me).conf===1?" punto.":" punti.");
+  $("wt").textContent="+"+PUNTI[i]+(PUNTI[i]===1?" punto":" punti");$("bg").textContent="Indovinato!";$("prove").textContent="";$("win-sub").textContent="Era un tuo pronostico. Ora hai "+stato(me).pts+(stato(me).pts===1?" punto.":" punti.");
   confetti($("cf"));w.hidden=false;w.classList.remove("go");void w.offsetWidth;w.classList.add("go");
   try{navigator.vibrate&&navigator.vibrate([60,40,120])}catch(e){}
 }
@@ -795,7 +799,7 @@ function adminRender(){
   $("ad-p").textContent=players.length;$("ad-m").textContent=live.size+"/"+N;$("ad-l").textContent=cl.reduce((a,x)=>a+x.scelti,0);
   const mo=$("ad-mom");mo.textContent="";
   MOMENTI.forEach((m,i)=>{const li=document.createElement("li");const b=document.createElement("button");b.type="button";const on=live.has(i);b.setAttribute("aria-pressed",on);
-    const n=document.createElement("span");n.className="n";n.textContent=String(i+1).padStart(2,"0");
+    const n=document.createElement("span");n.className="n";n.textContent="+"+PUNTI[i];
     const t=document.createElement("span");t.textContent=m;
     const k=document.createElement("span");k.className="k";const c=players.filter(p=>p.segni&&p.segni[i]).length;
     const kb=document.createElement("b");kb.textContent=(on?"✓ ":"")+c+"/"+players.length;k.append(kb,on?"l'hanno indovinato":"l'hanno scelto");
