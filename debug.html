@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-ADPBqn6lNk03S9fCrfYAn5Tn6Ei1UatW+AudyGlFrhg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://vqgkzvhlvmxihjxpsxan.supabase.co wss://vqgkzvhlvmxihjxpsxan.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-HXsa3xP+bo5EsiBcrMiW103HIb3neD5ptkyonU2Apq8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://vqgkzvhlvmxihjxpsxan.supabase.co wss://vqgkzvhlvmxihjxpsxan.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -685,6 +685,24 @@ body::after{display:none}
 .reg .cta{box-shadow:none!important}
 .tdata.sm{border-radius:0}
 .fig .bol{border-radius:0}
+
+/* ---------- v28: account con aria, extra come immagini ---------- */
+#tab-acc{gap:14px}
+#tab-acc .acc-hero{gap:8px;padding:8px 0 10px}
+.acc-hero .av{width:112px;height:112px;border-radius:24px;padding:12%;box-shadow:none!important;animation:none}
+.acc-hero h2{font-size:34px;line-height:1.05;letter-spacing:-.04em;margin:6px 0 0}
+.acc-hero h2 .hl{padding:0 3px}
+.acc-stats{gap:10px}
+.acc-stats div{padding:16px 6px 14px;border-radius:16px}
+.acc-stats b{font-size:30px;color:var(--c);margin-bottom:6px}
+.acc-list{gap:10px;margin-top:4px}
+.acc-list button{border-radius:16px;padding:18px}
+.acc-foot{margin-top:6px}
+.strip button small{display:none}
+.editor .strip button{position:relative}
+.reg .err{margin-top:10px}
+.reg .cta:disabled{opacity:.6}
+.nm-f input::placeholder{color:#BDBDBD;font-weight:500;font-size:18px;letter-spacing:0}
 </style>
 </head>
 <body>
@@ -728,7 +746,7 @@ body::after{display:none}
     <div class="fig"><span class="bol">PLAYER 1</span><span class="rg a"></span><span class="rg b"></span><span class="rg c"></span>
       <div class="preview" id="preview"></div>
       <button class="dice" id="dice" type="button" aria-label="Mostriciattolo a caso"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9h.01M15 9h.01M12 12h.01M9 15h.01M15 15h.01" stroke-width="2.6"/></svg></button></div>
-    <label class="nm-f"><span>Nome</span><input id="nome" name="nome" autocomplete="nickname" maxlength="24" required placeholder="Il tuo nome"></label>
+    <label class="nm-f"><span>Nome</span><input id="nome" name="nome" autocomplete="nickname" maxlength="24" placeholder="Il tuo nome"></label>
     <div class="editor" id="editor"></div>
     <p class="nota">* Puoi cambiarlo quando vuoi dall'Account.</p>
     <button class="cta" type="submit" id="reg-go"><span id="reg-go-t">Entra in partita</span><span class="arr" aria-hidden="true">&rarr;</span></button>
@@ -916,10 +934,12 @@ function mosGrid(a){
     for(let x=4;x<=11;x++)set(x,t-1,ink);set(3,t,ink);set(12,t,ink);
     for(let y=t+1;y<ey;y++){set(2,y,ink);set(13,y,ink)}
     for(let y=ey;y<=ey+2;y++){set(1,y,ink);set(2,y,ink);set(13,y,ink);set(14,y,ink)}}
-  if(a.x===2){ // cappellino con visiera
-    const c=a.c===4?MOS.colori[0][1]:MOS.colori[4][1];
-    for(let x=5;x<=10;x++){set(x,t-3,c);set(x,t-2,c);set(x,t-1,c)}set(5,t-3,null);set(10,t-3,null);
-    for(let x=9;x<=13;x++)set(x,t-1,ink)}
+  if(a.x===2){ // cappellino con visiera: poggia sulla testa, senza buchi
+    const c=a.c===4?MOS.colori[0][1]:MOS.colori[4][1],body=new Set([col,eye]);let low=t-1;
+    for(let x=4;x<=11;x++){const y0=(x===4||x===11)?t-2:t-3;let y=y0;
+      while(y<N&&!(G[y]&&body.has(G[y][x]))&&y<=t+1){set(x,y,c);y++}low=Math.max(low,y-1)}
+    for(let x=4;x<=11;x++)set(x,t-3,x===4||x===11?null:c);
+    for(let x=11;x<=14;x++)set(x,Math.min(low,t),ink);set(5,t-2,"#FFFFFF66")}
   if(a.x===3&&eyes.length){ // occhiali da sole
     const ys=Math.min(...eyes.map(e=>e[1]));const xs=[...new Set(eyes.map(e=>e[0]))].sort((p,q)=>p-q);
     const groups=xs.length>2?[[xs[0],xs[xs.length-1]]]:xs.map(x=>[x,x]);
@@ -978,7 +998,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=27; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=28; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1058,26 +1078,35 @@ function buildEditor(){
   lab("Colore");const sw=document.createElement("div");sw.className="sw";sw.setAttribute("role","group");sw.setAttribute("aria-label","Colore");
   MOS.colori.forEach((c,k)=>{const b=document.createElement("button");b.type="button";b.style.background=c[1];b.setAttribute("aria-label",c[0]);b.setAttribute("aria-pressed",draft.c===k);
     b.addEventListener("click",()=>{draft.c=k;buildEditor()});sw.append(b)});ed.append(sw);
-  lab("Extra");const ch=document.createElement("div");ch.className="chips";ch.setAttribute("role","group");ch.setAttribute("aria-label","Extra");
-  MOS.extra.forEach((e,k)=>{const b=document.createElement("button");b.type="button";b.textContent=e;b.setAttribute("aria-pressed",draft.x===k);
+  lab("Extra");const ch=document.createElement("div");ch.className="strip";ch.setAttribute("role","group");ch.setAttribute("aria-label","Extra");
+  MOS.extra.forEach((e,k)=>{const b=document.createElement("button");b.type="button";b.setAttribute("aria-label",e);b.setAttribute("aria-pressed",draft.x===k);
+    b.innerHTML=avatarSVG({f:draft.f,c:draft.c,x:k})+'<small>'+e+'</small>';
     b.addEventListener("click",()=>{draft.x=k;buildEditor()});ch.append(b)});ed.append(ch);
   const sel=st.children[draft.f];if(sel&&sel.scrollIntoView)try{sel.scrollIntoView({block:"nearest",inline:"nearest"})}catch(e){}
   paintPreview();
 }
 $("dice").addEventListener("click",()=>{draft=avRandom();buildEditor()});
 $("edit-av").addEventListener("click",()=>{if(me)openEditor(me.nome,me.avatar,true)});
+function regErr(t){const e=$("name-err");e.hidden=false;e.textContent=t;toast(t)}
+let regBusy=false;
 $("f").addEventListener("submit",async e=>{
-  e.preventDefault();const n=$("nome").value.trim();if(!n)return;
-  if(editing&&me){const {error}=await sb.from("giocatori").update({nome:n,avatar:draft,aggiornato_at:new Date().toISOString()}).eq("id",user.id);
-    if(error){$("name-err").hidden=false;$("name-err").textContent="Non riesco a salvare: "+error.message;return}
-    me.nome=n;me.avatar=Object.assign({},draft);show("game");render();return}
-  await deal(n,draft);
+  e.preventDefault();if(regBusy)return;const n=$("nome").value.trim();
+  if(!n){regErr("Scrivi il tuo nome per entrare.");$("nome").focus();return}
+  regBusy=true;$("reg-go").disabled=true;
+  try{await salvaReg(n)}catch(x){regErr("Qualcosa non ha funzionato: "+((x&&x.message)||x)+". Riprova.")}
+  finally{regBusy=false;$("reg-go").disabled=false}
 });
+async function salvaReg(n){
+  if(editing&&me){const {error}=await sb.from("giocatori").update({nome:n,avatar:draft,aggiornato_at:new Date().toISOString()}).eq("id",user.id);
+    if(error){regErr("Non riesco a salvare: "+error.message);return}
+    me.nome=n;me.avatar=Object.assign({},draft);show("game");setTab(tab);return}
+  await deal(n,draft);
+}
 async function deal(name,avatar){
   const row={id:user.id,nome:name,avatar:avFix(avatar||(me&&me.avatar)||avRandom()),cartella:CARTELLA.slice(),segni:Array(N).fill(false),aggiornato_at:new Date().toISOString()};
   const {data,error}=await sb.from("giocatori").upsert(row).select().single();
-  if(error){$("name-err").hidden=false;$("name-err").textContent="Non riesco a salvare la cartella: "+error.message;return}
-  me=data;show("game");render();
+  if(error){regErr("Non riesco a salvare la cartella: "+error.message);return}
+  me=data;show("game");setTab("bingo");
 }
 function render(){
   if(!me)return;
@@ -1120,7 +1149,7 @@ function renderRank(cl,pos){
     const b=document.createElement("b");b.textContent=mine?"✓ tuo":"";li.append(a,t,b);mo.append(li)})
 }
 function renderAcc(mine,pos){
-  $("acc-av").innerHTML=avatarSVG(me.avatar);$("acc-nm").textContent=me.nome;
+  $("acc-av").innerHTML=avatarSVG(me.avatar);$("acc-nm").innerHTML='<span class="hl"></span>';$("acc-nm").firstChild.textContent=me.nome;
   $("acc-mail").textContent=(user&&user.email)?user.email:"";
   $("acc-pos").textContent=(pos+1)+"°";$("acc-pt").textContent=mine.pt;$("acc-sc").textContent=mine.scelti+"/"+MAXP;
 }
