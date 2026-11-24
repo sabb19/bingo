@@ -6,7 +6,7 @@
 <title>Bingo dei Game Awards</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;700&family=Silkscreen&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
 body{margin:0}
@@ -26,7 +26,7 @@ body{margin:0}
   --r:#FF5A6E;
   --display:"Big Shoulders Display",Impact,"Arial Narrow",sans-serif;
   --body:"Figtree",system-ui,sans-serif;
-  --px:"Silkscreen",ui-monospace,monospace;
+  --px:"IBM Plex Mono",ui-monospace,monospace;
   --boing:cubic-bezier(.3,1.7,.5,1);
   color-scheme:dark;
 }
@@ -38,7 +38,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--l);outline-offset:3px}
 .sl{display:block;width:100%;height:auto}
 .q{display:block}
-.tag{font-family:var(--px);font-size:11px;background:var(--v);color:var(--n);padding:4px 10px;border-radius:99px;text-transform:uppercase;white-space:nowrap}
+.tag{font-family:var(--px);font-weight:600;letter-spacing:.06em;font-size:11px;background:var(--v);color:var(--n);padding:4px 10px;border-radius:99px;text-transform:uppercase;white-space:nowrap}
 .btn{border:0;border-radius:12px;padding:12px 16px;font-weight:700;font-size:16px;background:var(--c);color:var(--n)}
 .btn.alt{background:none;color:var(--c);box-shadow:inset 0 0 0 2px #F3F1F840}
 .row{display:flex;gap:10px;flex-wrap:wrap}
@@ -53,33 +53,36 @@ button{font:inherit;color:inherit;cursor:pointer}
 
 /* intro */
 .splash{background:var(--n);cursor:pointer;z-index:26}
-.sp-top{display:flex;align-items:center;gap:10px;font-family:var(--px);font-size:11px;text-transform:uppercase;color:var(--m)}
+.sp-top{display:flex;align-items:center;gap:10px;font-family:var(--px);font-weight:600;letter-spacing:.08em;font-size:11px;text-transform:uppercase;color:var(--m)}
 .sp-top .q{width:34px;height:34px}
 .splash .big-ttl{font-size:clamp(72px,24vw,118px)}
 .drop .w{display:block;white-space:nowrap}
 .drop .ch{display:inline-block}
 .sp-stage{position:relative;height:104px}
-.sp-walk{position:absolute;left:0;bottom:12px;width:64px}
+.sp-walk{position:absolute;left:0;bottom:8px;width:58px}
+.spin{width:100%}
 .sp-floor{position:absolute;left:0;right:0;bottom:0;height:4px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--v) 20%,var(--v) 80%,transparent)}
 .sp-light{position:absolute;left:150px;bottom:4px;width:120px;height:110px;background:radial-gradient(50% 100% at 50% 100%,#8C5CFF66,transparent 70%);opacity:0}
 .sp-tw{position:absolute;width:16px}.sp-tw svg{display:block;width:100%;height:auto}
 .sp-tw.t1{left:140px;top:0}.sp-tw.t2{right:28px;top:26px;width:11px}
 .sp-meta{margin:0;display:flex;gap:12px;align-items:center;color:var(--m);font-size:14px}
-.press{align-self:flex-start;border:0;background:none;padding:6px 0;font-family:var(--px);font-size:20px;color:var(--l);text-transform:uppercase}
+.press{align-self:flex-start;border:0;background:none;padding:6px 0;font-family:var(--px);font-weight:600;letter-spacing:.12em;font-size:18px;color:var(--l);text-transform:uppercase}
 .splash.out{animation:spout .35s steps(4) both}
 @keyframes spout{to{opacity:0;visibility:hidden}}
 @media (prefers-reduced-motion:no-preference){
   .splash .drop .ch{animation:drp .6s var(--boing) both;animation-delay:calc(var(--i) * 34ms + .4s)}
   .sp-top .q{animation:qin .7s var(--boing) .1s both}
-  .sp-walk{animation:wlk 2.2s steps(1) 1.2s both}
+  .sp-walk{animation:roll 1.9s cubic-bezier(.2,.7,.3,1) 1.2s both}
+  .spin{animation:spin 1.9s cubic-bezier(.2,.7,.3,1) 1.2s both}
   .sp-light{animation:lit .3s steps(3) 3.3s both}
   .sp-walk .sl{animation:hop .5s var(--boing) 3.5s 2 both}
-  .sp-tw{animation:twk 1.4s steps(3) 3.4s infinite both}.sp-tw.t2{animation-delay:4.1s}
   .press{animation:ap .01s 3.5s both,bl 1s steps(2) 3.5s infinite}
 }
 @media (prefers-reduced-motion:reduce){.sp-walk{transform:translateX(178px)}.sp-light{opacity:1}}
 @keyframes qin{from{transform:translateY(-80px);opacity:0}}
 @keyframes drp{0%{transform:translateY(-70vh);opacity:0}40%{opacity:1}100%{transform:none}}
+@keyframes roll{0%{transform:translateX(-90px);opacity:0}8%{opacity:1}100%{transform:translateX(178px)}}
+@keyframes spin{from{transform:rotate(-540deg)}to{transform:none}}
 @keyframes wlk{0%{transform:translateX(-80px);opacity:0}1%{opacity:1}10%{transform:translate(-40px,-6px)}20%{transform:translateX(0)}30%{transform:translate(30px,-6px)}40%{transform:translateX(60px)}50%{transform:translate(90px,-6px)}60%{transform:translateX(120px)}70%{transform:translate(150px,-6px)}80%,100%{transform:translateX(178px)}}
 @keyframes lit{to{opacity:1}}
 @keyframes hop{50%{transform:translateY(-22px)}}
@@ -205,6 +208,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .bigwin .shadow{width:70%}
 @media (max-width:800px){.screen{grid-template-columns:1fr}.wall{grid-template-columns:repeat(3,minmax(0,1fr))}.mo{min-height:64px;border-radius:10px;padding:10px}.join{border-radius:14px;padding:14px}}
 
+.who small,.lines,.xp,.sync,.stats,.albo h3,.albo li i,.albo li small,.field label,.cell .n,.dinfo,.win-layer .tagk{letter-spacing:.06em;font-weight:600}
 /* pannello debug (solo debug.html) */
 .dpanel{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .dtog{border:0;border-radius:99px;background:var(--r);color:var(--n);font-family:var(--px);font-size:12px;padding:8px 12px;text-transform:uppercase;box-shadow:0 3px 0 #0006}
@@ -224,8 +228,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <h1 class="big-ttl drop" aria-label="Il Bingo dei Game Awards"><span class="w"><span class=""><span class="ch" style="--i:1">I</span><span class="ch" style="--i:2">l</span></span> <span class="hl"><span class="ch" style="--i:3">B</span><span class="ch" style="--i:4">i</span><span class="ch" style="--i:5">n</span><span class="ch" style="--i:6">g</span><span class="ch" style="--i:7">o</span></span></span><span class="w"><span class=""><span class="ch" style="--i:8">d</span><span class="ch" style="--i:9">e</span><span class="ch" style="--i:10">i</span></span> <span class=""><span class="ch" style="--i:11">G</span><span class="ch" style="--i:12">a</span><span class="ch" style="--i:13">m</span><span class="ch" style="--i:14">e</span></span></span><span class="w"><span class=""><span class="ch" style="--i:15">A</span><span class="ch" style="--i:16">w</span><span class="ch" style="--i:17">a</span><span class="ch" style="--i:18">r</span><span class="ch" style="--i:19">d</span><span class="ch" style="--i:20">s</span></span></span></h1>
     <div class="sp-stage" aria-hidden="true">
       <span class="sp-light"></span>
-      <span class="sp-tw t1"><svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="0" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="4" width="1.03" height="1.03" fill="#BBEB4B"/></svg></span><span class="sp-tw t2"><svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="0" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="4" width="1.03" height="1.03" fill="#BBEB4B"/></svg></span>
-      <div class="sp-walk"><svg class="sl" viewBox="0 0 8 7" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="0" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="0" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="5" y="0" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="5" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="1" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="0" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="5" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="7" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="0" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="5" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="7" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="0" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="5" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="7" y="4" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="0" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="4" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="5" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="7" y="5" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="1" y="6" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="2" y="6" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="5" y="6" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="6" width="1.03" height="1.03" fill="#BBEB4B"/></svg></div>
+      <div class="sp-walk"><div class="spin"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#BBEB4B"/><circle cx="50" cy="50" r="29" fill="#F3F1F8"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">B</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".35" transform="rotate(-30 32 24)"/></svg></div></div>
       <div class="sp-floor"></div>
     </div>
     <p class="sp-meta"><span class="tag">Live</span><span>Segna i momenti dello show dal telefono</span></p>
@@ -281,7 +284,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <div class="win-layer" id="win" hidden role="dialog" aria-modal="true" aria-labelledby="bg">
   <div class="conf" id="cf"></div>
   <span class="tagk" id="wt">Linea 1</span>
-  <div class="jump"><svg class="sl" viewBox="0 0 8 7" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="6" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="6" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="6" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="6" width="1.03" height="1.03" fill="#150F22"/></svg><div class="shadow"></div></div>
+  <div class="jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
   <p class="big" id="bg">Bingo!</p>
   <p class="nm" id="wn"></p>
   <p class="sub">Sei già sullo schermo grande. La tua linea:</p>
@@ -305,7 +308,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   </aside>
 </section>
 <div class="bigwin" id="bigwin" hidden>
-  <div class="jump"><svg class="sl" viewBox="0 0 8 7" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="0" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="1" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="2" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="2" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="3" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="3" width="1.03" height="1.03" fill="#BBEB4B"/><rect x="6" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="3" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="4" width="1.03" height="1.03" fill="#150F22"/><rect x="0" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="3" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="4" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="7" y="5" width="1.03" height="1.03" fill="#150F22"/><rect x="1" y="6" width="1.03" height="1.03" fill="#150F22"/><rect x="2" y="6" width="1.03" height="1.03" fill="#150F22"/><rect x="5" y="6" width="1.03" height="1.03" fill="#150F22"/><rect x="6" y="6" width="1.03" height="1.03" fill="#150F22"/></svg><div class="shadow"></div></div>
+  <div class="jump"><svg class="sl" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#150F22"/><circle cx="50" cy="50" r="29" fill="#BBEB4B"/><text x="50" y="62" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="36" fill="#150F22">!</text><ellipse cx="32" cy="24" rx="13" ry="7" fill="#FFFFFF" opacity=".2" transform="rotate(-30 32 24)"/></svg><div class="shadow"></div></div>
   <p class="big" id="bw-t">Bingo!</p>
   <p class="nm" id="bw-n"></p>
 </div>
