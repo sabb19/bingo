@@ -258,6 +258,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 .legend i.lg-miss{background:var(--s);box-shadow:none;border-radius:2px;width:10px;height:10px;opacity:.6}
 .win-layer.hit .big{font-size:clamp(52px,16vw,150px)}
 .win-layer.hit .tagk{margin-bottom:18px}
+.howto.closed{color:var(--c);background:var(--s2);border-radius:12px;padding:10px 12px}
+.adm-ges{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center}
+@media (max-width:560px){.adm-ges{grid-template-columns:1fr}}
+.adm-ges .st{display:flex;flex-direction:column;gap:6px}
+.adm-ges .st b{font-family:var(--display);font-weight:900;font-size:30px;line-height:.95;text-transform:uppercase}
+.pill{align-self:flex-start;font-family:var(--px);font-weight:600;letter-spacing:.06em;font-size:11px;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--l);color:var(--n)}
+.pill.off{background:var(--r)}
+.adm-ges .cta{min-width:220px}
+.cta.stop{background:var(--r);box-shadow:0 5px 0 #8A2533}
 /* pannello admin */
 .admin{position:fixed;inset:0;z-index:30;background:var(--n);overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .adm{position:relative;max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
@@ -387,6 +396,10 @@ button{font:inherit;color:inherit;cursor:pointer}
       <div class="stats"><span><b id="ad-p">0</b>giocatori</span><span class="lv"><b id="ad-m">0/16</b>confermati</span><span><b id="ad-l">0</b>pronostici</span></div>
     </header>
     <p class="adm-no" id="ad-no" hidden>Questa pagina è solo per chi organizza la serata.</p>
+    <section class="adm-box" id="ad-ges"><h3>Gestione serata</h3>
+      <div class="adm-ges"><div class="st"><span class="pill" id="ad-pill">Scelte aperte</span><b id="ad-st">Gli ospiti stanno scegliendo</b><p class="adm-hint" id="ad-sth"></p></div>
+      <button class="cta stop" type="button" id="ad-scelte"><span id="ad-scelte-t">Chiudi le scelte</span><span class="px">&#9632;</span></button></div>
+    </section>
     <div class="adm-grid" id="ad-body">
       <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Tocca un momento quando succede sul palco: da quel momento nessuno può più sceglierlo, e chi l'aveva scelto prende 1 punto. Se sbagli, toccalo di nuovo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
       <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi indovina più momenti: 1 punto per ogni pronostico che confermi. Ognuno può sceglierne al massimo 8.</p><ol class="adm-rank" id="ad-rank"></ol></section>
@@ -524,8 +537,9 @@ if(DEBUG){(function(){
   const K="sq-bingo-debug-db";
   let db;try{db=JSON.parse(localStorage.getItem(K)||"null")}catch(e){}
   if(!db)db={session:false,giocatori:[],momenti:[]};
+  if(!db.serata)db.serata=[{id:1,scelte_aperte:true}];
   const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}};
-  window.addEventListener("storage",e=>{if(e.key!==K)return;try{db=JSON.parse(e.newValue||"null")||{session:false,giocatori:[],momenti:[]}}catch(_){}subs.forEach(x=>x.fn())});
+  window.addEventListener("storage",e=>{if(e.key!==K)return;try{db=JSON.parse(e.newValue||"null")||{session:false,giocatori:[],momenti:[]}}catch(_){}if(!db.serata)db.serata=[{id:1,scelte_aperte:true}];subs.forEach(x=>x.fn())});
   const U={id:"debug-sabrina",email:"debug",user_metadata:{full_name:"Sabrina"}};
   const auths=[],subs=[];
   const emit=t=>setTimeout(()=>subs.forEach(s=>s.t===t&&s.fn()),120);
@@ -544,7 +558,7 @@ if(DEBUG){(function(){
     auth:{onAuthStateChange(fn){auths.push(fn)},getSession:async()=>({data:{session:db.session?{user:U}:null}}),
       signInWithOAuth:async()=>{db.session=true;save();auths.forEach(fn=>fn("SIGNED_IN",{user:U}));return {error:null}},
       signOut:async()=>{db.session=false;save();auths.forEach(fn=>fn("SIGNED_OUT",null));return {error:null}}},
-    rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.primo_bingo_at=null;g.linee=0;g.piena=false;g.segni=Array(16).fill(false)});save();emit("momenti");emit("giocatori");return {error:null}}return {data:null}},
+    rpc:async n=>{if(n==="sono_regia")return {data:true};if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.primo_bingo_at=null;g.linee=0;g.piena=false;g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
     from:q,
     channel(){const c={on(_e,o,fn){subs.push({t:o.table,fn});return c},subscribe(cb){setTimeout(()=>cb("SUBSCRIBED"),50);return c}};return c}
   };
@@ -604,6 +618,7 @@ async function afterAuth(){
   try{const {data}=await sb.rpc("sono_regia");regia=!!data}catch(e){regia=false}
   $("to-admin").hidden=!regia;
   subscribe();
+  await loadSerata();
   await loadMomenti();
   const {data,error}=await sb.from("giocatori").select("*").eq("id",user.id).maybeSingle();
   if(error){setSync(false,"errore di collegamento");toast("Errore: "+error.message)}
@@ -672,6 +687,8 @@ function render(){
   const all=players.filter(p=>p.id!==me.id).concat([me]);const cl=classifica(all);const pos=cl.findIndex(x=>x.p===me);const mine=cl[pos];
   $("pt").textContent=mine.pt;$("ptt").textContent=mine.pt===1?"punto":"punti";
   $("xpi").style.width=(mine.scelti/MAXP*100)+"%";$("xpt").textContent=mine.scelti+"/"+MAXP+" scelti";
+  const h=$("howto");h.classList.toggle("closed",!aperte);
+  h.innerHTML=aperte?"Scegli fino a <b>"+MAXP+" momenti</b> che secondo te succederanno stasera. Ogni momento indovinato vale 1 punto. Quando un momento succede non si può più cambiare.":"<b>Scelte chiuse.</b> I tuoi pronostici sono questi: ora guarda lo show e incrocia le dita.";
   $("rank").innerHTML="<b>"+(pos+1)+"°</b> su "+all.length+" · "+st.conf+(st.conf===1?" indovinato":" indovinati");
 }
 // linee valide (solo momenti confermati): aggiorna me, festeggia se ne arriva una nuova
@@ -687,6 +704,7 @@ let saving=Promise.resolve();
 function save(){const snap={segni:me.segni,linee:me.linee,piena:me.piena,primo_bingo_at:me.primo_bingo_at,aggiornato_at:new Date().toISOString()};
   saving=saving.then(async()=>{const {error}=await sb.from("giocatori").update(snap).eq("id",user.id);setSync(!error,error?"non salvato, riprovo al prossimo tocco":"salvato")})}
 async function tap(i){
+  if(!aperte&&!live.has(i)){toast("Le scelte sono chiuse: ora goditi lo show e guarda se indovini.");return}
   if(live.has(i)){toast(me.segni[i]?"Indovinato! Questo resta tuo.":"Questo momento è già successo: troppo tardi per sceglierlo.");return}
   if(!me.segni[i]&&me.segni.filter(Boolean).length>=MAXP){toast("Hai già scelto "+MAXP+" momenti: togline uno per cambiare.");return}
   me.segni=me.segni.slice();me.segni[i]=!me.segni[i];
@@ -711,7 +729,8 @@ $("close").addEventListener("click",()=>{$("win").hidden=true});
 $("to-admin").addEventListener("click",()=>{location.hash="admin"});
 
 // ---------- dati live ----------
-let synced=false;
+let synced=false,aperte=true;
+async function loadSerata(){const {data}=await sb.from("serata").select("*").eq("id",1).maybeSingle();aperte=data?data.scelte_aperte!==false:true;render();adminRender()}
 async function loadMomenti(){const prev=live;const {data}=await sb.from("momenti").select("id");live=new Set((data||[]).map(r=>r.id).filter(i=>i>=0&&i<N));
   if(me){if(sync(null,false))save();const nuovi=[...live].filter(i=>!prev.has(i)&&me.segni[i]);if(synced&&nuovi.length&&$("admin").hidden&&$("screen").hidden)hit(nuovi[nuovi.length-1])}synced=true;
   refreshLive()}
@@ -723,6 +742,7 @@ function subscribe(){
   sb.channel("bingo")
     .on("postgres_changes",{event:"*",schema:"public",table:"momenti"},()=>loadMomenti())
     .on("postgres_changes",{event:"*",schema:"public",table:"giocatori"},()=>loadPlayers())
+    .on("postgres_changes",{event:"*",schema:"public",table:"serata"},()=>loadSerata())
     .subscribe(s=>{if(s==="SUBSCRIBED")setSync(true,"in diretta");else if(s==="CHANNEL_ERROR"||s==="TIMED_OUT")setSync(false,"diretta interrotta, ricarica la pagina")});
 }
 
@@ -765,7 +785,12 @@ $("sc-out").addEventListener("click",()=>{location.hash=""});
 // ---------- pannello admin ----------
 function adminRender(){
   if($("admin").hidden)return;
-  $("ad-no").hidden=regia;$("ad-body").hidden=!regia;$("ad-reset").hidden=!regia;
+  $("ad-no").hidden=regia;$("ad-body").hidden=!regia;$("ad-reset").hidden=!regia;$("ad-ges").hidden=!regia;
+  const chi=players.filter(p=>(p.segni||[]).some(Boolean)).length;
+  $("ad-pill").textContent=aperte?"Scelte aperte":"Scelte chiuse";$("ad-pill").classList.toggle("off",!aperte);
+  $("ad-st").textContent=aperte?"Gli ospiti stanno scegliendo":"Pronostici bloccati";
+  $("ad-sth").textContent=chi+" su "+players.length+" hanno già scelto. "+(aperte?"Chiudi le scelte quando parte lo show: da lì nessuno può più cambiare i suoi pronostici.":"Puoi riaprirle se qualcuno è arrivato tardi.");
+  $("ad-scelte-t").textContent=aperte?"Chiudi le scelte":"Riapri le scelte";$("ad-scelte").className="cta"+(aperte?" stop":"");
   const cl=classifica(players);
   $("ad-p").textContent=players.length;$("ad-m").textContent=live.size+"/"+N;$("ad-l").textContent=cl.reduce((a,x)=>a+x.scelti,0);
   const mo=$("ad-mom");mo.textContent="";
@@ -786,10 +811,13 @@ function adminRender(){
     li.append(a,av,nm,pt);rk.append(li)});
 }
 $("ad-out").addEventListener("click",()=>{location.hash=""});
+$("ad-scelte").addEventListener("click",async()=>{if(!regia)return;const nv=!aperte;aperte=nv;adminRender();render();
+  const {error}=await sb.from("serata").update({scelte_aperte:nv,aggiornato_at:new Date().toISOString()}).eq("id",1);
+  if(error){toast("Non salvato: "+error.message);loadSerata()}else toast(nv?"Scelte riaperte":"Scelte chiuse: nessuno può più cambiare i pronostici")});
 $("ad-reset").addEventListener("click",()=>{$("ad-conf").hidden=false});
 $("ad-no2").addEventListener("click",()=>{$("ad-conf").hidden=true});
 $("ad-yes").addEventListener("click",async()=>{$("ad-conf").hidden=true;const {error}=await sb.rpc("azzera_serata");if(error){toast("Non azzerato: "+error.message);return}
-  if(me){me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null}shownBingo.clear();firstLoad=true;await loadMomenti();await loadPlayers();toast("Serata azzerata")});
+  if(me){me.segni=Array(N).fill(false);me.linee=0;me.piena=false;me.primo_bingo_at=null}shownBingo.clear();firstLoad=true;await loadSerata();await loadMomenti();await loadPlayers();toast("Serata azzerata")});
 let qrDone=false;
 function qr(){if(qrDone)return;const box=$("qr");const url=location.origin+location.pathname.replace(/debug\.html$/,"");
   if(typeof QRCode==="undefined"){box.innerHTML='<p class="qr-miss">QR non disponibile: condividi il link della pagina.</p>';return}
