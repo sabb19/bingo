@@ -1,0 +1,15 @@
+{
+  // Bingo Game Awards su Cloudflare (piano gratuito): sito + serata (Durable Object con SQLite) + diretta.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bingo",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "durable_objects": { "bindings": [{ "name": "SERATA", "class_name": "Serata" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Serata"] }],
+  "vars": {
+    // ID pubblico del client OAuth Google "Bingo tga" (non è un segreto: compare in ogni pagina di accesso)
+    "GOOGLE_CLIENT_ID": "626206562144-mj48oull6r3vt4c7ra1usrldkp9qngcf.apps.googleusercontent.com"
+  },
+  "observability": { "enabled": true }
+}
