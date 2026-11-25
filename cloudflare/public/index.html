@@ -2,9 +2,9 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-eyWReTuNyYTrdQkUADCtnox21J45Y23urAGlXoF9rpo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-4QKDuXcn40DLyg+tJDASxjM1WokKs1+mtjsOW8xNkSg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#FFFFFF">
@@ -827,6 +827,17 @@ svg.blink .e{opacity:0}
 .op-light .rgm{filter:none}
 .op-light .op-nota{color:#00000099}
 .op-light .err{color:#C62828}
+/* v37: su iPhone niente zoom col doppio tocco, niente rimbalzo della pagina, niente scroll dietro le schermate a tutto schermo */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}
+html,body{overscroll-behavior:none}
+.full{overscroll-behavior:contain}
+body:has(> .full:not([hidden])){overflow:hidden}
+/* v37: prova schermate dall'admin */
+.pv-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pv-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(6px + env(safe-area-inset-bottom,0px));z-index:80;white-space:nowrap;display:flex;align-items:center;gap:10px;background:#000;color:#fff;border-radius:999px;padding:6px 6px 6px 14px;font:600 13px Geist,sans-serif;box-shadow:0 0 0 2px #fff,0 8px 24px #0004}
+.pv-bar b{font:500 10px "Geist Mono",monospace;letter-spacing:.1em;color:#1BA40C}
+.pv-bar button{border:0;border-radius:999px;padding:7px 12px;font:700 13px Geist,sans-serif;background:#fff;color:#000}
+.pv-bar #pv-esci{background:none;color:#fff;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -977,6 +988,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
     <div class="albo"><h3>È successo</h3><ol id="tv-mom"></ol></div>
   </aside>
 </section>
+<div class="pv-bar" id="pv-bar" hidden role="toolbar" aria-label="Prova schermate"><b>PROVA</b><span id="pv-n"></span><button type="button" id="pv-next">Avanti &rarr;</button><button type="button" id="pv-esci">Esci</button></div>
 <section class="admin" id="admin" hidden aria-label="Pannello admin">
   <div class="adm">
     <header class="adm-head">
@@ -992,6 +1004,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
       <div class="confirm" id="ad-fconf" hidden><p>Chiudere la serata? Le scelte e i momenti si bloccano, la classifica diventa definitiva e sullo schermo compare il podio. Puoi riaprirla se serve.</p><div class="row"><button class="btn" id="ad-fyes" type="button">Sì, chiudi</button><button class="btn alt" id="ad-fno" type="button">No</button></div></div>
       <p class="adm-hint"><button class="ghost" id="ad-tv" type="button">Apri lo schermo classifica in una nuova scheda</button></p>
     </section>
+    <section class="adm-box" id="ad-prova"><h3>Prova le schermate</h3><p class="adm-hint">Rivedi le schermate come le vede un ospite nuovo. Non cambia niente: niente accesso, niente salvataggi.</p><div class="pv-grid"><button class="btn" type="button" data-pv="0">Tutto da capo</button><button class="btn alt" type="button" data-pv="0" data-solo="1">Scarica l&#39;app</button><button class="btn alt" type="button" data-pv="1" data-solo="1">Accedi</button><button class="btn alt" type="button" data-pv="2" data-solo="1">Crea il mostro</button><button class="btn alt" type="button" data-pv="3" data-solo="1">Come si gioca</button></div></section>
     <div class="adm-grid" id="ad-body">
       <section class="adm-box"><h3>Momenti della cartella</h3><p class="adm-hint">Quando un momento succede sul palco toccalo due volte: la seconda conferma. Da lì nessuno può più sceglierlo, e chi l'aveva scelto prende i suoi punti (1, 2 o 3). Se sbagli, toccalo di nuovo due volte per annullarlo.</p><ol class="adm-mom" id="ad-mom"></ol></section>
       <section class="adm-box"><h3>Classifica</h3><p class="adm-hint">Vince chi fa più punti con i pronostici confermati. I momenti valgono 1, 2 o 3 punti: i più rari valgono di più. Ognuno può sceglierne al massimo 8. Tocca ⋯ accanto a un nome per rinominarlo o toglierlo.</p><ol class="adm-rank" id="ad-rank"></ol><div id="ad-escw" hidden><h3 style="margin-top:18px">Tolti dalla serata</h3><ol class="adm-esc" id="ad-esc"></ol></div></section>
@@ -1163,7 +1176,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=36; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=37; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1220,7 +1233,8 @@ async function afterAuth(){
   await loadPlayers();
   if(!me){const g=(user.user_metadata?.full_name||user.user_metadata?.name||"").split(" ")[0];openEditor(g.slice(0,24),avRandom(),false)}
   else if(!me.avatar||!Object.keys(me.avatar).length){openEditor(me.nome,avRandom(),true)}
-  else{show("game");setTab(tab)}
+  else{let visto=false;try{visto=localStorage.getItem("sq-intro-visto")==="1"}catch(e){}
+    if(!visto){$("in-av").innerHTML=avatarSVG(me.avatar);show("intro")}else{show("game");setTab(tab)}}
   route();
 }
 
@@ -1393,7 +1407,27 @@ function slam(txt,el){const s=$("slam");s.textContent=txt;s.hidden=false;s.class
 $("ach").addEventListener("click",()=>{$("ach").hidden=true});
 (function(){const p=$("ptr");for(let y=0;y<14;y++)for(let x=0;x<8;x++){const i=document.createElement("i");i.style.setProperty("--d",((x+y)*16)+"ms");p.append(i)}})();
 function quadretti(){if(RM)return;const p=$("ptr");p.classList.remove("go");void p.offsetWidth;p.classList.add("go")}
-$("intro-go").addEventListener("click",()=>{show("game");setTab("bingo")});
+
+
+// ---------- v37: prova schermate (admin) ----------
+(function(){let pv=-1,solo=false;const PASSI=["Scarica l'app","Accedi","Crea il mostro","Come si gioca"];
+  const chiudiTutto=()=>{$("install").hidden=true;["login","naming","intro","kicked"].forEach(x=>$(x).hidden=true)};
+  function vai(i){pv=i;$("pv-bar").hidden=false;$("pv-n").textContent=(i+1)+"/4";$("pv-bar").setAttribute("aria-label","Prova: "+PASSI[i]);$("pv-next").textContent=(solo||i===3)?"Fine":"Avanti";
+    if(location.hash==="#admin")history.replaceState(null,"",location.pathname+location.search);$("admin").hidden=true;$("screen").hidden=true;$("tabbar").hidden=true;chiudiTutto();$("game").hidden=true;
+    if(i===0){$("install").hidden=false;$("inst-skip").hidden=true;$("inst-done").hidden=true;layoutInst(isIOS)}
+    else if(i===1){show("login");$("login-err").hidden=true}
+    else if(i===2){openEditor("",avRandom(),false)}
+    else{$("in-av").innerHTML=avatarSVG(me&&me.avatar||avRandom());show("intro")}}
+  function esci(){pv=-1;$("pv-bar").hidden=true;chiudiTutto();if(me)show("game");location.hash="admin";route()}
+  function avanti(){if(solo||pv>=3)esci();else vai(pv+1)}
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-pv]");if(b){solo=!!b.dataset.solo;vai(+b.dataset.pv);return}
+    if(pv<0)return;if(e.target.closest("#google,#intro-go")){e.preventDefault();e.stopImmediatePropagation();avanti()}},true);
+  document.addEventListener("submit",e=>{if(pv<0)return;e.preventDefault();e.stopImmediatePropagation();avanti()},true);
+  $("pv-next").addEventListener("click",avanti);$("pv-esci").addEventListener("click",esci);
+  window.__prova=()=>pv;
+})();
+
+$("intro-go").addEventListener("click",()=>{try{localStorage.setItem("sq-intro-visto","1")}catch(e){}show("game");setTab("bingo")});
 $("to-admin").addEventListener("click",()=>{location.hash="admin"});
 
 // ---------- dati live ----------
