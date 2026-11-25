@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-nkdmCK1dXPHSFPkcGIRoGo0JN0pGlKIPFMQ/ZFZKjPM='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-WiledlH6HU1NuPEKUMPaDaLIqhg3mKuaRiDQYMg9m4c='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -857,6 +857,15 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .lg-red{border:0;border-radius:14px;padding:16px 18px;font:800 16px Geist,sans-serif;background:#C62828!important;color:#fff!important;box-shadow:none!important}
 .acc-list button.del{color:#C62828;text-decoration:none}
 .lg-menu{margin-top:18px}
+/* v42: apertura, crocini di stampa più dentro e tasto/passi più in alto */
+.op .rgm.tl{top:calc(22px + env(safe-area-inset-top,0px));left:22px}.op .rgm.tr{top:calc(22px + env(safe-area-inset-top,0px));right:22px}
+.op .rgm.bl{bottom:calc(22px + env(safe-area-inset-bottom,0px));left:22px}.op .rgm.br{bottom:calc(22px + env(safe-area-inset-bottom,0px));right:22px}
+.op-top{top:calc(58px + env(safe-area-inset-top,0px));left:30px;right:30px}
+.op-art{top:calc(108px + env(safe-area-inset-top,0px))}
+.op-ttl{left:30px}
+.op-bot{left:30px;right:30px;bottom:calc(max(84px,14vh) + env(safe-area-inset-bottom,0px))}
+.op-bot2{bottom:calc(max(84px,14vh) + env(safe-area-inset-bottom,0px))}
+@media (max-height:620px){.op-bot,.op-bot2{bottom:calc(56px + env(safe-area-inset-bottom,0px))}.op-top{top:calc(50px + env(safe-area-inset-top,0px))}.op-art{top:calc(92px + env(safe-area-inset-top,0px))}}
 </style>
 </head>
 <body>
@@ -1200,7 +1209,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=41; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=42; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
