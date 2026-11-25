@@ -13,7 +13,9 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     if (url.pathname.startsWith("/api/")) {
-      const stub = env.SERATA.get(env.SERATA.idFromName("serata"));
+      // v38: la serata vive nell'Unione Europea (giurisdizione "eu": dati salvati ed elaborati solo in UE)
+      const ns = env.PROVA === "1" ? env.SERATA : env.SERATA.jurisdiction("eu"); // in locale (prove) la giurisdizione non esiste
+      const stub = ns.get(ns.idFromName("serata"));
       return stub.fetch(req);
     }
     return env.ASSETS.fetch(req);
@@ -343,6 +345,28 @@ export class Serata extends DurableObject {
       const e = String(arg.vecchia || "").trim().toLowerCase();
       this.admin = this.admin.filter(a => a.principale || a.email !== e);
       await this.ctx.storage.put("admin", this.admin); this.aggiornaRegiaSocket();
+      return ok(null);
+    }
+    // v38: ognuno può cancellare il proprio account (giocatore e tutti i suoi accessi)
+    if (n === "cancella_account") {
+      const via = ["g:" + u.id];
+      this.giocatori.delete(u.id); // chi era stato tolto dalla serata resta tolto (solo id e nome, per non farlo rientrare)
+      for (const [t, s] of this.sess) if (s.id === u.id) { this.sess.delete(t); via.push("s:" + t); }
+      for (let i = 0; i < via.length; i += 100) await this.ctx.storage.delete(via.slice(i, i + 100));
+      for (const ws of this.ctx.getWebSockets()) { const a = ws.deserializeAttachment() || {}; if (a.id === u.id) { try { ws.close(1000, "account cancellato"); } catch (e) {} } }
+      this.avvisa("giocatori"); this.avvisa("esclusi");
+      return ok(null);
+    }
+    // v38: dopo la serata l'admin principale cancella tutto (giocatori, momenti, esclusi, accessi tranne il suo). La lista admin resta.
+    if (n === "svuota_tutto") {
+      if (!this.isPrincipale(u)) throw new Error("solo l'admin principale");
+      const via = [...this.giocatori.keys()].map(k => "g:" + k).concat([...this.esclusi.keys()].map(k => "x:" + k));
+      for (const [t, s] of this.sess) if (s.id !== u.id) { this.sess.delete(t); via.push("s:" + t); }
+      this.giocatori.clear(); this.esclusi.clear();
+      for (let i = 0; i < via.length; i += 100) await this.ctx.storage.delete(via.slice(i, i + 100));
+      this.momenti = {}; this.serata = { id: 1, scelte_aperte: true, finita: false, aggiornato_at: now() };
+      await this.ctx.storage.put({ momenti: this.momenti, serata: this.serata });
+      this.avvisa("giocatori"); this.avvisa("esclusi"); this.avvisa("momenti"); this.avvisa("serata");
       return ok(null);
     }
     if (n === "azzera_serata") {

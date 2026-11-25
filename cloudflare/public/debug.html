@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-4QKDuXcn40DLyg+tJDASxjM1WokKs1+mtjsOW8xNkSg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-KYbcd8vPEYUW5Ml3Pllbw9EAAdPiZBQyTD29KZFzSWU='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -15,8 +15,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Bingo TGA">
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/fonts/fonts.css">
 <style>
 *{box-sizing:border-box}
 body{margin:0}
@@ -838,6 +837,25 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .pv-bar b{font:500 10px "Geist Mono",monospace;letter-spacing:.1em;color:#1BA40C}
 .pv-bar button{border:0;border-radius:999px;padding:7px 12px;font:700 13px Geist,sans-serif;background:#fff;color:#000}
 .pv-bar #pv-esci{background:none;color:#fff;text-decoration:underline}
+
+/* v38: pagine legali */
+.leg{background:var(--n);z-index:30}
+.leg .col{gap:0;max-width:600px;padding-bottom:40px}
+.lg-back{align-self:flex-start;border:0;background:none;font:600 15px Geist,sans-serif;color:var(--c);padding:6px 0;margin-bottom:14px}
+.lg-ttl{margin:0 0 14px;font-family:"Geist",sans-serif;font-weight:900;letter-spacing:-.05em;line-height:.9;font-size:clamp(40px,12vw,56px)}
+.lg-body{font-size:15.5px;line-height:1.5}
+.lg-body .lg-lead{font-size:17px;font-weight:600;margin:0 0 6px}
+.lg-body h3{font:500 11px "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;margin:22px 0 6px;padding-top:10px;border-top:1.5px solid var(--c)}
+.lg-body p{margin:0 0 8px}.lg-body ul{margin:0 0 8px;padding-left:18px}.lg-body li{margin:4px 0}
+.lg-body a{color:var(--c)}
+.lg-body .lg-agg{margin-top:22px;font:500 11px "Geist Mono",ui-monospace,monospace;color:var(--m)}
+.lg-cards{display:flex;flex-direction:column;gap:10px;margin:14px 0 4px}
+.lg-card{display:grid;grid-template-columns:34px 1fr;gap:2px 10px;background:var(--s);border-radius:16px;padding:16px}
+.lg-card b{grid-row:span 2;font:500 12px "Geist Mono",monospace;padding-top:3px}
+.lg-card strong{font-size:16px}.lg-card span{font-size:14px;color:var(--m);line-height:1.4}
+.lg-del{display:flex;flex-direction:column;gap:12px;margin-top:22px}
+.lg-red{border:0;border-radius:14px;padding:16px 18px;font:800 16px Geist,sans-serif;background:#C62828!important;color:#fff!important;box-shadow:none!important}
+.acc-list button.del{color:#C62828;text-decoration:none}
 </style>
 </head>
 <body>
@@ -947,8 +965,12 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
     <div class="acc-stats"><div><b id="acc-pos">–</b><span>posizione</span></div><div><b id="acc-pt">0</b><span>punti</span></div><div><b id="acc-sc">0/8</b><span>pronostici</span></div></div>
     <div class="acc-list">
       <button id="edit-av" type="button">Modifica personaggio</button>
+      <button type="button" data-lg="dati">Dove vanno i tuoi dati</button>
+      <button type="button" data-lg="privacy">Privacy</button>
+      <button type="button" data-lg="termini">Termini della serata</button>
       <button id="to-admin" type="button" hidden>Pannello admin</button>
       <button id="logout" class="out" type="button">Esci</button>
+      <button type="button" class="out del" data-lg="cancella">Cancella account</button>
     </div>
     <div class="acc-foot"><span class="sync" id="sync">collegamento…</span></div>
   </section>
@@ -989,6 +1011,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
   </aside>
 </section>
 <div class="pv-bar" id="pv-bar" hidden role="toolbar" aria-label="Prova schermate"><b>PROVA</b><span id="pv-n"></span><button type="button" id="pv-next">Avanti &rarr;</button><button type="button" id="pv-esci">Esci</button></div>
+<section class="full leg" id="legal" hidden aria-label="Informazioni"><div class="col"><button class="lg-back" id="lg-back" type="button">&larr; Account</button><h2 class="lg-ttl" id="lg-ttl"></h2><div class="lg-body" id="lg-body"></div><div class="lg-del" id="lg-del" hidden><button class="lg-red" id="lg-del-go" type="button">Cancella il mio account</button><div class="confirm" id="lg-del-conf" hidden><p><b>Sei sicuro?</b> Non si può annullare.</p><div class="row"><button class="btn lg-red" id="lg-del-yes" type="button">Sì, cancella</button><button class="btn alt" id="lg-del-no" type="button">No</button></div></div><p class="err" id="lg-del-err" hidden></p></div></div></section>
 <section class="admin" id="admin" hidden aria-label="Pannello admin">
   <div class="adm">
     <header class="adm-head">
@@ -1014,6 +1037,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
       <ul class="adm-mail" id="ad-adm-l"></ul>
       <form class="adm-add" id="ad-adm-f" hidden><input id="ad-adm-e" type="email" inputmode="email" autocomplete="off" placeholder="email Google del nuovo admin" maxlength="120"><button class="btn" type="submit">Aggiungi</button></form>
     </section>
+    <section class="adm-box" id="ad-svuota" hidden><h3>Cancella tutti i dati</h3><p class="adm-hint">Da fare entro il 9 gennaio 2027, come promesso nella privacy. Cancella tutti i giocatori, le cartelle, i momenti e gli accessi (tranne il tuo). La lista admin resta.</p><button class="btn lg-red" id="ad-sv" type="button">Cancella tutti i dati</button><div class="confirm" id="ad-sv-conf" hidden><p><b>Cancellare tutto?</b> Non si può annullare.</p><div class="row"><button class="btn lg-red" id="ad-sv-yes" type="button">Sì, cancella tutto</button><button class="btn alt" id="ad-sv-no" type="button">No</button></div></div></section>
     <div class="scr-foot"><button id="ad-out" type="button">Vai alla mia cartella</button><button id="ad-reset" type="button">Azzera la serata</button></div>
     <div class="confirm" id="ad-conf" hidden><p>Azzerare la serata? Tolgo le conferme dei momenti e tutti i segni dei giocatori. I giocatori e i loro personaggi restano.</p><div class="row"><button class="btn" id="ad-yes" type="button">Sì, azzera</button><button class="btn alt" id="ad-no2" type="button">No</button></div></div>
   </div>
@@ -1161,7 +1185,7 @@ if(DEBUG){(function(){
       if(!db.admin)db.admin=[{email:"sabrinamontella02@gmail.com",principale:true}];
       if(n==="admin_lista")return {data:db.admin.slice(),error:null};
       if(n==="aggiungi_admin"){const e=String(arg.nuova).trim().toLowerCase();if(!db.admin.some(a=>a.email===e))db.admin.push({email:e,principale:false});save();return {error:null}}
-      if(n==="togli_admin"){db.admin=db.admin.filter(a=>a.principale||a.email!==arg.vecchia);save();return {error:null}}if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
+      if(n==="togli_admin"){db.admin=db.admin.filter(a=>a.principale||a.email!==arg.vecchia);save();return {error:null}}if(n==="cancella_account"){const id=(window.__giocatore&&window.__giocatore.id)||U.id;db.giocatori=db.giocatori.filter(g=>g.id!==id);db.esclusi=(db.esclusi||[]).filter(x=>x.user_id!==id);save();emit("giocatori");return {error:null}}if(n==="svuota_tutto"){db.giocatori=[];db.momenti=[];db.esclusi=[];db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("giocatori");emit("momenti");emit("serata");return {error:null}}if(n==="azzera_serata"){db.momenti=[];db.giocatori.forEach(g=>{g.segni=Array(16).fill(false)});db.serata=[{id:1,scelte_aperte:true,finita:false}];save();emit("momenti");emit("giocatori");emit("serata");return {error:null}}return {data:null}},
     from:q,removeChannel(){},
     channel(){const c={on(_e,o,fn){subs.push({t:o.table,fn});return c},subscribe(cb){setTimeout(()=>cb("SUBSCRIBED"),50);return c}};return c}
   };
@@ -1177,7 +1201,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=37; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=38; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1213,6 +1237,25 @@ $("google").addEventListener("click",async()=>{
   const {error}=await sb.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+location.pathname}});
   if(error){$("login-err").hidden=false;$("login-err").textContent="Accesso non riuscito: "+error.message}
 });
+
+// ---------- v38: privacy, termini, dove vanno i dati, cancella account ----------
+const LEGALE={"privacy": ["Privacy.", "\n<p class=\"lg-lead\">Come usiamo i tuoi dati nell'app \"Il Bingo dei Game Awards\" di Santa Officina, per la serata del 10 dicembre 2026.<\/p>\n<h3>Chi li tratta<\/h3>\n<p>Santa Officina, che organizza la serata, è titolare del trattamento. Per qualsiasi domanda sui tuoi dati scrivi a <a href=\"mailto:sabrinamontella02@gmail.com\">sabrinamontella02@gmail.com<\/a>.<\/p>\n<h3>Quali dati<\/h3>\n<ul>\n<li><b>Dall'accesso con Google:<\/b> nome, email e il codice che identifica il tuo account Google. Non vediamo mai la tua password.<\/li>\n<li><b>Nel gioco:<\/b> il nome che scegli, il tuo mostriciattolo, i pronostici e i punti.<\/li>\n<li><b>Tecnici:<\/b> un cookie per restare collegato e l'indirizzo IP, che il server registra per pochi giorni per sicurezza.<\/li>\n<\/ul>\n<h3>A cosa servono<\/h3>\n<p>Solo a farti giocare: farti entrare, salvare la tua cartella, calcolare la classifica e riconoscere chi organizza. La base è il servizio che chiedi usando l'app (art. 6.1.b GDPR) e, per i log di sicurezza, il nostro interesse a tenere l'app protetta (art. 6.1.f).<\/p>\n<h3>Chi li vede<\/h3>\n<p>Gli altri partecipanti, e lo schermo della serata, vedono solo il nome che scegli, il mostriciattolo, i punti e i momenti indovinati. La tua email non è mostrata a nessuno: serve solo per l'accesso e per riconoscere gli admin.<\/p>\n<h3>Dove sono<\/h3>\n<p>App e dati sono su Cloudflare, con i dati salvati nell'Unione Europea. Google gestisce solo l'accesso, secondo la sua informativa privacy. Non usiamo pubblicità né statistiche, non tracciamo nessuno e non vendiamo o cediamo i dati. Caratteri e librerie arrivano dal nostro server, non da siti esterni.<\/p>\n<h3>Per quanto<\/h3>\n<p>Fino a 30 giorni dopo la serata, cioè entro il 9 gennaio 2027. Poi cancelliamo tutto. L'accesso resta valido al massimo 60 giorni. Puoi cancellare il tuo account prima, quando vuoi, da Account.<\/p>\n<h3>I tuoi diritti<\/h3>\n<p>Puoi chiedere di vedere, correggere, cancellare o portare via i tuoi dati, o di limitarne l'uso o opporti. Il nome e il mostriciattolo li cambi da \"Modifica personaggio\". Per cancellare tutto c'è \"Cancella account\". Per il resto scrivi a <a href=\"mailto:sabrinamontella02@gmail.com\">sabrinamontella02@gmail.com<\/a>. Puoi anche fare reclamo al Garante per la protezione dei dati personali (garanteprivacy.it).<\/p>\n<h3>Età<\/h3>\n<p>Per giocare devi avere almeno 14 anni.<\/p>\n<h3>Cookie<\/h3>\n<p>Usiamo solo un cookie tecnico per tenerti collegato, e la memoria del telefono per piccole preferenze, per esempio se hai già visto \"Come si gioca\". Niente cookie di profilazione o di terze parti.<\/p>\n<p class=\"lg-agg\">Ultimo aggiornamento: 25 novembre 2026.<\/p>\n"], "termini": ["Termini della serata.", "\n<p class=\"lg-lead\">Le regole per usare l'app \"Il Bingo dei Game Awards\" di Santa Officina.<\/p>\n<h3>Che cos'è<\/h3>\n<p>Un gioco gratuito tra amici per seguire insieme The Game Awards 2026, giovedì 10 dicembre. Non si paga niente e non si vince denaro: non è una scommessa né un concorso a premi.<\/p>\n<h3>Non è ufficiale<\/h3>\n<p>L'app non è collegata né approvata da The Game Awards o dalle aziende e dai giochi nominati. I loro nomi e marchi appartengono ai rispettivi proprietari e sono usati solo per indicare i momenti dello show.<\/p>\n<h3>Come si gioca<\/h3>\n<ul>\n<li>Scegli al massimo 8 momenti tra i 16 della cartella.<\/li>\n<li>Le scelte si chiudono prima dell'inizio dello show.<\/li>\n<li>I momenti successi li conferma chi organizza. La sua decisione vale per la classifica.<\/li>\n<li>In caso di pareggio decide chi organizza.<\/li>\n<\/ul>\n<h3>Account<\/h3>\n<p>Un account a persona, con Google. Usa un nome rispettoso: chi organizza può cambiarlo o toglierti dalla serata se serve.<\/p>\n<h3>Funzionamento<\/h3>\n<p>L'app è offerta così com'è, per una serata tra amici. Facciamo del nostro meglio, ma può avere errori o fermarsi. Non rispondiamo di eventuali danni causati dall'uso dell'app, salvo quanto la legge non permette di escludere.<\/p>\n<h3>Cambi<\/h3>\n<p>Possiamo aggiornare queste regole. La versione nuova sarà sempre qui.<\/p>\n<h3>Contatti<\/h3>\n<p>Per domande scrivi a <a href=\"mailto:sabrinamontella02@gmail.com\">sabrinamontella02@gmail.com<\/a>.<\/p>\n<p class=\"lg-agg\">Ultimo aggiornamento: 25 novembre 2026.<\/p>\n"], "dati": ["Dove vanno i tuoi dati.", "\n<p class=\"lg-lead\">In breve: tre posti, e nient'altro.<\/p>\n<div class=\"lg-cards\">\n<div class=\"lg-card\"><b>01<\/b><strong>Il tuo telefono<\/strong><span>Piccole preferenze, per esempio se hai già visto \"Come si gioca\". Restano solo sul telefono.<\/span><\/div>\n<div class=\"lg-card\"><b>02<\/b><strong>Cloudflare · Unione Europea<\/strong><span>Il tuo account e il gioco: nome, mostriciattolo, pronostici e punti, più l'email per l'accesso. Lì gira l'app.<\/span><\/div>\n<div class=\"lg-card\"><b>03<\/b><strong>Google<\/strong><span>Solo l'accesso. Google sa che sei entrato in questa app, noi non vediamo la tua password.<\/span><\/div>\n<\/div>\n<h3>Dove non vanno<\/h3>\n<p>Niente pubblicità, niente statistiche, nessun tracciamento. Nessuno vende o riceve i tuoi dati.<\/p>\n<h3>Fino a quando<\/h3>\n<p>Fino al 9 gennaio 2027, poi cancelliamo tutto. Puoi cancellare il tuo account prima, quando vuoi.<\/p>\n"], "cancella": ["Cancella account.", "\n<p class=\"lg-lead\">Cancelliamo subito, e per sempre, tutto quello che riguarda il tuo account.<\/p>\n<ul>\n<li>Il tuo nome e il tuo mostriciattolo.<\/li>\n<li>I tuoi pronostici e i tuoi punti: sparisci dalla classifica.<\/li>\n<li>Il tuo accesso, su tutti i telefoni.<\/li>\n<\/ul>\n<p>Non si può annullare. Se rientri con Google ricominci da zero, con una cartella nuova.<\/p>\n"]};
+function apriLegale(k){const p=LEGALE[k];if(!p)return;$("lg-ttl").textContent=p[0];$("lg-body").innerHTML=p[1];
+  $("lg-del").hidden=k!=="cancella";$("lg-del-conf").hidden=true;$("lg-del-err").hidden=true;$("lg-del-go").hidden=false;$("legal").hidden=false;$("legal").scrollTop=0}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-lg]");if(b)apriLegale(b.dataset.lg)});
+$("lg-back").addEventListener("click",()=>{$("legal").hidden=true});
+$("lg-del-go").addEventListener("click",()=>{$("lg-del-go").hidden=true;$("lg-del-conf").hidden=false});
+$("lg-del-no").addEventListener("click",()=>{$("lg-del-conf").hidden=true;$("lg-del-go").hidden=false});
+$("lg-del-yes").addEventListener("click",async()=>{const b=$("lg-del-yes");b.disabled=true;
+  const {error}=await sb.rpc("cancella_account");b.disabled=false;
+  if(error){$("lg-del-err").hidden=false;$("lg-del-err").textContent="Non riesco a cancellare: "+error.message+". Riprova.";return}
+  try{localStorage.removeItem("sq-intro-visto")}catch(e){}
+  await sb.auth.signOut().catch(()=>{});user=null;me=null;$("legal").hidden=true;afterAuth();toast("Account cancellato. Tutti i tuoi dati sono stati eliminati.")});
+$("ad-sv").addEventListener("click",()=>{$("ad-sv").hidden=true;$("ad-sv-conf").hidden=false});
+$("ad-sv-no").addEventListener("click",()=>{$("ad-sv-conf").hidden=true;$("ad-sv").hidden=false});
+$("ad-sv-yes").addEventListener("click",async()=>{$("ad-sv-conf").hidden=true;$("ad-sv").hidden=false;const {error}=await sb.rpc("svuota_tutto");
+  if(error){toast("Non cancellato: "+error.message);return}me=null;await loadSerata();await loadMomenti();await loadPlayers();toast("Tutti i dati della serata sono stati cancellati")});
+
 $("logout").addEventListener("click",async()=>{await sb.auth.signOut();user=null;me=null;afterAuth()});
 
 let subscribed=false;
@@ -1585,7 +1628,7 @@ $("ad-out").addEventListener("click",()=>{location.hash=""});
 // ---------- v32: lista admin per email ----------
 let adminLetti=false,principale=false,adminList=[],togliArmata=null;
 async function loadAdmin(){try{const p=await sb.rpc("sono_principale");principale=!!p.data;const {data,error}=await sb.rpc("admin_lista");if(!error)adminList=data||[]}catch(e){}renderAdmin()}
-function renderAdmin(){const l=$("ad-adm-l");l.textContent="";$("ad-adm-f").hidden=!principale;
+function renderAdmin(){$("ad-svuota").hidden=!principale;const l=$("ad-adm-l");l.textContent="";$("ad-adm-f").hidden=!principale;
   $("ad-adm-h").textContent=principale?"Chi è in questa lista entra nel pannello admin con il suo account Google. Solo tu, come admin principale, puoi aggiungere e togliere.":"Chi è in questa lista entra nel pannello admin con il suo account Google. Solo l'admin principale può cambiarla.";
   adminList.forEach(a=>{const li=document.createElement("li");const e=document.createElement("span");e.textContent=a.email;li.append(e);
     if(a.principale){const b=document.createElement("em");b.textContent="PRINCIPALE";li.append(b)}
