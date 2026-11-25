@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-PbpzMTPelV/zUmr4LeQQNStl2PfsX0AuELoXzcAM650='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-NOg8YqJFVJ/fgwE3yufvK6jMqLVwkmuM2y44hyMRrHE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -1126,7 +1126,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=33; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=34; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1607,7 +1607,8 @@ async function nuovaVersione(){if(DEBUG||location.protocol!=="https:")return;
     if(j&&j.v>APP_V&&!pending&&!dirty&&$("win").hidden){try{sessionStorage.setItem("sq-agg","1")}catch(e){}location.reload()}}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")nuovaVersione()});
 setInterval(nuovaVersione,120000);
-setInterval(()=>{if(user&&!chanTutti&&document.visibilityState==="visible")loadPlayers()},30000); // nuovi arrivi e nomi
+// v34: la classifica cambia da sola solo mentre le scelte sono aperte; dopo cambia con i momenti, che arrivano in diretta. Meno richieste = dentro il piano gratuito di Cloudflare.
+setInterval(()=>{if(user&&!chanTutti&&aperte&&!finita&&document.visibilityState==="visible")loadPlayers()},60000); // nuovi arrivi e nomi
 try{if(sessionStorage.getItem("sq-agg")==="1"){sessionStorage.removeItem("sq-agg");setTimeout(()=>toast("App aggiornata all'ultima versione"),900)}}catch(e){}
 
 // ---------- avvio ----------
