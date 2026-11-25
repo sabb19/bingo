@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-KYbcd8vPEYUW5Ml3Pllbw9EAAdPiZBQyTD29KZFzSWU='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SRLEpi4qxy4oyMyUjxu0gqsT6jPd21qzCUj35L8lcAI=' 'sha256-C+ohkFvcU8/EBcO+athb2OGhbAYZ4nXibDurG9lw3Xk='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -1200,7 +1200,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=38; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=39; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1255,6 +1255,8 @@ $("ad-sv-no").addEventListener("click",()=>{$("ad-sv-conf").hidden=true;$("ad-sv
 $("ad-sv-yes").addEventListener("click",async()=>{$("ad-sv-conf").hidden=true;$("ad-sv").hidden=false;const {error}=await sb.rpc("svuota_tutto");
   if(error){toast("Non cancellato: "+error.message);return}me=null;await loadSerata();await loadMomenti();await loadPlayers();toast("Tutti i dati della serata sono stati cancellati")});
 
+// v39: tornando indietro il telefono può mostrare una copia vecchia della pagina (quella di prima dell'accesso): la ricarico, così vede che sei già dentro
+window.addEventListener("pageshow",e=>{if(e.persisted)location.reload()});
 $("logout").addEventListener("click",async()=>{await sb.auth.signOut();user=null;me=null;afterAuth()});
 
 let subscribed=false;

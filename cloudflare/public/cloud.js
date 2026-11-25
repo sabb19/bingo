@@ -32,7 +32,7 @@
     auth: {
       onAuthStateChange(fn) { auths.push(fn) },
       async getSession() { const d = await post("/api/me", {}); return { data: { session: d && d.data ? { user: d.data.user } : null } } },
-      async signInWithOAuth() { location.href = "/api/auth/google/start?torna=" + encodeURIComponent(location.hash || ""); return { error: null } },
+      async signInWithOAuth() { location.replace("/api/auth/google/start?torna=" + encodeURIComponent(location.hash || "")); return { error: null } }, // v39: replace, così "indietro" non riporta alla vecchia pagina di accesso
       async signOut() { await post("/api/logout", {}); auths.forEach(fn => fn("SIGNED_OUT", null)); return { error: null } }
     },
     rpc: (n, arg) => post("/api/rpc", { n, arg: arg || {} }),
