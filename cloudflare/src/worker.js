@@ -255,7 +255,8 @@ export class Serata extends DurableObject {
         const vecchio = this.giocatori.get(u.id);
         const segni = val.segni;
         this.controllaPronostici(vecchio ? vecchio.segni : Array(N).fill(false), segni);
-        const g = { id: u.id, nome: this.pulisciNome(val.nome), avatar: this.pulisciAvatar(val.avatar), cartella: this.pulisciCartella(val.cartella),
+        const g = { id: u.id, nome: vecchio && !regia ? vecchio.nome : this.pulisciNome(val.nome), // il nome si sceglie una volta sola
+          avatar: this.pulisciAvatar(val.avatar), cartella: this.pulisciCartella(val.cartella),
           segni: segni.slice(), aggiornato_at: now() };
         await this.salvaGiocatore(g);
         return ok(copia(g));
@@ -267,7 +268,11 @@ export class Serata extends DurableObject {
         const mio = f[1] === u.id;
         if (!mio && !regia) throw new Error("non puoi cambiare altri giocatori");
         const n = { ...g };
-        if ("nome" in val) n.nome = this.pulisciNome(val.nome);
+        if ("nome" in val) {
+          const nn = this.pulisciNome(val.nome);
+          if (nn !== g.nome && !regia) throw new Error("il nome non si può cambiare");
+          n.nome = nn;
+        }
         if (mio) {
           if ("avatar" in val) n.avatar = this.pulisciAvatar(val.avatar);
           if ("cartella" in val) n.cartella = this.pulisciCartella(val.cartella);
