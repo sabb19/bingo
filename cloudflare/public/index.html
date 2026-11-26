@@ -919,9 +919,16 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .nm-lk{display:none;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--m)}
 .nm-f.lk .nm-lk{display:inline}
 .nm-f>span:first-child{display:flex;justify-content:space-between}
+/* v54: intro all'apertura, solo logo al centro (Santa Officina × GAME AWARDS), poi sparisce */
+.sp0{--w:min(58vw,250px);position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;animation:sp0out .45s ease 1.4s forwards}
+.sp0 img{width:var(--w);height:auto;display:block}
+.sp0 span{font:500 calc(var(--w) * .1131)/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;white-space:nowrap;color:#000;margin-top:calc(var(--w) * .075)}
+@keyframes sp0out{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.sp0{animation-duration:.01s}}
 </style>
 </head>
 <body>
+<div class="sp0" aria-hidden="true"><img src="icons/santa-officina-scritta.png" alt=""><span>× GAME AWARDS</span></div>
 
 <section class="full inst op" id="install" hidden aria-label="Installa l'app"><i class="rgm tl"></i><i class="rgm tr"></i><i class="rgm bl"></i><i class="rgm br"></i><div class="op-top"><span>SANTA OFFICINA PRESENTA</span></div><div class="op-art"><canvas class="op-st" data-anim="riflesso" data-mask="1" aria-hidden="true"></canvas><h2 class="op-ttl">Scarica il<br>Bingo dei<br>Game<br>Awards.</h2></div><div class="op-bot"><div id="sh-ios" hidden><div class="op-row"><b>01</b><span>Tocca <strong>Condividi</strong></span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg></span></div><div class="op-row"><b>02</b><span>Tocca <strong>Aggiungi alla Home</strong></span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/></svg></span></div></div><div id="sh-and" hidden><div class="op-row"><b>01</b><span>Tocca i <strong>tre puntini</strong> in alto</span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg></span></div><div class="op-row"><b>02</b><span>Tocca <strong>Installa app</strong></span><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg></span></div></div><button class="op-cta" id="inst-go" type="button" hidden><span>Installa l'app</span><svg class="ar-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4.5v15M6 13.5l6 6 6-6"/></svg></button><p class="inst-done" id="inst-done" hidden>Fatto! Ora chiudi questa pagina e apri il Bingo dalla schermata Home.</p><button class="ghost" id="inst-skip" type="button" hidden>Continua nel browser</button></div></section>
 
