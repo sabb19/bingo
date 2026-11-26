@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-CE6KSGizV4NaVYyD0n4WhKVStoFen0dEBfNUMyg5ANs='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-NogRtj1hbeKGbFh6grt9YIbDWqpMkpj0Yq8uvOdOKmE='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -877,6 +877,14 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .tabbar button[aria-selected="true"]{background:var(--n);color:var(--c)}
 .tabbar button[aria-selected="true"] .ic{color:var(--c)}
 .tabbar button[aria-selected="true"]::after{display:none}
+
+/* v47: testata come l'apertura (riga mono, filetto, segni di registro) */
+.rhd,#game>header.bar{position:relative}
+.hd-pt{display:flex;justify-content:space-between;font:500 10px "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;padding:34px 0 8px;border-bottom:1.5px solid var(--c);color:var(--c)}
+.hd-rg{position:absolute;top:0;width:16px;height:16px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M10 0v20M0 10h20' stroke='black' stroke-width='1.6'/><circle cx='10' cy='10' r='5' fill='none' stroke='black' stroke-width='1.6'/></svg>") center/contain no-repeat}
+.hd-rg.tl{left:0}.hd-rg.tr{right:0}
+/* niente scorrimento laterale (la fila delle forme usciva di 8px) */
+.full{overflow-x:hidden}
 </style>
 </head>
 <body>
@@ -886,7 +894,7 @@ body:has(> .full:not([hidden])){overflow:hidden}
 
 <section class="full auth intro" id="intro" hidden aria-label="Come si gioca">
   <div class="col">
-    <div class="rhd"><div class="lp"><span>SANTA OFFICINA PRESENTA</span><span>× GAME AWARDS</span></div></div>
+    <div class="rhd"><i class="hd-rg tl" aria-hidden="true"></i><i class="hd-rg tr" aria-hidden="true"></i><div class="hd-pt"><span>SANTA OFFICINA PRESENTA</span><span>× GAME AWARDS</span></div></div>
     <div class="in-av" id="in-av"></div>
     <h2 class="r-ttl">Come si <span class="hl">gioca</span>.</h2>
     <ol class="passi">
@@ -940,7 +948,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
 
 <section class="full auth reg" id="naming" hidden aria-label="Il tuo player">
   <form class="col" id="f">
-    <div class="rhd"><div class="lp"><span>SANTA OFFICINA PRESENTA</span><span>× GAME AWARDS</span></div></div>
+    <div class="rhd"><i class="hd-rg tl" aria-hidden="true"></i><i class="hd-rg tr" aria-hidden="true"></i><div class="hd-pt"><span>SANTA OFFICINA PRESENTA</span><span>× GAME AWARDS</span></div></div>
     <h2 class="r-ttl">Il tuo <span class="hl">player</span>.</h2>
     <div class="fig"><span class="bol">PLAYER 1</span><span class="rg a"></span><span class="rg b"></span><span class="rg c"></span>
       <div class="preview" id="preview"></div>
@@ -954,7 +962,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
 </section>
 
 <div class="wrap" id="game" hidden lang="it">
-  <header class="bar lpbar"><div class="lp"><span>SANTA OFFICINA PRESENTA</span><span>× GAME AWARDS</span></div></header>
+  <header class="bar lpbar"><i class="hd-rg tl" aria-hidden="true"></i><i class="hd-rg tr" aria-hidden="true"></i><div class="hd-pt"><span>SANTA OFFICINA PRESENTA</span><span>× GAME AWARDS</span></div></header>
   <section class="tab" id="tab-bingo" role="tabpanel" aria-labelledby="tb-bingo">
     <div class="who">
       <div class="me"><span id="who-av"></span><div style="min-width:0"><small>Pronostici di</small><h2><span class="hl" id="who"></span></h2></div></div>
@@ -1216,7 +1224,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=46; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=47; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
