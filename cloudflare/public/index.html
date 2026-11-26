@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-JGy3P0NkZt5cfSE5B4oeIGHhEJ6c3+npELTS5CLeJak='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-oJqTu6EfEar0FDnaLsHf/o0dAf3JSeHmCWThdGtk4yU='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -938,6 +938,7 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .sp0 span{font:500 calc(var(--w) * .1131)/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.08em;white-space:nowrap;color:#000;margin-top:calc(var(--w) * .075)}
 @keyframes sp0out{to{opacity:0;visibility:hidden}}
 @media (prefers-reduced-motion:reduce){.sp0{animation-duration:.01s}}
+.tab,.tabbar button .ic,.tabbar button[aria-selected="true"] .ic{animation:none!important}
 </style>
 </head>
 <body>
@@ -1278,7 +1279,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=59; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=60; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
