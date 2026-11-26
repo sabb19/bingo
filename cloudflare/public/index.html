@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-NogRtj1hbeKGbFh6grt9YIbDWqpMkpj0Yq8uvOdOKmE='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-sOE9DFC6BCsotlRaCQSrE5WNfbsCzLdlmn6glqEO2Ac='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -885,6 +885,9 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .hd-rg.tl{left:0}.hd-rg.tr{right:0}
 /* niente scorrimento laterale (la fila delle forme usciva di 8px) */
 .full{overflow-x:hidden}
+
+/* v48: le file delle forme ed extra arrivano esatte al bordo (prima uscivano di 8px: col dado la schermata si spostava) */
+.full .strip{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px;scroll-padding-inline:16px}
 </style>
 </head>
 <body>
@@ -1224,7 +1227,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=47; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=48; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1335,7 +1338,7 @@ function buildEditor(){
   const sel=st.children[draft.f];if(sel&&sel.scrollIntoView)try{sel.scrollIntoView({block:"nearest",inline:"nearest"})}catch(e){}
   paintPreview();
 }
-$("dice").addEventListener("click",()=>{draft=avRandom();buildEditor()});
+$("dice").addEventListener("click",()=>{draft=avRandom();buildEditor();$("naming").scrollLeft=0;document.documentElement.scrollLeft=0});
 $("edit-av").addEventListener("click",()=>{if(me)openEditor(me.nome,me.avatar,true)});
 function regErr(t){const e=$("name-err");e.hidden=false;e.textContent=t;toast(t)}
 let regBusy=false;
