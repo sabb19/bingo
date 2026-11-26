@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-sOE9DFC6BCsotlRaCQSrE5WNfbsCzLdlmn6glqEO2Ac='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-AOxFxiZfqHF7Z8LQYo8lypgrtlwk5975HlIpFGRfids='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -888,6 +888,10 @@ body:has(> .full:not([hidden])){overflow:hidden}
 
 /* v48: le file delle forme ed extra arrivano esatte al bordo (prima uscivano di 8px: col dado la schermata si spostava) */
 .full .strip{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px;scroll-padding-inline:16px}
+
+/* v49: tornando su Bingo la scheda appare senza scivolare */
+.tab{animation:tabfade .2s ease both}
+@keyframes tabfade{from{opacity:0}to{opacity:1}}
 </style>
 </head>
 <body>
@@ -1227,7 +1231,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[...Array(16).keys()];
 const MAXP=8; // pronostici massimi a testa
-const APP_V=48; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=49; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1364,18 +1368,21 @@ async function deal(name,avatar){
 let lastScelti=-1;
 function render(){
   if(!me)return;
-  $("who").textContent=me.nome;$("who-av").innerHTML=avatarSVG(me.avatar);
-  const card=$("card");card.textContent="";
+  $("who").textContent=me.nome;{const h=avatarSVG(me.avatar);if($("who-av").dataset.av!==h){$("who-av").innerHTML=h;$("who-av").dataset.av=h}}
+  const card=$("card");const reuse=card.children.length===me.cartella.length;if(!reuse)card.textContent="";
   const st=stato(me);
   me.cartella.forEach((m,i)=>{
     const seg=!!me.segni[i],cf=live.has(m);
-    const b=document.createElement("button");b.type="button";
-    b.className="cell"+(seg&&cf?" on lock":"")+(seg&&!cf?" wait":"")+(!seg&&cf?" miss":"");
+    const cls="cell"+(seg&&cf?" on lock":"")+(seg&&!cf?" wait":"")+(!seg&&cf?" miss":"");
+    const key=cls+"|"+m;
+    if(reuse){const o=card.children[i];if(o.dataset.k===key)return;o.remove();}
+    const b=document.createElement("button");b.type="button";b.dataset.k=key;
+    b.className=cls;
     b.setAttribute("aria-pressed",seg);
     b.setAttribute("aria-label",MOMENTI[m]+", "+PUNTI[m]+(PUNTI[m]===1?" punto":" punti")+(seg&&cf?", indovinato":seg?", tuo pronostico":cf?", già successo":""));
     const n=document.createElement("span");n.className="n p"+PUNTI[m];n.textContent=(seg&&cf?"PRESO +":"+")+PUNTI[m];
     const t=document.createElement("span");t.className="t";if(seg&&cf){const h=document.createElement("span");h.className="hls";h.textContent=MOMENTI[m];t.append(h)}else t.textContent=MOMENTI[m];
-    b.append(n,t);b.addEventListener("click",()=>tap(i));card.append(b);
+    b.append(n,t);b.addEventListener("click",()=>tap(i));card.insertBefore(b,card.children[i]||null);
   });
   const all=players.filter(p=>p.id!==me.id).concat([me]);const cl=classifica(all);const pos=cl.findIndex(x=>x.p===me);const mine=cl[pos];
   $("pt").textContent=mine.pt;$("ptt").textContent=mine.pt===1?"punto":"punti";
