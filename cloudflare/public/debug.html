@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-eZfPqb3ReDpNa3kAShrMQRKej8sZpaSikAAqrr8LXII='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-nYa0SvOvZQK5xH4yK5YWAxNVVW8WuGuaRBrNnf4JcA0='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -1317,7 +1317,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[0,1,6,3,5,2,10,7,4,13,9,16,14,12,17,19,11,18,20,15,8]; // ordine delle card, uguale per tutti (rarità mischiate)
 const MAXP=8; // pronostici massimi a testa
-const APP_V=68; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=69; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1546,7 +1546,7 @@ async function tap(i){
   if(!me.segni[i]&&PUNTI[i]===1&&nComuni(me.segni)>=MAXC){toast("Hai già "+MAXC+" Comuni da 1 punto: per gli altri pronostici devi rischiare.");const cd=$("card");cd.classList.remove("cmshk");void cd.offsetWidth;cd.classList.add("cmshk");return}
   if(!me.segni[i]&&me.segni.filter(Boolean).length>=MAXP){toast("Hai già scelto "+MAXP+" momenti: togline uno per cambiare.");return}
   me.segni=me.segni.slice();me.segni[i]=!me.segni[i];
-  render();const cl_=$("card").children[me.cartella.indexOf(i)];cl_.classList.add("thump");
+  render();const cl_=$("card").children[me.cartella.indexOf(i)];cl_.classList.add("thump");cl_.addEventListener("animationend",()=>cl_.classList.remove("thump"),{once:true});
   if(me.segni[i]){burst(cl_,"+"+PUNTI[i]);salta(false);if(me.segni.filter(Boolean).length===MAXP)setTimeout(()=>slam("PARTY COMPLETO",$("card")),260)}
   save();
 }
@@ -1563,7 +1563,7 @@ function confetti(cf){cf.textContent="";for(let j=0;j<22;j++){const i=document.c
 $("close").addEventListener("click",()=>{$("win").hidden=true});
 // ---------- v30: animazioni ----------
 const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
-function salta(big){const w=$("who-av");if(!w||RM)return;w.classList.remove("jmp","jmp2");void w.offsetWidth;w.classList.add(big?"jmp2":"jmp")}
+function salta(big){const w=$("who-av");if(!w||RM)return;w.classList.remove("jmp","jmp2");void w.offsetWidth;w.classList.add(big?"jmp2":"jmp");w.addEventListener("animationend",()=>w.classList.remove("jmp","jmp2"),{once:true})}
 setInterval(()=>{if(document.hidden||RM)return;document.querySelectorAll("#who-av svg,#acc-av svg,.podio-m svg").forEach(v=>{v.classList.add("blink");setTimeout(()=>v.classList.remove("blink"),150)})},3400);
 const PXC=["#E5007E","#FF4400","#1F3FD1","#1BA40C","#FFD200","#000000"];
 function burst(cell,txt){if(RM)return;const c=$("card"),r=cell.getBoundingClientRect(),h=c.getBoundingClientRect(),x=r.left-h.left+r.width/2,y=r.top-h.top+r.height/2;
