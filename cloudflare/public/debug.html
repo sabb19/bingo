@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-lVNLgh9HcTNW65Vekb9ZopyKRHixm4gFKYhy0YcTFH4='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-wAfmL7Jfk4B8Z8X0FCPhSyebVTZsrtUA2wpsS7XY+fo='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -1007,6 +1007,22 @@ body:has(> .full:not([hidden])){overflow:hidden}
 
 /* v74 nome del giocatore senza evidenziatore */
 .who .hl,.acc-hero .hl,.acc-hero h2 .hl{background:none;padding:0}
+
+/* v75 card: solo i punti, niente simbolo e niente nome della rarità */
+#card .cell .rk{display:none!important}
+#card .cell .n::before{display:none!important}
+#card .cell .n{gap:0;padding-left:8px;padding-right:8px}
+
+/* v75 card: retino sulle card non scelte, stelline in fila per la rarità (1 Comune, 2 Raro, 3 Epico, 4 Leggendario), niente verde sul Leggendario */
+#card .cell:not(.wait):not(.on){background-color:var(--s);background-image:radial-gradient(#0000002a 1px,transparent 1.2px);background-size:6px 6px}
+#card .cell:not(.wait):not(.on) .n{box-shadow:0 0 0 3px var(--s)}
+#card .cell[data-r="1"]{--nn:1}#card .cell[data-r="2"]{--nn:2}#card .cell[data-r="3"]{--nn:3}#card .cell[data-r="5"]{--nn:4}
+#card .cell{--st:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222.3%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%203c.9%205%202.6%207.6%209%209-6.4%201.4-8.1%204-9%209-.9-5-2.6-7.6-9-9%206.4-1.4%208.1-4%209-9z%22/%3E%3C/svg%3E")}
+#card .cell::before{content:"";position:absolute;top:13px;right:10px;height:11px;width:calc(var(--nn) * 12px);background:currentColor;-webkit-mask:var(--st) right center/12px 11px repeat-x;mask:var(--st) right center/12px 11px repeat-x;pointer-events:none}
+#card .cell.wait::after{display:none}
+#card .cell.on::before{display:none}
+#card .cell[data-r="5"] .n{background:var(--n);color:var(--c)}
+#card .cell.wait[data-r="5"] .n,#card .cell.on[data-r="5"] .n{background:#ffffff26;color:#fff}
 </style>
 </head>
 <body>
@@ -1354,7 +1370,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[0,1,6,3,5,2,10,7,4,13,9,16,14,12,17,19,11,18,20,15,8]; // ordine delle card, uguale per tutti (rarità mischiate)
 const MAXP=8; // pronostici massimi a testa
-const APP_V=74; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=75; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
