@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-+rjE/V9XstA267vZdEo1WltB0NUG8RaGBE+gcXWMOZ8='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-2wdCtTQ2KWbwoBZpZCAbz1embJyZvB9kZb58jLIyYIw=' 'sha256-SgLc3lJ8VMVu1swNUaD6ZwB3U+WO5M2HJA/YBB4A2jo='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards (debug)</title>
@@ -930,7 +930,7 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .nm-f{flex-direction:column;align-items:stretch;gap:10px;padding:18px 0 10px}
 .nm-f input[readonly]{color:var(--c);cursor:default;caret-color:transparent;pointer-events:none;-webkit-user-select:none;user-select:none}
 .nm-lk{display:none;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--m)}
-.nm-f.lk .nm-lk{display:inline}
+.nm-f.lk .nm-lk{display:none}
 .nm-f.lk{border-bottom-color:transparent;padding-bottom:0}
 .nm-f>span:first-child{display:flex;justify-content:space-between}
 /* v54: intro all'apertura, solo logo al centro (Santa Officina × GAME AWARDS), poi sparisce */
@@ -962,7 +962,6 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .cell[data-r="5"] .rk{color:var(--v)}
 .cell.wait[data-r="5"] .rk{color:#3FD12F}
 .cell[data-r="5"] .n{background:var(--v);color:#fff}
-.cell.cm-full .rk{opacity:1;color:var(--c)}
 
 /* v63 card a struttura fissa: bollino in alto, rarità subito sotto, titolo sempre in basso */
 .cell{display:grid!important;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);row-gap:0;align-content:stretch;justify-items:start}
@@ -1321,7 +1320,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[0,1,6,3,5,2,10,7,4,13,9,16,14,12,17,19,11,18,20,15,8]; // ordine delle card, uguale per tutti (rarità mischiate)
 const MAXP=8; // pronostici massimi a testa
-const APP_V=65; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=66; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
@@ -1413,7 +1412,7 @@ $("kick-out").addEventListener("click",async()=>{await sb.auth.signOut();user=nu
 
 // ---------- nome e cartella ----------
 let draft=avRandom(),editing=false;
-function openEditor(name,avatar,isEdit){draft=avFix(avatar);editing=isEdit;$("nome").value=name||"";$("nome").readOnly=!!isEdit;$("nome").tabIndex=isEdit?-1:0;if(isEdit)$("nome").blur();$("nm-f").onclick=e=>{if($("nm-f").classList.contains("lk")){e.preventDefault();$("nome").blur()}};$("nm-f").classList.toggle("lk",!!isEdit);$("nm-nota").textContent=isEdit?"* Il nome non si può cambiare. Se c'è un errore, chiedi all'admin.":"* Il nome si sceglie una volta sola. Il mostriciattolo puoi cambiarlo quando vuoi dall'Account.";$("reg-go-t").textContent=isEdit?"Salva":"Entra in partita";$("name-err").hidden=true;buildEditor();show("naming")}
+function openEditor(name,avatar,isEdit){draft=avFix(avatar);editing=isEdit;$("nome").value=name||"";$("nome").readOnly=!!isEdit;$("nome").tabIndex=isEdit?-1:0;if(isEdit)$("nome").blur();$("nm-f").onclick=e=>{if($("nm-f").classList.contains("lk")){e.preventDefault();$("nome").blur()}};$("nm-f").classList.toggle("lk",!!isEdit);$("nm-nota").hidden=!!isEdit;$("nm-nota").textContent=isEdit?"* Il nome non si può cambiare. Se c'è un errore, chiedi all'admin.":"* Il nome si sceglie una volta sola. Il mostriciattolo puoi cambiarlo quando vuoi dall'Account.";$("reg-go-t").textContent=isEdit?"Salva":"Entra in partita";$("name-err").hidden=true;buildEditor();show("naming")}
 function paintPreview(){const p=$("preview");p.innerHTML=avatarSVG(draft);p.classList.remove("bump");void p.offsetWidth;p.classList.add("bump")}
 function buildEditor(){
   const ed=$("editor");ed.textContent="";draft=avFix(draft);
@@ -1472,7 +1471,7 @@ function render(){
     b.setAttribute("aria-label",MOMENTI[m]+", "+PUNTI[m]+(PUNTI[m]===1?" punto":" punti")+(seg&&cf?", indovinato":seg?", tuo pronostico":cf?", già successo":""));
     const n=document.createElement("span");n.className="n p"+PUNTI[m];n.textContent=(seg&&cf?"PRESO +":"+")+PUNTI[m];
     const t=document.createElement("span");t.className="t";if(seg&&cf){const h=document.createElement("span");h.className="hls";h.textContent=MOMENTI[m];t.append(h)}else t.textContent=MOMENTI[m];
-    b.append(n,t);if(cmf)b.classList.add("cm-full");b.dataset.r=PUNTI[m];{const k=document.createElement("i");k.className="rk";k.textContent=cmf?"Comuni pieni":RARITA[PUNTI[m]];b.insertBefore(k,t)}b.addEventListener("click",()=>tap(m));card.insertBefore(b,card.children[i]||null);
+    b.append(n,t);if(cmf)b.classList.add("cm-full");b.dataset.r=PUNTI[m];{const k=document.createElement("i");k.className="rk";k.textContent=RARITA[PUNTI[m]];b.insertBefore(k,t)}b.addEventListener("click",()=>tap(m));card.insertBefore(b,card.children[i]||null);
   });
   const all=players.filter(p=>p.id!==me.id).concat([me]);const cl=classifica(all);const pos=cl.findIndex(x=>x.p===me);const mine=cl[pos];
   $("pt").textContent=mine.pt;$("ptt").textContent=mine.pt===1?"punto":"punti";
