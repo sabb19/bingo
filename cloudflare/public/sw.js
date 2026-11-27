@@ -1,6 +1,6 @@
 // Service worker minimo: rende l'app installabile e mostra l'ultima versione salvata se manca la rete.
 // I dati della serata (server Cloudflare) passano sempre dalla rete, mai dalla cache.
-const CACHE="bingo-v67";
+const CACHE="bingo-v68";
 const SHELL=["./","./index.html","./debug.html","./manifest.webmanifest","./icons/icon-192-v56.png","./icons/avvio-android-512-v59.png","./cloud.js","./vendor/qrcode-1.0.0.min.js","./vendor/fonts/fonts.css"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).catch(()=>{}));self.skipWaiting()});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});

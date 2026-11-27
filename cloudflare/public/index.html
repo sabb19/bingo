@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-bB7zN+OU+yfE8gDBeXlxY4EEgc8B+GgMJuQwC9EP4/s='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-3IFfHp0rsb0Qg5hc6CqzCThhRwZlowYbb1LMM1csgn0='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -1219,7 +1219,7 @@ const DEBUG=!!window.SQ_DEBUG;
 // Colori delle aree Santa Officina. Il giocatore sceglie forma, colore e un extra.
 const MOS={
   colori:[["Magenta","#E5007E"],["Arancio","#FF4400"],["Oltremare","#1F3FD1"],["Verde","#1BA40C"],["Giallo","#FFD200"],["Inchiostro","#141414"]],
-  extra:["Niente","Cuffie","Cappellino","Occhiali"],
+  extra:["Niente","Cuffie","Guance","Occhiali"],
   forme:[
    ["Ranocchio",[".###....###.","##E##..##E##","##E######E##","############","############","############","############",".##########.",".##########.","..########..",".###....###.","............"]],
    ["Antenne",["..#......#..","...#....#...","...######...","..########..",".##########.",".##E####E##.",".##E####E##.",".##########.",".##########.",".##########.","..##....##..","..##....##.."]],
@@ -1250,12 +1250,9 @@ function mosGrid(a){
     for(let x=4;x<=11;x++)set(x,t-1,ink);set(3,t,ink);set(12,t,ink);
     for(let y=t+1;y<ey;y++){set(2,y,ink);set(13,y,ink)}
     for(let y=ey;y<=ey+2;y++){set(1,y,ink);set(2,y,ink);set(13,y,ink);set(14,y,ink)}}
-  if(a.x===2){ // cappellino con visiera: poggia sulla testa, senza buchi
-    const c=a.c===4?MOS.colori[0][1]:MOS.colori[4][1],body=new Set([col,eye]);let low=t-1;
-    for(let x=4;x<=11;x++){const y0=(x===4||x===11)?t-2:t-3;let y=y0;
-      while(y<N&&!(G[y]&&body.has(G[y][x]))&&y<=t+1){set(x,y,c);y++}low=Math.max(low,y-1)}
-    for(let x=4;x<=11;x++)set(x,t-3,x===4||x===11?null:c);
-    for(let x=11;x<=14;x++)set(x,Math.min(low,t),ink);set(5,t-2,"#FFFFFF66")}
+  if(a.x===2&&eyes.length){ // guance rosa sotto gli occhi
+    const ey=Math.max(...eyes.map(e=>e[1]))+1,xs=eyes.map(e=>e[0]),xl=Math.min(...xs),xr=Math.max(...xs),pk=dark?"#E5007E":"#FF8FC4";
+    [[xl-1,ey],[xl,ey],[xr,ey],[xr+1,ey]].forEach(([x,y])=>{if(G[y]&&G[y][x]===col)set(x,y,pk)})}
   if(a.x===3&&eyes.length){ // occhiali da sole
     const ys=Math.min(...eyes.map(e=>e[1]));const xs=[...new Set(eyes.map(e=>e[0]))].sort((p,q)=>p-q);
     const groups=xs.length>2?[[xs[0],xs[xs.length-1]]]:xs.map(x=>[x,x]);
@@ -1319,7 +1316,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[0,1,6,3,5,2,10,7,4,13,9,16,14,12,17,19,11,18,20,15,8]; // ordine delle card, uguale per tutti (rarità mischiate)
 const MAXP=8; // pronostici massimi a testa
-const APP_V=67; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=68; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
