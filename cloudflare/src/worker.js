@@ -5,7 +5,9 @@
 import { DurableObject } from "cloudflare:workers";
 
 const PRINCIPALE = "sabrinamontella02@gmail.com";
-const N = 16, MAXP = 8, MAX_ADMIN = 20;
+const N = 21, MAXP = 8, MAX_ADMIN = 20;
+// punti di ogni momento (stesso ordine dell'app): massimo MAXC pronostici sui momenti da 1 punto (Comuni)
+const PUNTI = [1,2,5,1,3,2,3,2,1,2,1,5,3,1,2,3,1,1,1,2,2], MAXC = 4;
 const SESS_GIORNI = 60;
 const TAVOLE = ["giocatori", "momenti", "serata", "esclusi"];
 
@@ -214,6 +216,7 @@ export class Serata extends DurableObject {
     if (this.serata.finita) throw new Error("serata finita");
     if (!this.serata.scelte_aperte) throw new Error("scelte chiuse");
     if (nuovi.filter(Boolean).length > MAXP) throw new Error("massimo 8 pronostici");
+    if (nuovi.filter((v, i) => v && PUNTI[i] === 1).length > MAXC) throw new Error("massimo 4 Comuni");
     for (let i = 0; i < N; i++) if (this.momenti[i] && nuovi[i] !== !!vecchi[i]) throw new Error("momento già successo");
   }
   pulisciNome(n) {
