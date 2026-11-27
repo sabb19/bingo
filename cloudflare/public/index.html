@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-rR5FN6HVcSdY0Ptl3+SrIZORba4EHjA1J3rgtsmRPQs='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-nyNnH8snchZqAh1h8QDNnlc6OYB5MqV433W5t0wr7y4='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -964,6 +964,15 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .cell.wait[data-r="5"] .rk{color:#3FD12F}
 .cell[data-r="5"] .n{background:var(--v);color:#fff}
 .cell.cm-full .rk{opacity:.6}
+
+/* v63 card a struttura fissa: bollino in alto, rarità subito sotto, titolo sempre in basso */
+.cell{display:grid!important;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);row-gap:0;align-content:stretch;justify-items:start}
+.cell .n{grid-row:1;align-self:start}
+.cell .rk{grid-row:2;margin:7px 0 0!important;white-space:nowrap;max-width:100%;overflow:hidden;font-size:8.5px!important;letter-spacing:.07em!important;hyphens:none;-webkit-hyphens:none}
+.cell .t{grid-row:3;align-self:end;justify-self:stretch;min-width:0;margin-top:10px}
+#card{grid-auto-rows:1fr}
+#card .cell{aspect-ratio:auto;min-height:0;height:100%}
+@media (max-width:400px){#card .cell{padding:10px 8px 10px 10px}.cell .rk{font-size:7.5px!important;letter-spacing:.03em!important}}
 </style>
 </head>
 <body>
@@ -1312,7 +1321,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[0,1,6,3,5,2,10,7,4,13,9,16,14,12,17,19,11,18,20,15,8]; // ordine delle card, uguale per tutti (rarità mischiate)
 const MAXP=8; // pronostici massimi a testa
-const APP_V=62; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=63; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
