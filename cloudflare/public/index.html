@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-FgWPiLih7QIt6I4De0tsDz3tGkHInS/VyTb5uAN4eVs='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Cm4LuQpzfW2tTi14Lc+RTV0Q7gLc92PF3cX67+PGmDs=' 'sha256-HzmvdZRwA96k7w5ScOljv3whkHtaLdAVMr18d2+RIfQ='; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' wss://*.workers.dev; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Santa Officina × Game Awards</title>
@@ -979,6 +979,29 @@ body:has(> .full:not([hidden])){overflow:hidden}
 .segs{gap:0;background:var(--s);border-radius:3px;overflow:hidden}
 .segs i{height:4px;border-radius:0;background:transparent}
 .segs i.on{background:var(--c)}.segs i.ok{background:var(--v)}
+
+/* v72 titoli grandi per sezione al posto della barra nera BINGO; riga piccola con lo stato delle scelte */
+.pgh{margin:30px 0 0;display:flex;flex-direction:column;gap:10px}
+.ey{margin:0;display:flex;align-items:center;gap:8px;font:600 10.5px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--m)}
+.ey .hd-st{display:inline-flex;align-items:center;gap:8px;color:inherit}
+.ey .hd-st i{width:7px;height:7px;border-radius:50%;background:var(--v)}
+.ey .hd-st[data-st="chiusa"] i{background:#8A8A8A}
+.pg-t,.reg .r-ttl,.intro .r-ttl{margin:0;font-family:"Geist",sans-serif;font-weight:900;font-size:42px;line-height:.9;letter-spacing:-.055em;color:var(--c);text-wrap:balance}
+.reg .r-ttl,.intro .r-ttl{margin-top:10px}
+.pg-t .hl,.r-ttl .hl{background:linear-gradient(transparent 66%,var(--v) 66%,var(--v) 88%,transparent 88%);padding:0 2px}
+.auth p.ey{margin:6px 0 0;font-size:10.5px;line-height:1;color:var(--m);opacity:1;max-width:none}
+.tab-sub{margin-top:14px}
+.who{margin-top:24px;padding:12px 14px;background:var(--s);border-radius:18px}
+.who h2{font-size:26px}
+.who .me .av{width:44px;height:44px;border-radius:12px;background:#fff}
+.lines b{font-size:34px}
+.lines{font-size:9.5px}
+.segs{margin-top:18px}
+#tab-acc .acc-hero{flex-direction:row;align-items:center;text-align:left;gap:14px;margin-top:24px;padding:14px;background:var(--s);border-radius:18px}
+.acc-hero .av{width:64px;height:64px;border-radius:14px;background:#fff;box-shadow:none}
+.acc-hero h2{font-size:30px;margin:0}
+.acc-hero small{display:block;font-size:12px;margin-top:4px}
+.acc-id{min-width:0}
 </style>
 </head>
 <body>
@@ -989,7 +1012,7 @@ body:has(> .full:not([hidden])){overflow:hidden}
 
 <section class="full auth intro" id="intro" hidden aria-label="Come si gioca">
   <div class="col">
-    <div class="rhd"><div class="hd-s"><span class="hd-tt">BINGO</span><span class="hd-st" data-st="aperte"><i aria-hidden="true"></i><span class="hd-stt">SCELTE APERTE</span></span></div></div>
+    <p class="ey"><span class="hd-st" data-st="aperte"><i aria-hidden="true"></i><span class="hd-stt">SCELTE APERTE</span></span><span aria-hidden="true">·</span><span>10 DIC</span></p>
     <div class="in-av" id="in-av"></div>
     <h2 class="r-ttl">Come si <span class="hl">gioca</span>.</h2>
     <ol class="passi">
@@ -1043,7 +1066,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
 
 <section class="full auth reg" id="naming" hidden aria-label="Il tuo player">
   <form class="col" id="f">
-    <div class="rhd"><div class="hd-s"><span class="hd-tt">BINGO</span><span class="hd-st" data-st="aperte"><i aria-hidden="true"></i><span class="hd-stt">SCELTE APERTE</span></span></div></div>
+    <p class="ey"><span class="hd-st" data-st="aperte"><i aria-hidden="true"></i><span class="hd-stt">SCELTE APERTE</span></span><span aria-hidden="true">·</span><span>10 DIC</span></p>
     <h2 class="r-ttl">Il tuo <span class="hl">player</span>.</h2>
     <div class="fig"><span class="bol">PLAYER 1</span><span class="rg a"></span><span class="rg b"></span><span class="rg c"></span>
       <div class="preview" id="preview"></div>
@@ -1057,10 +1080,10 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
 </section>
 
 <div class="wrap" id="game" hidden lang="it">
-  <header class="bar lpbar"><div class="hd-s"><span class="hd-tt">BINGO</span><span class="hd-st" data-st="aperte"><i aria-hidden="true"></i><span class="hd-stt">SCELTE APERTE</span></span></div></header>
   <section class="tab" id="tab-bingo" role="tabpanel" aria-labelledby="tb-bingo">
+    <header class="pgh"><p class="ey"><span class="hd-st" data-st="aperte"><i aria-hidden="true"></i><span class="hd-stt">SCELTE APERTE</span></span><span aria-hidden="true">·</span><span>10 DIC</span></p><h2 class="pg-t">I tuoi <span class="hl">pronostici</span>.</h2></header>
     <div class="who">
-      <div class="me"><span id="who-av"></span><div style="min-width:0"><small>Pronostici di</small><h2><span class="hl" id="who"></span></h2></div></div>
+      <div class="me"><span id="who-av"></span><div style="min-width:0"><h2><span class="hl" id="who"></span></h2></div></div>
       <div class="lines"><b id="pt">0</b><span id="ptt">punti</span></div>
     </div>
     <div class="segs" id="segs" aria-hidden="true"></div>
@@ -1071,7 +1094,7 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
     <div class="legend"><span><i class="lg-wait"></i>tuo pronostico</span><span><i class="lg-on"></i>indovinato</span><span><i class="lg-miss"></i>successo, non scelto</span></div>
   </section>
   <section class="tab" id="tab-rank" role="tabpanel" aria-labelledby="tb-rank" hidden>
-    <h2 class="tab-ttl">Classifica</h2>
+    <header class="pgh"><p class="ey">Classifica · dal vivo</p><h2 class="pg-t">Chi sta <span class="hl">vincendo</span>.</h2></header>
     <p class="tab-sub" id="cl-sub"></p>
     <div class="podio-m" id="cl-pod" aria-hidden="true"></div>
     <div class="duel" id="cl-duel" hidden></div>
@@ -1082,7 +1105,8 @@ document.querySelectorAll(".op-st").forEach(setup);theme();
     <ol class="my-mom" id="cl-mom"></ol>
   </section>
   <section class="tab" id="tab-acc" role="tabpanel" aria-labelledby="tb-acc" hidden>
-    <div class="acc-hero"><span id="acc-av"></span><h2 id="acc-nm"></h2><small id="acc-mail"></small></div>
+    <header class="pgh"><p class="ey">Account</p><h2 class="pg-t">Il tuo <span class="hl">profilo</span>.</h2></header>
+    <div class="acc-hero"><span id="acc-av"></span><div class="acc-id"><h2 id="acc-nm"></h2><small id="acc-mail"></small></div></div>
     <div class="acc-stats"><div><b id="acc-pos">–</b><span>posizione</span></div><div><b id="acc-pt">0</b><span>punti</span></div><div><b id="acc-sc">0/8</b><span>pronostici</span></div></div>
     <div class="acc-list">
       <button id="edit-av" type="button">Modifica personaggio</button>
@@ -1324,7 +1348,7 @@ const isRegia=()=>location.hash==="#classifica"||location.hash==="#regia";
 const isAdmin=()=>location.hash==="#admin";
 const CARTELLA=[0,1,6,3,5,2,10,7,4,13,9,16,14,12,17,19,11,18,20,15,8]; // ordine delle card, uguale per tutti (rarità mischiate)
 const MAXP=8; // pronostici massimi a testa
-const APP_V=71; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
+const APP_V=72; // versione dell'app: se version.json ne ha una più nuova, l'app si aggiorna da sola
 let sb=null,user=null,me=null,live=new Set(),regia=false,players=[];
 
 function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
